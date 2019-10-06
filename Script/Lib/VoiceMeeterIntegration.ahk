@@ -91,7 +91,7 @@ ShowTooltip(Message){ ;Shows the tooltip and returns true if the currently activ
           Return false
      WinGet style, Style, ahk_id %WinID%
      WinGetPos ,,,winW,winH, %winTitle%
-     if ((style & 0x20800000) or winH < A_ScreenHeight or winW < A_ScreenWidth ){ 
+     if ((style & 0x20800000) or WinActive("ahk_class Progman") or winH < A_ScreenHeight or winW < A_ScreenWidth){ 
           #Persistent
           SetFormat, FloatFast, 4.1
           ToolTip, %Message%
