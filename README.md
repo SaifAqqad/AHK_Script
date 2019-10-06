@@ -20,7 +20,7 @@
 
 ## Instructions: 
 1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
-2. Copy Script.exe to any directory you want (Preferably C:\AHK\)
+2. Copy Script.exe to any directory you want (Preferably C:\AHK\Script)
 3. Open Task Scheduler (Windows Search --> Task Scheduler) 
 4. Create Basic Task
 
@@ -30,6 +30,6 @@
     
     4c. Action: *Start a program*
     
-    4d. Program/Script: *C:\AHK\Script.exe* (or the directory you copied to )
+    4d. Program/Script: *C:\AHK\Script\Script.exe* (or the directory you copied to )
     
 5. Click *Finish*
