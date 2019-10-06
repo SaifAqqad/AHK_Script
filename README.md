@@ -5,11 +5,14 @@
   AHK_Script
 </h1>
 <p align="center">
-  Personal AHK script With VoiceMeeter Integration.
+  Personal AHK script With VoiceMeeter Integration using <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">VoiceMeeter's API</a>.
 </p>
 <p align="center">
   <a style="text-decoration:none" href="https://autohotkey.com">
     <img src="https://img.shields.io/badge/AutoHotkey-1.1.30.03-4DB057.svg" alt="AHK link" />
+  </a>
+  <a style="text-decoration:none" href="https://www.vb-audio.com/Voicemeeter/banana.htm">
+   <img src="https://img.shields.io/badge/VoiceMeeter-Banana-FF4427.svg" alt="VM link" />
   </a>
 </p>
 
