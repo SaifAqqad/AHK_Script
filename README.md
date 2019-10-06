@@ -17,8 +17,12 @@
 </p>
 
 ![VoiceMeeter Integration](https://j.gifs.com/2x2J4A.gif)
+## Tips for using [VoiceMeeterIntegration.ahk](https://github.com/SaifAqqad/AHK_Script/blob/master/Script/Lib/VoiceMeeterIntegration.ahk) in your own script:
+1. Use **#include *path/to/VoiceMeeterIntegration.ahk***
+2. Add a call to VM_Login() and OnExit("VM_Logout")
 
-## Instructions: 
+
+## Run at Startup Instructions: 
 1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
 2. Copy Script.exe to any directory you want (Preferably C:\AHK\Script)
 3. Open Task Scheduler (Windows Search --> Task Scheduler) 
