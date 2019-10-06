@@ -21,6 +21,7 @@
 1. Use `#include path/to/VoiceMeeterIntegration.ahk`
 2. Add a call to `VM_Login()` and `OnExit("VM_Logout")`
 
+**Note: Tooltips won't show up if the currently active windows is fullscreen (e.g. fullscreen games/netflix)**
 
 ## Run at Startup Instructions: 
 1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
