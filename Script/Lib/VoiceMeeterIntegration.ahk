@@ -1,7 +1,8 @@
 ;===================================================VoiceMeeter Integration===================================================
 ;VM_Login()  loads VoiceMeeter's Library and calls the login function
 ;VM_Logout() Calls VM's logout function 
-;VM_Restart() ;Restarts VoiceMeeter's Engine
+;VM_Restart() Restarts VoiceMeeter's Engine
+;VM_CheckParams() Calls VM api's IsParametersDirty 
 ;AudioDevice Should be given as: "Strip[i]." or "Bus[i]." where i is zero based, 0-4 for VMBanana
 ;    getCurrentVol(AudioDevice) returns the current volume for AudioDevice
 ;    VolUp(AudioDevice) Increases the AudioDevice volume by 2dB
@@ -11,6 +12,7 @@
 ;DeviceNum is zero based, 0-4 for VMBanana, 
 ;    SwitchAudioDevice(DeviceNum) Mutes CurrentAudioDevice then changes CurrentAudioDevice to "Bus[DeviceNum]." then unmutes it
 Global CurrentAudioDevice := "Bus[0]."
+SetTimer, VM_CheckParams, 20 ;calls VM_CheckParams() periodically
 VM_Login() {
      VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
      DllCall("VoicemeeterRemote64\VBVMR_Login")
@@ -22,6 +24,9 @@ VM_Logout() {
 VM_Restart(){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
      Return
+}
+VM_CheckParams(){
+     DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
 getCurrentVol(AudioDevice){
      CurrentVol := 0.0
