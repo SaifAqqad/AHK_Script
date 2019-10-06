@@ -1,8 +1,17 @@
-<img align="left" width="55" height="55" src="Script/Script.ico" alt="AHK_Script">
-
-# AHK_Script    [![AutoHotkey](https://img.shields.io/badge/AutoHotkey-1.1.30.03-4DB057.svg)](https://autohotkey.com/)
-
-Personal AHK script With VoiceMeeter Integration
+<p align="center">
+  <img width="250" height="80" align="center" src="https://www.autohotkey.com/assets/images/ahk-logo-no-text241x78-160.png">
+</p>
+<h1 align="center">
+  AHK_Script
+</h1>
+<p align="center">
+  Personal AHK script With VoiceMeeter Integration.
+</p>
+<p align="center">
+  <a style="text-decoration:none" href="https://autohotkey.com">
+    <img src="https://img.shields.io/badge/AutoHotkey-1.1.30.03-4DB057.svg" alt="AHK link" />
+  </a>
+</p>
 
 ![VoiceMeeter Integration](https://j.gifs.com/2x2J4A.gif)
 
