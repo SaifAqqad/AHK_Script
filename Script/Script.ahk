@@ -1,7 +1,7 @@
 #NoEnv
 #Include, %A_ScriptDir%\Lib\VoiceMeeterIntegration.ahk
-OnExit("VMLogout")
-VMLogin()
+OnExit("VM_Logout")
+VM_Login()
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 DetectHiddenWindows, On
@@ -14,7 +14,7 @@ if (FileExist(TrayIcon)) {
 }
 Global DefaultMediaApp := "plexamp.exe"
 ;=======================================Global Hotkeys=======================================
-<^<+R::RestartVM()
+<^<+R::VM_Restart()
 
 #Space::#s 
 
