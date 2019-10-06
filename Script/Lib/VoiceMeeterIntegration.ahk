@@ -1,7 +1,7 @@
 ;===================================================VoiceMeeter Integration===================================================
-;VMLogin()  loads VoiceMeeter's Library and calls the login function
-;VMLogout() Calls VM's logout function 
-;RestartVM() ;Restarts VoiceMeeter's Engine
+;VM_Login()  loads VoiceMeeter's Library and calls the login function
+;VM_Logout() Calls VM's logout function 
+;VM_Restart() ;Restarts VoiceMeeter's Engine
 ;AudioDevice Should be given as: "Strip[i]." or "Bus[i]." where i is zero based, 0-4 for VMBanana
 ;    getCurrentVol(AudioDevice) returns the current volume for AudioDevice
 ;    VolUp(AudioDevice) Increases the AudioDevice volume by 2dB
@@ -11,17 +11,19 @@
 ;DeviceNum is zero based, 0-4 for VMBanana, 
 ;    SwitchAudioDevice(DeviceNum) Mutes CurrentAudioDevice then changes CurrentAudioDevice to "Bus[DeviceNum]." then unmutes it
 Global CurrentAudioDevice := "Bus[0]."
-VMLogin() {
+VM_Login() {
      VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
      DllCall("VoicemeeterRemote64\VBVMR_Login")
-     DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
-VMLogout() {
+VM_Logout() {
      DllCall("VoicemeeterRemote64\VBVMR_Logout")
      DllCall("FreeLibrary", "Ptr", VBVMRDLL) 
 }
+VM_Restart(){
+     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
+     Return
+}
 getCurrentVol(AudioDevice){
-     DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
      CurrentVol := 0.0
      NumPut(0.0, CurrentVol, 0, "Float")
      DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioDevice . "Gain" , "Ptr" , &CurrentVol, "Int")
@@ -45,7 +47,6 @@ VolDown(AudioDevice){
 }
 getMuteState(AudioDevice){
      local MuteState := 0.0
-     DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
      NumPut(0.0, MuteState, 0, "Float")
      DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioDevice . "Mute" , "Ptr" , &MuteState , "Int")
      MuteState := NumGet(MuteState, 0, "Float")
@@ -77,12 +78,7 @@ SwitchAudioDevice(DeviceNum){
      RemoveTooltip()
      ShowTooltip( DeviceNum = "0" ? "Headphone Audio" : "Monitor Audio" )
      Sleep, 100
-     RestartVM()
-}
-RestartVM(){
-     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
-     DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
-     Return
+     VM_Restart()
 }
 ShowTooltip(Message){ ;Shows the tooltip and returns true if the currently active window is not fullscreen
      winID := WinExist( "A" )
