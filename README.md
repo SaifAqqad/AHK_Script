@@ -18,8 +18,8 @@
 
 ![VoiceMeeter Integration](https://j.gifs.com/2x2J4A.gif)
 ## Tips for using [VoiceMeeterIntegration.ahk](https://github.com/SaifAqqad/AHK_Script/blob/master/Script/Lib/VoiceMeeterIntegration.ahk) in your own script:
-1. Use **#include *path/to/VoiceMeeterIntegration.ahk***
-2. Add a call to VM_Login() and OnExit("VM_Logout")
+1. Use `#include path/to/VoiceMeeterIntegration.ahk`
+2. Add a call to `VM_Login()` and `OnExit("VM_Logout")`
 
 
 ## Run at Startup Instructions: 
