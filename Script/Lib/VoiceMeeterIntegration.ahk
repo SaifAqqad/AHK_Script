@@ -1,90 +1,93 @@
 ;===================================================VoiceMeeter Integration===================================================
-;VM_Login()  loads VoiceMeeter's Library and calls the login function
-;VM_Logout() Calls VM's logout function 
-;VM_Restart() Restarts VoiceMeeter's Engine
-;VM_CheckParams() Calls VM api's IsParametersDirty 
+;VMI_login()  loads VoiceMeeter's Library and calls the login function
+;VMI_logout() Calls VM's logout function 
+;VMI_restart() Restarts VoiceMeeter's Engine
+;VMI_checkParams() Calls VM api's IsParametersDirty 
+;VMI_getCurrentAudioDevice() Returns VMI_currentAudioDevice, necessary for using VMI as a library
 ;AudioDevice Should be given as: "Strip[i]." or "Bus[i]." where i is zero based, 0-4 for VMBanana
-;    getCurrentVol(AudioDevice) returns the current volume for AudioDevice
-;    VolUp(AudioDevice) Increases the AudioDevice volume by 2dB
-;    VolDown(AudioDevice) Decreases the AudioDevice volume by 2dB
-;    MuteToggle(AudioDevice) Mutes AudioDevice
-;    getMuteState(AudioDevice) Returns current mute status for AudioDevice
+;    VMI_getCurrentVol(AudioDevice) returns the current volume for AudioDevice
+;    VMI_volUp(AudioDevice) Increases the AudioDevice volume by 2dB
+;    VMI_volDown(AudioDevice) Decreases the AudioDevice volume by 2dB
+;    VMI_muteToggle(AudioDevice) Mutes AudioDevice
+;    VMI_getMuteState(AudioDevice) Returns current mute status for AudioDevice
 ;DeviceNum is zero based, 0-4 for VMBanana, 
-;    SwitchAudioDevice(DeviceNum) Mutes CurrentAudioDevice then changes CurrentAudioDevice to "Bus[DeviceNum]." then unmutes it
-Global CurrentAudioDevice := "Bus[0]."
-SetTimer, VM_CheckParams, 20 ;calls VM_CheckParams() periodically
-VM_Login(){
+;    VMI_switchAudioDevice(DeviceNum) Mutes VMI_currentAudioDevice then changes VMI_currentAudioDevice to "Bus[DeviceNum]." then unmutes it
+Global VMI_currentAudioDevice := "Bus[0]."
+SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
+VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
      DllCall("VoicemeeterRemote64\VBVMR_Login")
 }
-VM_Logout(){
+VMI_logout(){
      DllCall("VoicemeeterRemote64\VBVMR_Logout")
      DllCall("FreeLibrary", "Ptr", VBVMRDLL) 
 }
-VM_Restart(){
+VMI_restart(){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
 }
-VM_CheckParams(){
+VMI_checkParams(){
      DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
-getCurrentVol(AudioDevice){
+VMI_getCurrentVol(AudioDevice){
      CurrentVol := 0.0
      NumPut(0.0, CurrentVol, 0, "Float")
      DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioDevice . "Gain" , "Ptr" , &CurrentVol, "Int")
      CurrentVol := NumGet(CurrentVol, 0, "Float")
      return CurrentVol
 }
-VolUp(AudioDevice){
-     local Vol := getCurrentVol(AudioDevice)
+VMI_volUp(AudioDevice){
+     local Vol := VMI_getCurrentVol(AudioDevice)
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     ShowTooltip(Vol . " db")
+     VMI_showTooltip(Vol . " db")
 }
-VolDown(AudioDevice){
-     local Vol := getCurrentVol(AudioDevice)
+VMI_volDown(AudioDevice){
+     local Vol := VMI_getCurrentVol(AudioDevice)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     ShowTooltip(Vol . " db")
+     VMI_showTooltip(Vol . " db")
      
 }
-getMuteState(AudioDevice){
+VMI_getMuteState(AudioDevice){
      local MuteState := 0.0
      NumPut(0.0, MuteState, 0, "Float")
      DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioDevice . "Mute" , "Ptr" , &MuteState , "Int")
      MuteState := NumGet(MuteState, 0, "Float")
      return MuteState
 }
-MuteToggle(AudioDevice){
-     local Mute := getMuteState(AudioDevice)
+VMI_muteToggle(AudioDevice){
+     local Mute := VMI_getMuteState(AudioDevice)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Mute" , "Float" , !Mute, "Int")    
-     Mute := getMuteState(AudioDevice)
-     if (AudioDevice != CurrentAudioDevice ) {
-          ShowTooltip( Mute = 0.0 ? "Strip Audio Muted" : "Strip Audio Unmuted" )
+     Mute := VMI_getMuteState(AudioDevice)
+     if (AudioDevice != VMI_currentAudioDevice ) {
+          VMI_showTooltip( Mute = 0.0 ? "Strip Audio Muted" : "Strip Audio Unmuted" )
      }else{ 
-          ShowTooltip( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
+          VMI_showTooltip( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
      }
 }
-SwitchAudioDevice(DeviceNum){
-     if ((CurrentAudioDevice = "Bus[" . DeviceNum . "].")) {
-          ShowTooltip("Already using this Device")
+VMI_switchAudioDevice(DeviceNum){
+     AudioDevice := "Bus[" . DeviceNum . "]."
+     if (VMI_currentAudioDevice = AudioDevice) {
+          VMI_showTooltip("Already using this Device")
           return
      }
-     if (getMuteState(CurrentAudioDevice) = 1.0){
-          CurrentAudioDevice := "Bus[" . DeviceNum . "]."
-          MuteToggle(CurrentAudioDevice)
+     if (VMI_getMuteState(VMI_currentAudioDevice) = 1.0){
+          VMI_currentAudioDevice := AudioDevice
+          VMI_muteToggle(VMI_currentAudioDevice)
      }else{
-          MuteToggle(CurrentAudioDevice)
-          CurrentAudioDevice := "Bus[" . DeviceNum . "]."
-          MuteToggle(CurrentAudioDevice)
+          VMI_muteToggle(VMI_currentAudioDevice)
+          VMI_currentAudioDevice := AudioDevice
+          VMI_muteToggle(VMI_currentAudioDevice)
      }
-     RemoveTooltip()
-     ShowTooltip( DeviceNum = "0" ? "Headphone Audio" : "Monitor Audio" )
+     VMI_removeTooltip()
+     VMI_showTooltip( DeviceNum = "0" ? "Headphone Audio" : "Monitor Audio" )
      Sleep, 100
-     VM_Restart()
+     VMI_restart()
 }
-ShowTooltip(Message){ ;Shows the tooltip and returns true if the currently active window is not fullscreen
+VMI_getCurrentAudioDevice(){return VMI_currentAudioDevice}
+VMI_showTooltip(Message){ ;Shows the tooltip and returns true if the currently active window is not fullscreen
      winID := WinExist( "A" )
      if ( !winID )
           Return false
@@ -93,13 +96,13 @@ ShowTooltip(Message){ ;Shows the tooltip and returns true if the currently activ
      if ((style & 0x20800000) or WinActive("ahk_class Progman") or winH < A_ScreenHeight or winW < A_ScreenWidth){ 
           #Persistent
           ToolTip, %Message%
-          SetTimer, RemoveTooltip, 700
+          SetTimer, VMI_removeTooltip, 700
           return true 
      }else{
           return false
      }
 }
-RemoveTooltip(){
-     SetTimer, RemoveTooltip, Off
+VMI_removeTooltip(){
+     SetTimer, VMI_removeTooltip, Off
      ToolTip
 }

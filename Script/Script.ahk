@@ -1,7 +1,7 @@
 #NoEnv
 #Include, %A_ScriptDir%\Lib\VoiceMeeterIntegration.ahk
-OnExit("VM_Logout")
-VM_Login()
+OnExit("VMI_logout")
+VMI_login()
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 DetectHiddenWindows, On
@@ -14,7 +14,7 @@ if (FileExist(TrayIcon)) {
 }
 Global DefaultMediaApp := "plexamp.exe"
 ;=======================================Global Hotkeys=======================================
-<^<+R::VM_Restart()
+<^<+R::VMI_restart()
 
 #Space::#s 
 
@@ -39,31 +39,31 @@ DefaultMediaApp := "plexamp.exe"
 ShowTooltip("Using Plexamp")
 Return
 
-F11::SwitchAudioDevice("0") 
+F11::VMI_switchAudioDevice("0") 
 
-F12::SwitchAudioDevice("1") 
+F12::VMI_switchAudioDevice("1") 
 
 $Media_Play_Pause::PlayPauseRun() 
 
 $^Media_Play_Pause::sendInput {Media_Play_Pause} 
 
-Volume_Up::VolUp(CurrentAudioDevice) 
+Volume_Up::VMI_volUp(VMI_currentAudioDevice) 
 
-Volume_Down::VolDown(CurrentAudioDevice) 
+Volume_Down::VMI_volDown(VMI_currentAudioDevice) 
 
-$<^Volume_Down:: ;Mutes CurrentAudioDevice
-MuteToggle(CurrentAudioDevice)
+$<^Volume_Down:: ;Mutes VMI_currentAudioDevice
+VMI_muteToggle(VMI_currentAudioDevice)
 KeyWait, LControl 
 Return
 
 $<^<+Volume_Down:: ;Mutes System Audio Strip
-MuteToggle("Strip[3].")
+VMI_muteToggle("Strip[3].")
 KeyWait, LControl 
 Return
 
-$#Volume_Down::VolDown("Strip[4].") ;Decreases Media Audio Strip volume
+$#Volume_Down::VMI_volDown("Strip[4].") ;Decreases Media Audio Strip volume
 
-$#Volume_Up::VolUp("Strip[4].") ;increases Media Audio Strip volume
+$#Volume_Up::VMI_volUp("Strip[4].") ;increases Media Audio Strip volume
 ;====================================Fortnite Macros========================================
 #if, WinActive("ahk_exe FortniteClient-Win64-Shipping.exe")
 ;Build reset macro
@@ -107,4 +107,6 @@ MuteMic() ;toggles the microphone then either displays a toolkit or plays a soun
      }
      Return
 }
+
+
 
