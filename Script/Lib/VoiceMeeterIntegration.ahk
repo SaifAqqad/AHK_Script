@@ -13,17 +13,16 @@
 ;    SwitchAudioDevice(DeviceNum) Mutes CurrentAudioDevice then changes CurrentAudioDevice to "Bus[DeviceNum]." then unmutes it
 Global CurrentAudioDevice := "Bus[0]."
 SetTimer, VM_CheckParams, 20 ;calls VM_CheckParams() periodically
-VM_Login() {
+VM_Login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
      DllCall("VoicemeeterRemote64\VBVMR_Login")
 }
-VM_Logout() {
+VM_Logout(){
      DllCall("VoicemeeterRemote64\VBVMR_Logout")
      DllCall("FreeLibrary", "Ptr", VBVMRDLL) 
 }
 VM_Restart(){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
-     Return
 }
 VM_CheckParams(){
      DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
@@ -103,6 +102,4 @@ ShowTooltip(Message){ ;Shows the tooltip and returns true if the currently activ
 RemoveTooltip(){
      SetTimer, RemoveTooltip, Off
      ToolTip
-     Return
 }
-
