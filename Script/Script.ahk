@@ -1,7 +1,7 @@
 #NoEnv
-#Include, %A_ScriptDir%\Lib\VMI.ahk
-OnExit("VMI_logout")
+#include <VMI>
 VMI_login()
+OnExit("VMI_logout")
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 DetectHiddenWindows, On
@@ -24,19 +24,19 @@ Global DefaultMediaApp := "plexamp.exe"
 
 *RShift::MuteMic()
 
-#if, (!ShowTooltip(""))
+#if, (!VMI_showTooltip(""))
 CapsLock::Return
 #if
 
 ;=======================================Media Hotkeys=======================================
 <!S::
 DefaultMediaApp := "Spotify.exe"
-ShowTooltip("Using Spotify")
+VMI_showTooltip("Using Spotify")
 Return
 
 <!P::
 DefaultMediaApp := "plexamp.exe"
-ShowTooltip("Using Plexamp")
+VMI_showTooltip("Using Plexamp")
 Return
 
 F11::VMI_switchAudioDevice("0") 
@@ -102,12 +102,8 @@ MuteMic() ;toggles the microphone then either displays a toolkit or plays a soun
 {
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     if ( !ShowTooltip( !MuteState == True ? "Microphone muted" : "Microphone online" ) ){
+     if ( !VMI_showTooltip( !MuteState == True ? "Microphone muted" : "Microphone online" ) ){
           SoundPlay, % !MuteState == True ?  "mute.mp3" :  "unmute.mp3"
      }
      Return
 }
-
-
-
-
