@@ -116,6 +116,3 @@ VMI_removeTooltip(){
      SetTimer, VMI_removeTooltip, Off
      ToolTip
 }
-
-
-
