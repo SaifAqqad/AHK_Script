@@ -5,7 +5,7 @@
   AHK_Script
 </h1>
 <p align="center">
-  Personal AHK script With VoiceMeeter Integration using <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">VoiceMeeter's API</a>.
+ My personal AHK script With VoiceMeeter Integration using <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">VoiceMeeter's API</a>.
 </p>
 <p align="center">
   <a style="text-decoration:none" href="https://autohotkey.com">
