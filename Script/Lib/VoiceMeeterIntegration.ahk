@@ -93,7 +93,6 @@ ShowTooltip(Message){ ;Shows the tooltip and returns true if the currently activ
      WinGetPos ,,,winW,winH, %winTitle%
      if ((style & 0x20800000) or WinActive("ahk_class Progman") or winH < A_ScreenHeight or winW < A_ScreenWidth){ 
           #Persistent
-          SetFormat, FloatFast, 4.1
           ToolTip, %Message%
           SetTimer, RemoveTooltip, 700
           return true 
@@ -106,3 +105,4 @@ RemoveTooltip(){
      ToolTip
      Return
 }
+
