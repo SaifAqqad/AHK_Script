@@ -1,5 +1,5 @@
 #NoEnv
-#Include, %A_ScriptDir%\Lib\VoiceMeeterIntegration.ahk
+#Include, %A_ScriptDir%\Lib\VMI.ahk
 OnExit("VMI_logout")
 VMI_login()
 SendMode Input
@@ -107,6 +107,7 @@ MuteMic() ;toggles the microphone then either displays a toolkit or plays a soun
      }
      Return
 }
+
 
 
 
