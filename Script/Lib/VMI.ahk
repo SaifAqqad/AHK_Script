@@ -8,6 +8,7 @@
 ;    VMI_getCurrentVol(AudioDevice) returns the current volume for AudioDevice
 ;    VMI_volUp(AudioDevice) Increases the AudioDevice volume by 2dB
 ;    VMI_volDown(AudioDevice) Decreases the AudioDevice volume by 2dB
+;    VMI_setVol(AudioDevice, Vol) Sets AudioDevice volume to a specific Vol, Vol is given in dB
 ;    VMI_muteToggle(AudioDevice) Mutes AudioDevice
 ;    VMI_getMuteState(AudioDevice) Returns current mute status for AudioDevice
 ;DeviceNum is zero based, 0-4 for VMBanana, 
@@ -49,6 +50,11 @@ VMI_volDown(AudioDevice){
      SetFormat, FloatFast, 4.1
      VMI_showTooltip(Vol . " db")
      
+}
+VMI_setVol(AudioDevice, Vol){
+     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Gain" , "Float" , Vol , "Int")
+     SetFormat, FloatFast, 4.1
+     VMI_showTooltip(Vol . " db")
 }
 VMI_getMuteState(AudioDevice){
      local MuteState := 0.0
@@ -106,3 +112,4 @@ VMI_removeTooltip(){
      SetTimer, VMI_removeTooltip, Off
      ToolTip
 }
+
