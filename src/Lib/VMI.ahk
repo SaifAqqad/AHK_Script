@@ -46,20 +46,19 @@ VMI_volUp(AudioDevice){
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     VMI_showTooltip(Vol . " db")
+     return Vol
 }
 VMI_volDown(AudioDevice){
      local Vol := VMI_getCurrentVol(AudioDevice)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     VMI_showTooltip(Vol . " db")
-     
+     return Vol     
 }
 VMI_setVol(AudioDevice, Vol){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     VMI_showTooltip(Vol . " db")
+     return Vol
 }
 VMI_getMuteState(AudioDevice){
      local MuteState := 0.0
@@ -71,12 +70,7 @@ VMI_getMuteState(AudioDevice){
 VMI_muteToggle(AudioDevice){
      local Mute := VMI_getMuteState(AudioDevice)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioDevice . "Mute" , "Float" , !Mute, "Int")    
-     Mute := VMI_getMuteState(AudioDevice)
-     if (AudioDevice != VMI_currentAudioDevice ) {
-          VMI_showTooltip( Mute = 0.0 ? "Strip Audio Muted" : "Strip Audio Unmuted" )
-     }else{ 
-          VMI_showTooltip( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
-     }
+     return VMI_getMuteState(AudioDevice)
 }
 VMI_switchAudioDevice(DeviceNum){
      AudioDevice := "Bus[" . DeviceNum . "]."

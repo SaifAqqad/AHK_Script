@@ -45,23 +45,37 @@ $Media_Play_Pause::PlayPauseRun()
 
 $^Media_Play_Pause::sendInput {Media_Play_Pause} 
 
-Volume_Up::VMI_volUp(VMI_currentAudioDevice) 
+Volume_Up::
+Vol:= VMI_volUp(VMI_currentAudioDevice) 
+VMI_showTooltip(Vol . " db")
+return
 
-Volume_Down::VMI_volDown(VMI_currentAudioDevice) 
+Volume_Down::
+Vol:= VMI_volDown(VMI_currentAudioDevice) 
+VMI_showTooltip(Vol . " db")
+return
 
 $<^Volume_Down:: ;Mutes VMI_currentAudioDevice
-VMI_muteToggle(VMI_currentAudioDevice)
+Mute:= VMI_muteToggle(VMI_currentAudioDevice)
+VMI_showTooltip( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $<^<+Volume_Down:: ;Mutes System Audio Strip
-VMI_muteToggle("Strip[3].")
+Mute:= VMI_muteToggle("Strip[3].")
+VMI_showTooltip( Mute = 0.0 ? "Strip Audio Muted" : "Strip Audio Unmuted" )
 KeyWait, LControl 
 Return
 
-$#Volume_Down::VMI_volDown("Strip[4].") ;Decreases Media Audio Strip volume
+$#Volume_Down::
+Vol:= VMI_volDown("Strip[4].") ;Decreases Media Audio Strip volume
+VMI_showTooltip(Vol . " db")
+return
 
-$#Volume_Up::VMI_volUp("Strip[4].") ;increases Media Audio Strip volume
+$#Volume_Up::
+Vol:= VMI_volUp("Strip[4].") ;increases Media Audio Strip volume
+VMI_showTooltip(Vol . " db")
+return
 ;====================================Fortnite Macros========================================
 #if, WinActive("ahk_exe FortniteClient-Win64-Shipping.exe")
 ;Build reset macro
@@ -105,3 +119,8 @@ MuteMic() ;toggles the microphone then either displays a toolkit or plays a soun
      }
      Return
 }
+
+
+
+
+
