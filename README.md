@@ -17,17 +17,20 @@
 </p>
 
 ![VoiceMeeter Integration](https://j.gifs.com/2x2J4A.gif)
-## Tips for using [VoiceMeeterIntegration.ahk](../master/Script/Lib/VoiceMeeterIntegration.ahk) in your own script:
-1. Use `#include path/to/VoiceMeeterIntegration.ahk`
-2. Add a call to `VM_Login()` and `OnExit("VM_Logout")`
+## Instructions for using [VoiceMeeterIntegration](./src/Lib/VMI.ahk) in your own script:
+1. Add VMI.ahk to *YourScriptDir*/Lib/
+2. Add the following to the top of your script: 
+      ```AutoHotKey
+      #include <VMI>
+      ```
 
-**Note: Tooltips won't show up if the currently active windows is fullscreen (e.g. fullscreen games/netflix)**
+**Note: Tooltips won't show up if the currently focused window is fullscreen (e.g. fullscreen games/netflix)**
 
 ## Run at Startup Instructions: 
 1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
-2. Copy Script.exe to any directory you want (Preferably C:\AHK\Script)
-3. Open Task Scheduler (Windows Search --> Task Scheduler) 
-4. Create Basic Task
+2. Copy Script.exe to any directory you want (Preferably *C:\AHK\Script*)
+3. Open **Task Scheduler** (Windows Search --> Task Scheduler) 
+4. **Create Basic Task**
 
     4a. Name: *AHK Script*
     
@@ -37,4 +40,4 @@
     
     4d. Program/Script: *C:\AHK\Script\Script.exe* (or the directory you copied to )
     
-5. Click *Finish*
+5. Click **Finish**
