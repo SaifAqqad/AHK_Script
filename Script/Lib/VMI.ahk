@@ -17,17 +17,20 @@ Global VMI_currentAudioDevice := "Bus[0]."
 SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
-     DllCall("VoicemeeterRemote64\VBVMR_Login")
+     return DllCall("VoicemeeterRemote64\VBVMR_Login")
 }
 VMI_logout(){
      DllCall("VoicemeeterRemote64\VBVMR_Logout")
      DllCall("FreeLibrary", "Ptr", VBVMRDLL) 
 }
 VMI_restart(){
-     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
+     return DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
 }
 VMI_checkParams(){
-     DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
+     return DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
+}
+VMI_getCurrentAudioDevice(){
+     return VMI_currentAudioDevice
 }
 VMI_getCurrentVol(AudioDevice){
      CurrentVol := 0.0
@@ -92,7 +95,6 @@ VMI_switchAudioDevice(DeviceNum){
      Sleep, 100
      VMI_restart()
 }
-VMI_getCurrentAudioDevice(){return VMI_currentAudioDevice}
 VMI_showTooltip(Message){ ;Shows the tooltip and returns true if the currently active window is not fullscreen
      winID := WinExist( "A" )
      if ( !winID )
