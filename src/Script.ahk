@@ -1,7 +1,5 @@
 #NoEnv
 #include <VMI>
-VMI_login()
-OnExit("VMI_logout")
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 DetectHiddenWindows, On
@@ -107,3 +105,4 @@ MuteMic() ;toggles the microphone then either displays a toolkit or plays a soun
      }
      Return
 }
+

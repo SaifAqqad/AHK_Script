@@ -13,8 +13,10 @@
 ;    VMI_getMuteState(AudioDevice) Returns current mute status for AudioDevice
 ;DeviceNum is zero based, 0-4 for VMBanana, 
 ;    VMI_switchAudioDevice(DeviceNum) Mutes VMI_currentAudioDevice then changes VMI_currentAudioDevice to "Bus[DeviceNum]." then unmutes it
-Global VMI_currentAudioDevice := "Bus[0]."
+VMI_login()
+OnExit("VMI_logout")
 SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
+Global VMI_currentAudioDevice := "Bus[0]."
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
      return DllCall("VoicemeeterRemote64\VBVMR_Login")
@@ -114,4 +116,6 @@ VMI_removeTooltip(){
      SetTimer, VMI_removeTooltip, Off
      ToolTip
 }
+
+
 
