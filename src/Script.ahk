@@ -37,45 +37,52 @@ DefaultMediaApp := "plexamp.exe"
 VMI_showTooltip("Using Plexamp")
 Return
 
-F11::VMI_switchAudioDevice("0") 
-
-F12::VMI_switchAudioDevice("1") 
-
 $Media_Play_Pause::PlayPauseRun() 
 
 $^Media_Play_Pause::sendInput {Media_Play_Pause} 
 
 Volume_Up::
-Vol:= VMI_volUp(VMI_currentAudioDevice) 
+Vol:= VMI_volUp(VMI_DefaultAudioDevice) 
 VMI_showTooltip(Vol . " db")
 return
 
 Volume_Down::
-Vol:= VMI_volDown(VMI_currentAudioDevice) 
+Vol:= VMI_volDown(VMI_DefaultAudioDevice) 
 VMI_showTooltip(Vol . " db")
 return
 
-$<^Volume_Down:: ;Mutes VMI_currentAudioDevice
-Mute:= VMI_muteToggle(VMI_currentAudioDevice)
+$<^Volume_Down:: ;Mutes VMI_DefaultAudioDevice
+Mute:= VMI_muteToggle(VMI_DefaultAudioDevice)
 VMI_showTooltip( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $<^<+Volume_Down:: ;Mutes System Audio Strip
-Mute:= VMI_muteToggle("Strip[3].")
-VMI_showTooltip( Mute = 0.0 ? "Strip Audio Muted" : "Strip Audio Unmuted" )
+Mute:= VMI_muteToggle("Strip[3]")
+VMI_showTooltip( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $#Volume_Down::
-Vol:= VMI_volDown("Strip[4].") ;Decreases Media Audio Strip volume
+Vol:= VMI_volDown("Strip[4]") ;Decreases Media Audio Strip volume
 VMI_showTooltip(Vol . " db")
 return
 
 $#Volume_Up::
-Vol:= VMI_volUp("Strip[4].") ;increases Media Audio Strip volume
+Vol:= VMI_volUp("Strip[4]") ;increases Media Audio Strip volume
 VMI_showTooltip(Vol . " db")
 return
+
+F11::
+VMI_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
+VMI_showTooltip("Headphone Audio")
+return
+
+F12::          
+VMI_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
+VMI_showTooltip("Monitor Audio")
+return
+
 ;====================================Fortnite Macros========================================
 #if, WinActive("ahk_exe FortniteClient-Win64-Shipping.exe")
 ;Build reset macro
@@ -97,8 +104,8 @@ SendInput {g}
 Return
 #if
 ;=====================================Functions=====================================
-PlayPauseRun() ;either runs DefaultMediaApp then sends Media_play_pause or just sends it immediately
-{
+PlayPauseRun(){ ;either runs DefaultMediaApp then sends Media_play_pause or just sends it immediately
+     
      if (WinExist("ahk_exe Spotify.exe") or WinExist("ahk_exe Anghami.exe") or WinExist("ahk_exe Plex.exe") or WinExist("ahk_exe Plexamp.exe")){
           SendInput, {Media_Play_Pause}
      }else {
@@ -110,8 +117,8 @@ PlayPauseRun() ;either runs DefaultMediaApp then sends Media_play_pause or just 
      }
      Return
 }
-MuteMic() ;toggles the microphone then either displays a toolkit or plays a sound effect
-{
+MuteMic(){          ;toggles the microphone then either displays a toolkit or plays a sound effect
+     
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
      if ( !VMI_showTooltip( !MuteState == True ? "Microphone muted" : "Microphone online" ) ){
@@ -119,8 +126,3 @@ MuteMic() ;toggles the microphone then either displays a toolkit or plays a soun
      }
      Return
 }
-
-
-
-
-
