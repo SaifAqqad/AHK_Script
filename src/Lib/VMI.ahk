@@ -31,9 +31,6 @@ VMI_restart(){
 VMI_checkParams(){
      return DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
-VMI_getCurrentAudioDevice(){
-     return VMI_currentAudioDevice
-}
 VMI_getCurrentVol(AudioDevice){
      CurrentVol := 0.0
      NumPut(0.0, CurrentVol, 0, "Float")
