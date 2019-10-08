@@ -73,12 +73,12 @@ Vol:= VMI_volUp("Strip[4]") ;increases Media Audio Strip volume
 VMI_showTooltip(Vol . " db")
 return
 
-F11::
+F7::
 VMI_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
 VMI_showTooltip("Headphone Audio")
 return
 
-F12::          
+F8::          
 VMI_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
 VMI_showTooltip("Monitor Audio")
 return
