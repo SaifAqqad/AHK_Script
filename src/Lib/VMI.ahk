@@ -78,7 +78,7 @@ VMI_showTooltip(Message){ ;Shows the tooltip and returns true if the currently a
           Return false
      WinGet style, Style, ahk_id %WinID%
      WinGetPos ,,,winW,winH, %winTitle%
-     if ((style & 0x20800000) or WinActive("ahk_class Progman") or winH < A_ScreenHeight or winW < A_ScreenWidth){ 
+     if ((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth){ 
           #Persistent
           ToolTip, %Message%
           SetTimer, VMI_removeTooltip, 700
