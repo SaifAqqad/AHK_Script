@@ -16,7 +16,7 @@
   </a>
 </p>
 
-![VoiceMeeter Integration](https://j.gifs.com/2x2J4A.gif)
+![VoiceMeeter Integration](./Demo.gif)
 ## Instructions for using [VoiceMeeterIntegration](./src/Lib/VMI.ahk) in your own script:
 1. Add VMI.ahk to *YourScriptDir*/Lib/
 2. Add the following to the top of your script: 
