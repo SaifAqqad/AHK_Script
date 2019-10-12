@@ -1,8 +1,8 @@
 ;===================================================VoiceMeeter Integration===================================================
-;VMI_login()  loads VoiceMeeter's Library and calls the login function
+;VMI_login()  loads VoiceMeeter's Library and calls VM's login function
 ;VMI_logout() Calls VM's logout function 
 ;VMI_restart() Restarts VoiceMeeter's Engine
-;VMI_checkParams() Calls VM api's IsParametersDirty 
+;VMI_checkParams() Calls VM's IsParametersDirty function
 ;AudioBus Should be given as: "Strip[i]" or "Bus[i]" where i is zero based, 0-4 for VMBanana
 ;    VMI_getCurrentVol(AudioBus) returns the current volume for AudioBus
 ;    VMI_volUp(AudioBus) Increases the AudioBus volume by 2dB
@@ -12,13 +12,17 @@
 ;    VMI_getMuteState(AudioBus) Returns current mute status for AudioBus
 ;AudioBus is given as: Bus[i]/Strip[i] i = 0-2 // AudioDriver is: "mme"/"wdm"/"ks"/"asio" // AudioDevice is the Device name given as a string
 ;    VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice)
-VMI_login()
-OnExit("VMI_logout")
-SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
 Global VMI_DefaultAudioBus := "Bus[0]"
+VMI_login()
 VMI_login(){
-     VBVMRDLL := DllCall("LoadLibrary", "str", "C:\Program Files (x86)\VB\Voicemeeter\VoicemeeterRemote64.dll")
-     return DllCall("VoicemeeterRemote64\VBVMR_Login")
+     VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
+     VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
+     if (DllCall("VoicemeeterRemote64\VBVMR_Login") = 1){
+          Run, %VM_Path%voicemeeterpro.exe
+          sleep, 5000
+     }
+     SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
+     OnExit("VMI_logout")
 }
 VMI_logout(){
      DllCall("VoicemeeterRemote64\VBVMR_Logout")
