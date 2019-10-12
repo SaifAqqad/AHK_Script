@@ -1,17 +1,24 @@
-;===================================================VoiceMeeter Integration===================================================
-;VMI_login()  loads VoiceMeeter's Library and calls VM's login function
-;VMI_logout() Calls VM's logout function 
-;VMI_restart() Restarts VoiceMeeter's Engine
-;VMI_checkParams() Calls VM's IsParametersDirty function
-;AudioBus Should be given as: "Strip[i]" or "Bus[i]" where i is zero based, 0-4 for VMBanana
-;    VMI_getCurrentVol(AudioBus) returns the current volume for AudioBus
-;    VMI_volUp(AudioBus) Increases the AudioBus volume by 2dB
-;    VMI_volDown(AudioBus) Decreases the AudioBus volume by 2dB
-;    VMI_setVol(AudioBus, Vol) Sets AudioBus volume to a specific Vol, Vol is given in dB
-;    VMI_muteToggle(AudioBus) Mutes AudioBus
-;    VMI_getMuteState(AudioBus) Returns current mute status for AudioBus
-;AudioBus is given as: Bus[i]/Strip[i] i = 0-2 // AudioDriver is: "mme"/"wdm"/"ks"/"asio" // AudioDevice is the Device name given as a string
-;    VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice)
+;********************************************************************************************************************;
+;*                                            VoiceMeeter Integration                                               *;
+;******************************************************USAGE*********************************************************;
+;*  VMI_login()  loads VoiceMeeter's Library and calls VM's login function                                          *;
+;*  VMI_logout() Calls VM's logout function                                                                         *;
+;*  VMI_restart() Restarts VoiceMeeter's Engine                                                                     *;
+;*  VMI_checkParams() Calls VM's IsParametersDirty function                                                         *;
+;*******                                                                                                      *******;
+;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana                             *;
+;*  VMI_getCurrentVol(AudioBus) returns the current volume for AudioBus                                             *;
+;*  VMI_volUp(AudioBus) Increases the AudioBus volume by 2dB                                                        *;
+;*  VMI_volDown(AudioBus) Decreases the AudioBus volume by 2dB                                                      *;
+;*  VMI_setVol(AudioBus, Vol) Sets AudioBus volume to a specific Vol, Vol is given in dB                            *;
+;*  VMI_muteToggle(AudioBus) Mutes AudioBus                                                                         *;
+;*  VMI_getMuteState(AudioBus) Returns current mute status for AudioBus                                             *;
+;*******                                                                                                      *******;
+;*                  AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                       *;
+;*                  AudioDriver: "mme"/"wdm"/"ks"/"asio"                                                            *;
+;*                  AudioDevice: The full Device name as shown in VoiceMeeter's GUI                                 *;
+;*  VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
+;********************************************************************************************************************;
 Global VMI_DefaultAudioBus := "Bus[0]"
 VMI_login()
 VMI_login(){
