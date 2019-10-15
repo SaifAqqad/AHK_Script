@@ -19,7 +19,7 @@
 ;*                  AudioDevice: The full Device name as shown in VoiceMeeter's GUI                                 *;
 ;*  VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
 ;*                                                                                                                  *;
-;* Note: if you run your script at startup then add the argument /script to the run command                         *;
+;* Note: if you run your script at startup then add the argument /startup to the run command                        *;
 ;********************************************************************************************************************;
 Global VMI_DefaultAudioBus := "Bus[0]"
 VMI_login()
