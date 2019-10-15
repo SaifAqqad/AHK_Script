@@ -41,4 +41,6 @@
     
     4d. Program/Script: *C:\AHK\Script\Script.exe* (or the directory you copied to )
     
+    5d. Add arguments: */startup*
+    
 5. Click **Finish**
