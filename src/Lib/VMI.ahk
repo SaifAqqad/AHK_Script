@@ -24,7 +24,7 @@ VMI_login()
 VMI_login(){
      VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
-     if (DllCall("VoicemeeterRemote64\VBVMR_Login") = 1){
+     if (DllCall("VoicemeeterRemote64\VBVMR_Login") = 1 and (A_Args[1] != "/startup") ){
           Run, %VM_Path%voicemeeterpro.exe
           sleep, 5000
      }
