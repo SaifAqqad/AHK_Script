@@ -92,7 +92,6 @@ sleep,30
 sendInput, {RButton}
 sleep, 30
 sendInput, {g}
-sleep, 30
 Return
 ;Hold Edit-building key macro
 $g::
