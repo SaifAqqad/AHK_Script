@@ -93,7 +93,7 @@ sendInput, {RButton}
 sleep, 30
 sendInput, {g}
 Return
-;Hold Edit-building key macro
+/*Hold Edit-building key macro
 $g::
 sendInput {g}
 KeyWait, g
@@ -101,6 +101,7 @@ Return
 $g Up::
 SendInput {g}
 Return
+*/
 #if
 ;=====================================Functions=====================================
 PlayPauseRun(){ ;either runs DefaultMediaApp then sends Media_play_pause or just sends it immediately
