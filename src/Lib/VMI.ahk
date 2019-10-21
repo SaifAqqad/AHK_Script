@@ -26,7 +26,7 @@ Global VMI_DefaultAudioBus := "Bus[0]"
 VMI_login()
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
-     DllCall("VoicemeeterRemote64\VBVMR_Login"
+     DllCall("VoicemeeterRemote64\VBVMR_Login")
      SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
      OnExit("VMI_logout")
 }
