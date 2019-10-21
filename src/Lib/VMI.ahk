@@ -21,11 +21,12 @@
 ;*                                                                                                                  *;
 ;* Note: if you run your script at startup then add the argument /startup to the run command                        *;
 ;********************************************************************************************************************;
+Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
 Global VMI_DefaultAudioBus := "Bus[0]"
 VMI_login()
 VMI_login(){
-     VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
+     DllCall("VoicemeeterRemote64\VBVMR_Login"
      SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
      OnExit("VMI_logout")
 }
