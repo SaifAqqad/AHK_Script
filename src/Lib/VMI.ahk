@@ -1,5 +1,5 @@
 ;********************************************************************************************************************;
-;*                                            VoiceMeeter Integration                                               *;
+;*                                            VoiceMeeter Interface                                                 *;
 ;******************************************************USAGE*********************************************************;
 ;*  VMI_login()  loads VoiceMeeter's Library and calls VM's login function                                          *;
 ;*  VMI_logout() Calls VM's logout function                                                                         *;
@@ -19,7 +19,6 @@
 ;*                  AudioDevice: The full Device name as shown in VoiceMeeter's GUI                                 *;
 ;*  VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
 ;*                                                                                                                  *;
-;* Note: if you run your script at startup then add the argument /startup to the run command                        *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
 Global VMI_DefaultAudioBus := "Bus[0]"
