@@ -42,17 +42,17 @@ $Media_Play_Pause::PlayPauseRun()
 $^Media_Play_Pause::sendInput {Media_Play_Pause} 
 
 Volume_Up::
-Vol:= VMI_volUp(VMI_DefaultAudioBus) 
+Vol:= VMI_volUp() 
 VMI_showTooltip(Vol . " db")
 return
 
 Volume_Down::
-Vol:= VMI_volDown(VMI_DefaultAudioBus) 
+Vol:= VMI_volDown() 
 VMI_showTooltip(Vol . " db")
 return
 
-$<^Volume_Down:: ;Mutes VMI_DefaultAudioBus
-Mute:= VMI_muteToggle(VMI_DefaultAudioBus)
+$<^Volume_Down:: ;Mutes Bus[0]
+Mute:= VMI_muteToggle()
 VMI_showTooltip( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
 KeyWait, LControl 
 Return
