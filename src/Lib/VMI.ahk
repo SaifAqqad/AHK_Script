@@ -6,7 +6,7 @@
 ;*  VMI_restart() Restarts VoiceMeeter's Engine                                                                     *;
 ;*  VMI_checkParams() Calls VM's IsParametersDirty function                                                         *;
 ;*******                                                                                                      *******;
-;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana                             *;
+;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana ;"Bus[0]" by default                            *;
 ;*  VMI_getCurrentVol(AudioBus) returns the current volume for AudioBus                                             *;
 ;*  VMI_volUp(AudioBus) Increases the AudioBus volume by 2dB                                                        *;
 ;*  VMI_volDown(AudioBus) Decreases the AudioBus volume by 2dB                                                      *;
@@ -21,7 +21,6 @@
 ;*                                                                                                                  *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
-Global VMI_DefaultAudioBus := "Bus[0]"
 VMI_login()
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
@@ -39,40 +38,40 @@ VMI_restart(){
 VMI_checkParams(){
      return DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
 }
-VMI_getCurrentVol(AudioBus){
+VMI_getCurrentVol(AudioBus:="Bus[0]"){
      CurrentVol := 0.0
      NumPut(0.0, CurrentVol, 0, "Float")
      DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentVol, "Int")
      CurrentVol := NumGet(CurrentVol, 0, "Float")
      return CurrentVol
 }
-VMI_volUp(AudioBus){
+VMI_volUp(AudioBus:="Bus[0]"){
      local Vol := VMI_getCurrentVol(AudioBus)
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
      return Vol
 }
-VMI_volDown(AudioBus){
+VMI_volDown(AudioBus:="Bus[0]"){
      local Vol := VMI_getCurrentVol(AudioBus)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
      return Vol     
 }
-VMI_setVol(AudioBus, Vol){
+VMI_setVol(AudioBus:="Bus[0]", Vol:=0.0){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
      return Vol
 }
-VMI_getMuteState(AudioBus){
+VMI_getMuteState(AudioBus:="Bus[0]"){
      local MuteState := 0.0
      NumPut(0.0, MuteState, 0, "Float")
      DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Mute" , "Ptr" , &MuteState , "Int")
      MuteState := NumGet(MuteState, 0, "Float")
      return MuteState
 }
-VMI_muteToggle(AudioBus){
+VMI_muteToggle(AudioBus:="Bus[0]"){
      local Mute := VMI_getMuteState(AudioBus)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , !Mute, "Int")    
      return VMI_getMuteState(AudioBus)
