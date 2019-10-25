@@ -23,7 +23,7 @@
       ```AutoHotKey
       #include <VMI>
       ```
-[**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/ec6ac260d624344265f861011df3c168a4cf2a75/src/Script.ahk#L44)
+[**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/bb8caa30e36bd0c59ede1caabbdd711d30580cdf/src/Script.ahk#L44)
 
 **Note: Tooltips won't show up if the currently focused window is fullscreen (e.g. fullscreen games/netflix)**
 
