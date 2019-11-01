@@ -121,10 +121,9 @@ MuteMic(){          ;toggles the microphone then either displays a toolkit or pl
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
+     GUI_Spawn( !MuteState == True ? "Microphone muted" : "Microphone online" ) 
      if ( !VMI_showTooltip("") ){
           SoundPlay, % !MuteState == True ?  "mute.mp3" :  "unmute.mp3"
-     }else{
-         GUI_Spawn( !MuteState == True ? "Microphone muted" : "Microphone online" ) 
      }
      Return
 }
