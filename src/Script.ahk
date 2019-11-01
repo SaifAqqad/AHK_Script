@@ -43,12 +43,12 @@ $^Media_Play_Pause::sendInput {Media_Play_Pause}
 
 Volume_Up::
 Vol:= VMI_volUp() 
-GUI_Spawn(Vol . " db")
+GUI_Spawn("Volume: " . Vol)
 return
 
 Volume_Down::
 Vol:= VMI_volDown() 
-GUI_Spawn(Vol . " db")
+GUI_Spawn("Volume: " . Vol)
 return
 
 $<^Volume_Down:: ;Mutes Bus[0]
@@ -65,12 +65,12 @@ Return
 
 $#Volume_Down::
 Vol:= VMI_volDown("Strip[4]") ;Decreases Media Audio Strip volume
-GUI_Spawn(Vol . " db")
+GUI_Spawn("Media Volume: " . Vol)
 return
 
 $#Volume_Up::
 Vol:= VMI_volUp("Strip[4]") ;increases Media Audio Strip volume
-GUI_Spawn(Vol . " db")
+GUI_Spawn("Media Volume: " . Vol)
 return
 
 F7::
@@ -135,7 +135,7 @@ GUI_Spawn(txt){
         Gui, Color, 1d1f21, 282a2e
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         Gui, Font, s11, Segoe UI
-        Gui, Add, Text, cf0c674 vmainTXT W130 Center, %txt%
+        Gui, Add, Text, cf0c674 vmainTXT W160 Center, %txt%
         Gui, Show, xCenter Y980 AutoSize NoActivate 
         gui_state:= "open"
     }else{
