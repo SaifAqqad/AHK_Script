@@ -21,6 +21,7 @@
 ;*                                                                                                                  *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
+Global VM_VolType := "%"
 VMI_login()
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
@@ -50,19 +51,19 @@ VMI_volUp(AudioBus:="Bus[0]"){
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return Vol
+     return (VM_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
 }
 VMI_volDown(AudioBus:="Bus[0]"){
      local Vol := VMI_getCurrentVol(AudioBus)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return Vol     
+     return (VM_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )     
 }
 VMI_setVol(AudioBus:="Bus[0]", Vol:=0.0){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return Vol
+     return (VM_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
 }
 VMI_getMuteState(AudioBus:="Bus[0]"){
      local MuteState := 0.0
