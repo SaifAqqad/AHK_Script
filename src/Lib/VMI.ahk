@@ -18,10 +18,14 @@
 ;*                  AudioDriver: "mme"/"wdm"/"ks"/"asio"                                                            *;
 ;*                  AudioDevice: The full Device name as shown in VoiceMeeter's GUI                                 *;
 ;*  VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
-;*                                                                                                                  *;
+;*******                                                                                                      *******;
+;*                                                  GUI                                                             *;
+;*  VMI_GUIspawn(txt) Displays a custom GUI in the bottom center area of the screen containing the txt string       *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
-Global VM_VolType := "%"
+Global VMI_VolType := "%"
+Global VMI_GUIstate := "closed"
+Global VMI_GUItxt :=
 VMI_login()
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
@@ -51,19 +55,19 @@ VMI_volUp(AudioBus:="Bus[0]"){
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VM_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
+     return (VMI_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
 }
 VMI_volDown(AudioBus:="Bus[0]"){
      local Vol := VMI_getCurrentVol(AudioBus)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VM_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )     
+     return (VMI_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )     
 }
 VMI_setVol(AudioBus:="Bus[0]", Vol:=0.0){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VM_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
+     return (VMI_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
 }
 VMI_getMuteState(AudioBus:="Bus[0]"){
      local MuteState := 0.0
@@ -80,22 +84,20 @@ VMI_muteToggle(AudioBus:="Bus[0]"){
 VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
      return DllCall("VoicemeeterRemote64\VBVMR_SetParameterStringA", "AStr", AudioBus . ".Device." . AudioDriver , "AStr" , AudioDevice , "Int")  
 }
-VMI_showTooltip(Message){ ;Shows the tooltip and returns true if the currently active window is not fullscreen
-     winID := WinExist( "A" )
-     if ( !winID )
-          Return false
-     WinGet style, Style, ahk_id %WinID%
-     WinGetPos ,,,winW,winH, %winTitle%
-     if ((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth){ 
-          #Persistent
-          ToolTip, %Message%
-          SetTimer, VMI_removeTooltip, 700
-          return true 
-     }else{
-          return false
-     }
+VMI_GUIspawn(txt){
+    if (VMI_GUIstate = "closed"){
+        Gui, Color, 1d1f21, 282a2e
+        Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
+        Gui, Font, s11, Segoe UI
+        Gui, Add, Text, cf0c674 vVMI_GUItxt W160 Center, %txt%
+        Gui, Show, xCenter Y980 AutoSize NoActivate 
+        VMI_GUIstate:= "open"
+    }else{
+        GuiControl, Text, VMI_GUItxt, %txt% 
+    }
+    SetTimer, VMI_GUIdestroy, 700
 }
-VMI_removeTooltip(){
-     SetTimer, VMI_removeTooltip, Off
-     ToolTip
+VMI_GUIdestroy(){
+    Gui, Destroy
+    VMI_GUIstate:= "closed"
 }

@@ -11,7 +11,7 @@ if (FileExist(TrayIcon)) {
      Menu, Tray, Icon, %TrayIcon%
 }
 Global DefaultMediaApp := "plexamp.exe"
-GUI_Spawn("AHK starting up..")
+VMI_GUIspawn("AHK starting up..")
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMI_restart()
 
@@ -23,19 +23,19 @@ GUI_Spawn("AHK starting up..")
 
 *RShift::MuteMic()
 
-#if, (!VMI_showTooltip(""))
+#if, (isActiveWinFullscreen())
 CapsLock::Return
 #if
 
 ;===============================================Media Hotkeys===============================================
 <!S::
 DefaultMediaApp := "Spotify.exe"
-GUI_Spawn("Using Spotify")
+VMI_GUIspawn("Using Spotify")
 Return
 
 <!P::
 DefaultMediaApp := "plexamp.exe"
-GUI_Spawn("Using Plexamp")
+VMI_GUIspawn("Using Plexamp")
 Return
 
 $Media_Play_Pause::PlayPauseRun() 
@@ -44,64 +44,64 @@ $^Media_Play_Pause::sendInput {Media_Play_Pause}
 
 Volume_Up::
 Vol:= VMI_volUp() 
-GUI_Spawn("Volume: " . Vol)
+VMI_GUIspawn("Volume: " . Vol)
 return
 
 Volume_Down::
 Vol:= VMI_volDown() 
-GUI_Spawn("Volume: " . Vol)
+VMI_GUIspawn("Volume: " . Vol)
 return
 
 $<^Volume_Down:: ;Mutes Bus[0]
 Mute:= VMI_muteToggle()
-GUI_Spawn( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
+VMI_GUIspawn( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $<^<+Volume_Down:: ;Mutes System Audio 
 Mute:= VMI_muteToggle("Strip[3]")
-GUI_Spawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
+VMI_GUIspawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $#Volume_Down::
 Vol:= VMI_volDown("Strip[4]") ;Decreases Media Audio volume
-GUI_Spawn("Media Volume: " . Vol)
+VMI_GUIspawn("Media Volume: " . Vol)
 return
 
 $#Volume_Up::
 Vol:= VMI_volUp("Strip[4]") ;increases Media Audio volume
-GUI_Spawn("Media Volume: " . Vol)
+VMI_GUIspawn("Media Volume: " . Vol)
 return
 
 $<!Volume_Down::
 Vol:= VMI_volDown("Strip[1]") ;Decreases Microphone volume
-GUI_Spawn("Microphone Volume: " . Vol)
+VMI_GUIspawn("Microphone Volume: " . Vol)
 return
 
 $<!Volume_Up::
 Vol:= VMI_volUp("Strip[1]") ;increases Microphone volume
-GUI_Spawn("Microphone Volume: " . Vol)
+VMI_GUIspawn("Microphone Volume: " . Vol)
 return
 
 $<!<^Volume_Down::
 Vol:= VMI_volDown("Strip[0]") ;Decreases Game chat volume
-GUI_Spawn("Game chat Volume: " . Vol)
+VMI_GUIspawn("Game chat Volume: " . Vol)
 return
 
 $<!<^Volume_Up::
 Vol:= VMI_volUp("Strip[0]") ;increases Game chat volume
-GUI_Spawn("Game chat Volume: " . Vol)
+VMI_GUIspawn("Game chat Volume: " . Vol)
 return
 
 F7::
 VMI_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
-GUI_Spawn("Headphone Audio")
+VMI_GUIspawn("Headphone Audio")
 return
 
 F8::          
 VMI_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
-GUI_Spawn("Monitor Audio")
+VMI_GUIspawn("Monitor Audio")
 return
 
 ;============================================Fortnite Macros================================================
@@ -142,29 +142,18 @@ MuteMic(){          ;toggles the microphone then either displays a toolkit or pl
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     GUI_Spawn( !MuteState == True ? "Microphone muted" : "Microphone online" ) 
-     if ( !VMI_showTooltip("") ){
+     VMI_GUIspawn( !MuteState == True ? "Microphone muted" : "Microphone online" ) 
+     if ( isActiveWinFullscreen() ){
           SoundPlay, % !MuteState == True ?  "mute.mp3" :  "unmute.mp3"
      }
      Return
 }
-;=============================================GUI=============================================
-global gui_state := "closed"
-global mainTXT :=
-GUI_Spawn(txt){
-    if (gui_state = "closed"){
-        Gui, Color, 1d1f21, 282a2e
-        Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
-        Gui, Font, s11, Segoe UI
-        Gui, Add, Text, cf0c674 vmainTXT W160 Center, %txt%
-        Gui, Show, xCenter Y980 AutoSize NoActivate 
-        gui_state:= "open"
-    }else{
-        GuiControl, Text, mainTXT, %txt% 
-    }
-    SetTimer, GUI_Destroy, 700
-}
-GUI_Destroy(){
-    Gui, Destroy
-    gui_state:= "closed"
+isActiveWinFullscreen(){ ;returns true if the currently active window is fullscreen
+     winID := WinExist( "A" )
+     if ( !winID )
+          Return false
+     WinGet style, Style, ahk_id %WinID%
+     WinGetPos ,,,winW,winH, %winTitle%
+     return !((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth)
+          
 }
