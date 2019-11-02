@@ -16,7 +16,7 @@
   </a>
 </p>
 
-![VoiceMeeter Interface](./Demo.gif)
+![VoiceMeeter Interface](https://asuedujo-my.sharepoint.com/personal/saif_aqqad_asu_edu_jo/Documents/Documents/AHK/AHK_Script/Demo.gif)
 ## Instructions for using [VoiceMeeterInterface](./src/Lib/VMI.ahk) in your own script:
 1. Add VMI.ahk to *YourScriptDir*/Lib/
 2. Add the following to the top of your script: 
@@ -24,8 +24,6 @@
       #include <VMI>
       ```
 [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/a429ec17c231006ac389933e7a67f06dc0f23ea9/src/Script.ahk#L44)
-
-**Note: Tooltips won't show up if the currently focused window is fullscreen (e.g. fullscreen games/netflix)**
 
 ## Run at Startup Instructions: 
 1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
