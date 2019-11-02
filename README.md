@@ -16,7 +16,7 @@
   </a>
 </p>
 
-![VoiceMeeter Interface](https://asuedujo-my.sharepoint.com/personal/saif_aqqad_asu_edu_jo/Documents/Documents/AHK/AHK_Script/Demo.gif)
+![VoiceMeeter Interface](https://user-images.githubusercontent.com/47293197/68070055-bfea4580-fd60-11e9-825e-3ae075367f5a.gif)
 ## Instructions for using [VoiceMeeterInterface](./src/Lib/VMI.ahk) in your own script:
 1. Add VMI.ahk to *YourScriptDir*/Lib/
 2. Add the following to the top of your script: 
