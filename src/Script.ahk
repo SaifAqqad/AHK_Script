@@ -11,6 +11,7 @@ if (FileExist(TrayIcon)) {
      Menu, Tray, Icon, %TrayIcon%
 }
 Global DefaultMediaApp := "plexamp.exe"
+GUI_Spawn("AHK starting up..")
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMI_restart()
 
@@ -57,20 +58,40 @@ GUI_Spawn( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
 KeyWait, LControl 
 Return
 
-$<^<+Volume_Down:: ;Mutes System Audio Strip
+$<^<+Volume_Down:: ;Mutes System Audio 
 Mute:= VMI_muteToggle("Strip[3]")
 GUI_Spawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $#Volume_Down::
-Vol:= VMI_volDown("Strip[4]") ;Decreases Media Audio Strip volume
+Vol:= VMI_volDown("Strip[4]") ;Decreases Media Audio volume
 GUI_Spawn("Media Volume: " . Vol)
 return
 
 $#Volume_Up::
-Vol:= VMI_volUp("Strip[4]") ;increases Media Audio Strip volume
+Vol:= VMI_volUp("Strip[4]") ;increases Media Audio volume
 GUI_Spawn("Media Volume: " . Vol)
+return
+
+$<!Volume_Down::
+Vol:= VMI_volDown("Strip[1]") ;Decreases Microphone volume
+GUI_Spawn("Microphone Volume: " . Vol)
+return
+
+$<!Volume_Up::
+Vol:= VMI_volUp("Strip[1]") ;increases Microphone volume
+GUI_Spawn("Microphone Volume: " . Vol)
+return
+
+$<!<^Volume_Down::
+Vol:= VMI_volDown("Strip[0]") ;Decreases Game chat volume
+GUI_Spawn("Game chat Volume: " . Vol)
+return
+
+$<!<^Volume_Up::
+Vol:= VMI_volUp("Strip[0]") ;increases Game chat volume
+GUI_Spawn("Game chat Volume: " . Vol)
 return
 
 F7::
