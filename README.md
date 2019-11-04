@@ -23,7 +23,7 @@
       ```AutoHotKey
       #include <VMI>
       ```
-[**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/885bf5105c6a9f73c856e72faaa5c8b045a32551/src/Script.ahk#L45)
+      [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/885bf5105c6a9f73c856e72faaa5c8b045a32551/src/Script.ahk#L45)
 
 ## Run at Startup Instructions: 
 1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
