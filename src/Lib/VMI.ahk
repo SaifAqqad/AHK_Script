@@ -26,12 +26,14 @@ Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
 Global VMI_VolType := "%"
 Global VMI_GUIstate := "closed"
 Global VMI_GUItxt :=
+Global AccentColor:=
 VMI_login()
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
      DllCall("VoicemeeterRemote64\VBVMR_Login")
      SetTimer, VMI_checkParams, 20 ;calls VMI_checkParams() periodically
      OnExit("VMI_logout")
+     VMI_GUIgetAccentColor()
 }
 VMI_logout(){
      DllCall("VoicemeeterRemote64\VBVMR_Logout")
@@ -85,11 +87,12 @@ VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
      return DllCall("VoicemeeterRemote64\VBVMR_SetParameterStringA", "AStr", AudioBus . ".Device." . AudioDriver , "AStr" , AudioDevice , "Int")  
 }
 VMI_GUIspawn(txt){
-    if (VMI_GUIstate = "closed"){
-        Gui, Color, 1d1f21, 282a2e
+     if (VMI_GUIstate = "closed"){
+        Gui, Color, 191919, %AccentColor%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
+        WinSet, Transparent, 240, ahk_class AutoHotkeyGUI
         Gui, Font, s11, Segoe UI
-        Gui, Add, Text, cf0c674 vVMI_GUItxt W160 Center, %txt%
+        Gui, Add, Text, c%AccentColor% vVMI_GUItxt W160 Center, %txt%
         Gui, Show, xCenter Y980 AutoSize NoActivate 
         VMI_GUIstate:= "open"
     }else{
@@ -97,7 +100,14 @@ VMI_GUIspawn(txt){
     }
     SetTimer, VMI_GUIdestroy, 700
 }
+VMI_GUIgetAccentColor(){
+     RegRead, AccentColor, HKCU\SOFTWARE\Microsoft\Windows\DWM, ColorizationColor 
+     SetFormat, integer, hex
+     AccentColor := AccentColor+0
+     StringRight, AccentColor, AccentColor, 6
+}
 VMI_GUIdestroy(){
     Gui, Destroy
     VMI_GUIstate:= "closed"
+    SetTimer, VMI_GUIdestroy, Off
 }
