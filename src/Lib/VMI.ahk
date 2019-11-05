@@ -23,7 +23,7 @@
 ;*  VMI_GUIspawn(txt) Displays a custom GUI in the bottom center area of the screen containing the txt string       *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
-Global VMI_VolType := "%"
+Global VMI_VolType := 1 ;1 -> returns Vol as a percentage ;0 -> returns Vol in dB
 Global VMI_GUIstate := "closed"
 Global VMI_GUItxt :=
 Global AccentColor:=
@@ -57,19 +57,19 @@ VMI_volUp(AudioBus:="Bus[0]"){
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMI_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
+     return (VMI_VolType ? ((Vol+60)/60)*100 . "%" : Vol )
 }
 VMI_volDown(AudioBus:="Bus[0]"){
      local Vol := VMI_getCurrentVol(AudioBus)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMI_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )     
+     return (VMI_VolType ? ((Vol+60)/60)*100 . "%" : Vol )     
 }
 VMI_setVol(AudioBus:="Bus[0]", Vol:=0.0){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMI_VolType = "%" ? ((Vol+60)/60)*100 . "%" : Vol )
+     return (VMI_VolType ? ((Vol+60)/60)*100 . "%" : Vol )
 }
 VMI_getMuteState(AudioBus:="Bus[0]"){
      local MuteState := 0.0
