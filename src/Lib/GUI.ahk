@@ -12,7 +12,7 @@ GUI_spawn(txt){
      if (GUI_state = "closed"){
         Gui, Color, % (GUI_sysTheme ? CDCED2 : 191919), %GUI_AccentColor%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
-        WinSet, Transparent,% (GUI_sysTheme ? 210 : 230), ahk_class AutoHotkeyGUI
+        WinSet, Transparent,% (GUI_sysTheme ? 220 : 230), ahk_class AutoHotkeyGUI
         Gui, Font, s11, Segoe UI
         Gui, Add, Text, c%GUI_AccentColor% vGUI_txt W160 Center, %txt%
         Gui, Show, xCenter Y980 AutoSize NoActivate 
