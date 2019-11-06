@@ -1,5 +1,6 @@
 #NoEnv
 #include <VMI>
+#include <GUI>
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 DetectHiddenWindows, On
@@ -11,7 +12,7 @@ if (FileExist(TrayIcon)) {
      Menu, Tray, Icon, %TrayIcon%
 }
 Global DefaultMediaApp := "plexamp.exe"
-VMI_GUIspawn("AHK starting up..")
+GUI_spawn("AHK starting up..")
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMI_restart()
 
@@ -30,12 +31,12 @@ CapsLock::Return
 ;===============================================Media Hotkeys===============================================
 <!S::
 DefaultMediaApp := "Spotify.exe"
-VMI_GUIspawn("Using Spotify")
+GUI_spawn("Using Spotify")
 Return
 
 <!P::
 DefaultMediaApp := "plexamp.exe"
-VMI_GUIspawn("Using Plexamp")
+GUI_spawn("Using Plexamp")
 Return
 
 $Media_Play_Pause::PlayPauseRun() 
@@ -44,64 +45,64 @@ $^Media_Play_Pause::sendInput {Media_Play_Pause}
 
 Volume_Up::
 Vol:= VMI_volUp() 
-VMI_GUIspawn("Volume: " . Vol)
+GUI_spawn("Volume: " . Vol)
 return
 
 Volume_Down::
 Vol:= VMI_volDown() 
-VMI_GUIspawn("Volume: " . Vol)
+GUI_spawn("Volume: " . Vol)
 return
 
 $<^Volume_Down:: ;Mutes Bus[0]
 Mute:= VMI_muteToggle()
-VMI_GUIspawn( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
+GUI_spawn( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $<^<+Volume_Down:: ;Mutes System Audio 
 Mute:= VMI_muteToggle("Strip[3]")
-VMI_GUIspawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
+GUI_spawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $#Volume_Down::
 Vol:= VMI_volDown("Strip[4]") ;Decreases Media Audio volume
-VMI_GUIspawn("Media Volume: " . Vol)
+GUI_spawn("Media Volume: " . Vol)
 return
 
 $#Volume_Up::
 Vol:= VMI_volUp("Strip[4]") ;increases Media Audio volume
-VMI_GUIspawn("Media Volume: " . Vol)
+GUI_spawn("Media Volume: " . Vol)
 return
 
 $<!Volume_Down::
 Vol:= VMI_volDown("Strip[1]") ;Decreases Microphone volume
-VMI_GUIspawn("Microphone Volume: " . Vol)
+GUI_spawn("Microphone Volume: " . Vol)
 return
 
 $<!Volume_Up::
 Vol:= VMI_volUp("Strip[1]") ;increases Microphone volume
-VMI_GUIspawn("Microphone Volume: " . Vol)
+GUI_spawn("Microphone Volume: " . Vol)
 return
 
 $<!<^Volume_Down::
 Vol:= VMI_volDown("Strip[0]") ;Decreases Game chat volume
-VMI_GUIspawn("Game chat Volume: " . Vol)
+GUI_spawn("Game chat Volume: " . Vol)
 return
 
 $<!<^Volume_Up::
 Vol:= VMI_volUp("Strip[0]") ;increases Game chat volume
-VMI_GUIspawn("Game chat Volume: " . Vol)
+GUI_spawn("Game chat Volume: " . Vol)
 return
 
 F7::
 VMI_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
-VMI_GUIspawn("Headphone Audio")
+GUI_spawn("Headphone Audio")
 return
 
 F8::          
 VMI_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
-VMI_GUIspawn("Monitor Audio")
+GUI_spawn("Monitor Audio")
 return
 
 ;============================================Fortnite Macros================================================
@@ -142,7 +143,7 @@ MuteMic(){          ;toggles the microphone then either displays a toolkit or pl
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     VMI_GUIspawn( !MuteState == True ? "Microphone muted" : "Microphone online" ) 
+     GUI_spawn( !MuteState == True ? "Microphone muted" : "Microphone online" ) 
      if ( isActiveWinFullscreen() ){
           SoundPlay, % !MuteState == True ?  "mute.mp3" :  "unmute.mp3"
      }
