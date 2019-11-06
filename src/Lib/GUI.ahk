@@ -5,6 +5,7 @@
 Global GUI_state := "closed"
 Global GUI_txt :=
 Global GUI_AccentColor:=
+GUI_getAccentColor()
 GUI_spawn(txt){
      if (GUI_state = "closed"){
         Gui, Color, 191919, %GUI_AccentColor%
