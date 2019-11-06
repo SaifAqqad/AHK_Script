@@ -6,7 +6,7 @@
 ;*  VMR_restart() Restarts VoiceMeeter's Engine                                                                     *;
 ;*  VMR_checkParams() Calls VM's IsParametersDirty function                                                         *;
 ;*******                                                                                                      *******;
-;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana ;"Bus[0]" by default                            *;
+;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana ;"Bus[0]" by default        *;
 ;*  VMR_getCurrentVol(AudioBus) returns the current volume for AudioBus                                             *;
 ;*  VMR_volUp(AudioBus) Increases the AudioBus volume by 2dB                                                        *;
 ;*  VMR_volDown(AudioBus) Decreases the AudioBus volume by 2dB                                                      *;
