@@ -18,15 +18,9 @@
 ;*                  AudioDriver: "mme"/"wdm"/"ks"/"asio"                                                            *;
 ;*                  AudioDevice: The full Device name as shown in VoiceMeeter's GUI                                 *;
 ;*  VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
-;*******                                                                                                      *******;
-;*                                                  GUI                                                             *;
-;*  VMI_GUIspawn(txt) Displays a custom GUI in the bottom center area of the screen containing the txt string       *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
 Global VMI_VolType := 1 ;1 -> returns Vol as a percentage ;0 -> returns Vol in dB
-Global VMI_GUIstate := "closed"
-Global VMI_GUItxt :=
-Global AccentColor:=
 VMI_login()
 VMI_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
@@ -85,29 +79,4 @@ VMI_muteToggle(AudioBus:="Bus[0]"){
 }
 VMI_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
      return DllCall("VoicemeeterRemote64\VBVMR_SetParameterStringA", "AStr", AudioBus . ".Device." . AudioDriver , "AStr" , AudioDevice , "Int")  
-}
-VMI_GUIspawn(txt){
-     if (VMI_GUIstate = "closed"){
-        Gui, Color, 191919, %AccentColor%
-        Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
-        WinSet, Transparent, 240, ahk_class AutoHotkeyGUI
-        Gui, Font, s11, Segoe UI
-        Gui, Add, Text, c%AccentColor% vVMI_GUItxt W160 Center, %txt%
-        Gui, Show, xCenter Y980 AutoSize NoActivate 
-        VMI_GUIstate:= "open"
-    }else{
-        GuiControl, Text, VMI_GUItxt, %txt% 
-    }
-    SetTimer, VMI_GUIdestroy, 700
-}
-VMI_GUIgetAccentColor(){
-     RegRead, AccentColor, HKCU\SOFTWARE\Microsoft\Windows\DWM, ColorizationColor 
-     SetFormat, integer, hex
-     AccentColor := AccentColor+0
-     StringRight, AccentColor, AccentColor, 6
-}
-VMI_GUIdestroy(){
-    Gui, Destroy
-    VMI_GUIstate:= "closed"
-    SetTimer, VMI_GUIdestroy, Off
 }
