@@ -1,5 +1,5 @@
 ;********************************************************************************************************************;
-;*                                            VoiceMeeterRemote Wrapper                                                 *;
+;*                                            VoiceMeeterRemote Wrapper                                             *;
 ;******************************************************USAGE*********************************************************;
 ;*  VMR_login()  loads VoiceMeeter's Library and calls VM's login function                                          *;
 ;*  VMR_logout() Calls VM's logout function                                                                         *;
