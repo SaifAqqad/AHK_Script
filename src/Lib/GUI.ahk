@@ -1,7 +1,7 @@
 ;********************************************************************************************************************;
 ;*                                                  GUI                                                             *;
 ;*  GUI_spawn(txt) Displays a custom GUI in the bottom center area of the screen containing the txt string          *;
-;*  GUI_getSysTheme() runs at startup to get the system theme + acccent color                                *;
+;*  GUI_getSysTheme() runs at startup to get the system theme + acccent color                                       *;
 ;********************************************************************************************************************;
 Global GUI_state := "closed"
 Global GUI_txt :=
@@ -12,7 +12,7 @@ GUI_spawn(txt){
      if (GUI_state = "closed"){
         Gui, Color, % (GUI_sysTheme ? CDCED2 : 191919), %GUI_AccentColor%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
-        WinSet, Transparent, 252, ahk_class AutoHotkeyGUI
+        WinSet, Transparent, 240, ahk_class AutoHotkeyGUI
         Gui, Font, s11, Segoe UI
         Gui, Add, Text, c%GUI_AccentColor% vGUI_txt W160 Center, %txt%
         Gui, Show, xCenter Y980 AutoSize NoActivate 
