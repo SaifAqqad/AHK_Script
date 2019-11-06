@@ -17,13 +17,13 @@
 </p>
 
 ![VoiceMeeter Interface](https://user-images.githubusercontent.com/47293197/68070055-bfea4580-fd60-11e9-825e-3ae075367f5a.gif)
-## Instructions for using [VoiceMeeterInterface](./src/Lib/VMI.ahk) in your own script:
-1. Add VMI.ahk to *YourScriptDir*/Lib/
+## Instructions for using [VoiceMeeterRemote](./src/Lib/VMI.ahk) in your own script:
+1. Add VMR.ahk to *YourScriptDir*/Lib/
 2. Add the following to the top of your script: 
       ```AutoHotKey
-      #include <VMI>
+      #include <VMR>
       ```
-      [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/885bf5105c6a9f73c856e72faaa5c8b045a32551/src/Script.ahk#L45)
+      [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/c033cc2c5601965f6f5e59191ea48e2e3c9bd977/src/Script.ahk#L46)
 
 ## Run at Startup Instructions: 
 1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
