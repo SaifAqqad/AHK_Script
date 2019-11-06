@@ -1,5 +1,5 @@
 #NoEnv
-#include <VMI>
+#include <VMR>
 #include <GUI>
 SendMode Input
 SetWorkingDir %A_ScriptDir%
@@ -14,7 +14,7 @@ if (FileExist(TrayIcon)) {
 Global DefaultMediaApp := "plexamp.exe"
 GUI_spawn("AHK starting up..")
 ;===============================================Global Hotkeys===============================================
-<^<+R::VMI_restart()
+<^<+R::VMR_restart()
 
 #Space::#s 
 
@@ -44,64 +44,64 @@ $Media_Play_Pause::PlayPauseRun()
 $^Media_Play_Pause::sendInput {Media_Play_Pause} 
 
 Volume_Up::
-Vol:= VMI_volUp() 
+Vol:= VMR_volUp() 
 GUI_spawn("Volume: " . Vol)
 return
 
 Volume_Down::
-Vol:= VMI_volDown() 
+Vol:= VMR_volDown() 
 GUI_spawn("Volume: " . Vol)
 return
 
 $<^Volume_Down:: ;Mutes Bus[0]
-Mute:= VMI_muteToggle()
+Mute:= VMR_muteToggle()
 GUI_spawn( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $<^<+Volume_Down:: ;Mutes System Audio 
-Mute:= VMI_muteToggle("Strip[3]")
+Mute:= VMR_muteToggle("Strip[3]")
 GUI_spawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $#Volume_Down::
-Vol:= VMI_volDown("Strip[4]") ;Decreases Media Audio volume
+Vol:= VMR_volDown("Strip[4]") ;Decreases Media Audio volume
 GUI_spawn("Media Volume: " . Vol)
 return
 
 $#Volume_Up::
-Vol:= VMI_volUp("Strip[4]") ;increases Media Audio volume
+Vol:= VMR_volUp("Strip[4]") ;increases Media Audio volume
 GUI_spawn("Media Volume: " . Vol)
 return
 
 $<!Volume_Down::
-Vol:= VMI_volDown("Strip[1]") ;Decreases Microphone volume
+Vol:= VMR_volDown("Strip[1]") ;Decreases Microphone volume
 GUI_spawn("Microphone Volume: " . Vol)
 return
 
 $<!Volume_Up::
-Vol:= VMI_volUp("Strip[1]") ;increases Microphone volume
+Vol:= VMR_volUp("Strip[1]") ;increases Microphone volume
 GUI_spawn("Microphone Volume: " . Vol)
 return
 
 $<!<^Volume_Down::
-Vol:= VMI_volDown("Strip[0]") ;Decreases Game chat volume
+Vol:= VMR_volDown("Strip[0]") ;Decreases Game chat volume
 GUI_spawn("Game chat Volume: " . Vol)
 return
 
 $<!<^Volume_Up::
-Vol:= VMI_volUp("Strip[0]") ;increases Game chat volume
+Vol:= VMR_volUp("Strip[0]") ;increases Game chat volume
 GUI_spawn("Game chat Volume: " . Vol)
 return
 
 F7::
-VMI_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
+VMR_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
 GUI_spawn("Headphone Audio")
 return
 
 F8::          
-VMI_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
+VMR_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
 GUI_spawn("Monitor Audio")
 return
 
