@@ -7,9 +7,9 @@ Global GUI_state := "closed"
 Global GUI_txt :=
 Global GUI_AccentColor:=
 Global GUI_sysTheme:= ;0 --> Dark theme ;1 --> light theme
-GUI_getSysTheme()
 GUI_spawn(txt){
      if (GUI_state = "closed"){
+        GUI_getSysTheme()
         Gui, Color, % (GUI_sysTheme ? CDCED2 : 191919), %GUI_AccentColor%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         WinSet, Transparent,% (GUI_sysTheme ? 220 : 230), ahk_class AutoHotkeyGUI
