@@ -77,22 +77,22 @@ return
 
 $<!Volume_Down::
 Vol:= VMR_volDown("Strip[1]") ;Decreases Microphone volume
-GUI_spawn("Microphone Volume: " . Vol)
+GUI_spawn("Mic Volume: " . Vol)
 return
 
 $<!Volume_Up::
 Vol:= VMR_volUp("Strip[1]") ;increases Microphone volume
-GUI_spawn("Microphone Volume: " . Vol)
+GUI_spawn("Mic Volume: " . Vol)
 return
 
 $<!<^Volume_Down::
 Vol:= VMR_volDown("Strip[0]") ;Decreases Game chat volume
-GUI_spawn("Game chat Volume: " . Vol)
+GUI_spawn("Gamechat Volume: " . Vol)
 return
 
 $<!<^Volume_Up::
 Vol:= VMR_volUp("Strip[0]") ;increases Game chat volume
-GUI_spawn("Game chat Volume: " . Vol)
+GUI_spawn("Gamechat Volume: " . Vol)
 return
 
 F7::
