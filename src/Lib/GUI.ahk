@@ -10,12 +10,14 @@ GUI_spawn(txt, GUI_Theme:="sys", GUI_Accent:="sys" ){
     if (GUI_state = "closed"){
         GUI_Theme:= ( GUI_Theme != "sys" ? GUI_Theme : GUI_getSysTheme() )
         GUI_Accent:= ( GUI_Accent != "sys" ? GUI_Accent : GUI_getSysAccent() )
+        WinGetPos,,,,TBh, ahk_class Shell_TrayWnd
+        GUI_yPos:= A_ScreenHeight - TBh * 2.2
         Gui, Color, %GUI_Theme%, %GUI_Accent%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         WinSet, Transparent, 230, ahk_class AutoHotkeyGUI
         Gui, Font, s11, Segoe UI
-        Gui, Add, Text, c%GUI_Accent% vGUI_txt W160 Center, %txt%
-        Gui, Show, xCenter Y980 AutoSize NoActivate 
+        Gui, Add, Text, c%GUI_Accent% vGUI_txt W165 Center, %txt%
+        Gui, Show, AutoSize NoActivate xCenter y%GUI_yPos%
         GUI_state:= "open"
     }else{
         GuiControl, Text, GUI_txt, %txt% 
