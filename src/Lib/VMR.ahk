@@ -50,14 +50,14 @@ VMR_volUp(AudioBus:="Bus[0]"){
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMR_VolType ? ((Vol+60)/60)*100 . "%" : Vol )
+     return (VMR_VolType ? ((Vol+60)/60)*100 . "%" : Vol . "dB" )
 }
 VMR_volDown(AudioBus:="Bus[0]"){
      local Vol := VMR_getCurrentVol(AudioBus)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMR_VolType ? ((Vol+60)/60)*100 . "%" : Vol )     
+     return (VMR_VolType ? ((Vol+60)/60)*100 . "%" : Vol . "dB" )     
 }
 VMR_setVol(AudioBus:="Bus[0]", Vol:=0.0){
      DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
