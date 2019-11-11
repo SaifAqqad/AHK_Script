@@ -11,7 +11,7 @@ GUI_spawn(txt, GUI_Theme:="sys", GUI_Accent:="sys" ){
         GUI_Theme:= ( GUI_Theme != "sys" ? GUI_Theme : GUI_getSysTheme() )
         GUI_Accent:= ( GUI_Accent != "sys" ? GUI_Accent : GUI_getSysAccent() )
         WinGetPos,,,,TBh, ahk_class Shell_TrayWnd
-        GUI_yPos:= A_ScreenHeight - TBh * 2.2
+        GUI_yPos:= A_ScreenHeight - TBh * 2.6
         Gui, Color, %GUI_Theme%, %GUI_Accent%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         WinSet, Transparent, 230, ahk_class AutoHotkeyGUI
