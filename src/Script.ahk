@@ -11,7 +11,6 @@ TrayIcon := A_ScriptDir . "\Script.ico"
 if (FileExist(TrayIcon)) {
      Menu, Tray, Icon, %TrayIcon%
 }
-Global DefaultMediaApp := "plexamp.exe"
 GUI_spawn("AHK starting up..")
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMR_restart()
@@ -29,33 +28,23 @@ CapsLock::Return
 #if
 
 ;===============================================Media Hotkeys===============================================
-<!S::
-DefaultMediaApp := "Spotify.exe"
-GUI_spawn("Using Spotify")
-Return
-
-<!P::
-DefaultMediaApp := "plexamp.exe"
-GUI_spawn("Using Plexamp")
-Return
-
 $Media_Play_Pause::PlayPauseRun() 
 
 $^Media_Play_Pause::sendInput {Media_Play_Pause} 
 
 Volume_Up::
 Vol:= VMR_volUp() 
-GUI_spawn("Volume: " . Vol)
+GUI_spawn("Global Volume: " . Vol)
 return
 
 Volume_Down::
 Vol:= VMR_volDown() 
-GUI_spawn("Volume: " . Vol)
+GUI_spawn("Global Volume: " . Vol)
 return
 
 $<^Volume_Down:: ;Mutes Bus[0]
 Mute:= VMR_muteToggle()
-GUI_spawn( Mute = 0.0 ? "Audio Muted" : "Audio Unmuted" )
+GUI_spawn( Mute = 0.0 ? "Global Audio Muted" : "Global Audio Unmuted" )
 KeyWait, LControl 
 Return
 
@@ -131,11 +120,7 @@ PlayPauseRun(){ ;either runs DefaultMediaApp then sends Media_play_pause or just
      if (WinExist("ahk_exe Spotify.exe") or WinExist("ahk_exe Anghami.exe") or WinExist("ahk_exe Plex.exe") or WinExist("ahk_exe Plexamp.exe")){
           SendInput, {Media_Play_Pause}
      }else {
-          run, open %DefaultMediaApp%
-          if ( DefaultMediaApp != "plexamp.exe" ){
-               Sleep, 3500
-               sendInput, {Media_Play_Pause}
-          }
+          run, plexamp.exe
      }
      Return
 }
