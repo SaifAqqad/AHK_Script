@@ -19,25 +19,19 @@
 # [VoiceMeeterRemote](./src/Lib/VMR.ahk)
   ### AHK Wrapper for <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">Voicemeeter Remote API</a>
   ![VoiceMeeterRemote Demo](https://user-images.githubusercontent.com/47293197/68070055-bfea4580-fd60-11e9-825e-3ae075367f5a.gif)
-  ## Instructions for using VoiceMeeterRemote in your own script:
-1. Add VMR.ahk to *YourScriptDir*/Lib/
-2. Add the following to the top of your script: 
-      ```AutoHotKey
-      #include <VMR>
-      ```
-      [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/f143ac25ce644e0566a2d8a5e550ed741c34113c/src/Script.ahk#L46)
+
+[**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/7d4bda111a368e04fc99e6283665e903c4a2170f/src/Script.ahk#L36)
 
 # [GUI.ahk](./src/Lib/GUI.ahk)
   ### A simple OSD GUI that follows the user's system theme
   ![GUIlight Demo](https://user-images.githubusercontent.com/47293197/68298049-55067a80-0090-11ea-877c-9f2964873c96.gif) ![GUIdark Demo](https://user-images.githubusercontent.com/47293197/68298037-50da5d00-0090-11ea-854b-54731a5ffcd8.gif)
-  ## Instructions for using GUI.ahk in your own script:
-  1. Add GUI.ahk to *YourScriptDir*/Lib/
-  2. Add the following to the top of your script: 
-      ```AutoHotKey
-      #include <GUI>
-      ```
-      [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/f143ac25ce644e0566a2d8a5e550ed741c34113c/src/Script.ahk#L48)
-# Run at Startup Instructions: 
+
+[**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/7d4bda111a368e04fc99e6283665e903c4a2170f/src/Script.ahk#L37)
+
+## You can use any of the above files in your own script using the [#Include Directive](https://www.autohotkey.com/docs/commands/_Include.htm) or by adding the code to your Script
+
+
+## Run at Startup Instructions: 
   1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
   2. Copy Script.exe to any directory you want (Preferably *C:\AHK\Script*)
   3. Open **Task Scheduler** (Windows Search --> Task Scheduler) 
