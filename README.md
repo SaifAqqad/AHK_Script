@@ -20,13 +20,13 @@
   ### AHK Wrapper for <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">Voicemeeter Remote API</a>
   ![VoiceMeeterRemote Demo](https://user-images.githubusercontent.com/47293197/68070055-bfea4580-fd60-11e9-825e-3ae075367f5a.gif)
 
-[**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/7d4bda111a368e04fc99e6283665e903c4a2170f/src/Script.ahk#L36)
+### [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/7d4bda111a368e04fc99e6283665e903c4a2170f/src/Script.ahk#L36)
 
 # [GUI.ahk](./src/Lib/GUI.ahk)
   ### A simple OSD GUI that follows the user's system theme
   ![GUIlight Demo](https://user-images.githubusercontent.com/47293197/68298049-55067a80-0090-11ea-877c-9f2964873c96.gif) ![GUIdark Demo](https://user-images.githubusercontent.com/47293197/68298037-50da5d00-0090-11ea-854b-54731a5ffcd8.gif)
 
-[**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/7d4bda111a368e04fc99e6283665e903c4a2170f/src/Script.ahk#L37)
+### [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/7d4bda111a368e04fc99e6283665e903c4a2170f/src/Script.ahk#L37)
 
 ## 
 
