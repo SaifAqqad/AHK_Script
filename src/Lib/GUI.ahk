@@ -10,19 +10,24 @@ GUI_spawn(txt, GUI_Theme:="sys", GUI_Accent:="sys" ){
     if (GUI_state = "closed"){
         GUI_Theme:= ( GUI_Theme != "sys" ? GUI_Theme : GUI_getSysTheme() )
         GUI_Accent:= ( GUI_Accent != "sys" ? GUI_Accent : GUI_getSysAccent() )
-        WinGetPos,,,,TBh, ahk_class Shell_TrayWnd
-        GUI_yPos:= A_ScreenHeight - TBh * 2.6
+        SetFormat, integer, d
         Gui, Color, %GUI_Theme%, %GUI_Accent%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         WinSet, Transparent, 230, ahk_class AutoHotkeyGUI
         Gui, Font, s11, Segoe UI
         Gui, Add, Text, c%GUI_Accent% vGUI_txt W165 Center, %txt%
+        GUI_yPos:= GUI_getYpos()
         Gui, Show, AutoSize NoActivate xCenter y%GUI_yPos%
         GUI_state:= "open"
     }else{
         GuiControl, Text, GUI_txt, %txt% 
     }
     SetTimer, GUI_destroy, 700
+}
+GUI_getYpos(){
+    SysGet, Monitor, Monitor, 0
+    SysGet, MonitorWorkArea, MonitorWorkArea, 0
+    Return (MonitorWorkAreaBottom * 0.95)
 }
 GUI_getSysTheme(){
     RegRead, GUI_sysTheme, HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize, SystemUsesLightTheme 
