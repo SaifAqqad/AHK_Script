@@ -9,7 +9,7 @@
 </p>
 <p align="center">
   <a style="text-decoration:none" href="https://autohotkey.com">
-    <img src="https://img.shields.io/badge/AutoHotkey-1.1.31.00-4DB057.svg" alt="AHK link" />
+    <img src="https://img.shields.io/badge/AutoHotkey-1.1.31.01-4DB057.svg" alt="AHK link" />
   </a>
   <a style="text-decoration:none" href="https://www.vb-audio.com/Voicemeeter/banana.htm">
    <img src="https://img.shields.io/badge/VoiceMeeter-Banana-FF4427.svg" alt="VM link" />
