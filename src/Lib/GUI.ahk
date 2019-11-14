@@ -25,7 +25,6 @@ GUI_spawn(txt, GUI_Theme:="sys", GUI_Accent:="sys" ){
     SetTimer, GUI_destroy, 700
 }
 GUI_getYpos(){
-    SysGet, Monitor, Monitor, 0
     SysGet, MonitorWorkArea, MonitorWorkArea, 0
     Return (MonitorWorkAreaBottom * 0.95)
 }
