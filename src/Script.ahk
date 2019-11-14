@@ -1,6 +1,7 @@
 #NoEnv
 #include <VMR>
 #include <GUI>
+GUI_spawn("AHK starting up..")
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 DetectHiddenWindows, On
@@ -11,7 +12,6 @@ TrayIcon := A_ScriptDir . "\Script.ico"
 if (FileExist(TrayIcon)) {
      Menu, Tray, Icon, %TrayIcon%
 }
-GUI_spawn("AHK starting up..")
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMR_restart()
 
@@ -27,6 +27,7 @@ GUI_spawn("AHK starting up..")
 CapsLock::Return
 #if
 
+F6::run, speedtest
 ;===============================================Media Hotkeys===============================================
 $Media_Play_Pause::PlayPauseRun() 
 
