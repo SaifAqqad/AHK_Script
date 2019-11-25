@@ -1,10 +1,8 @@
 #NoEnv
 #include <VMR>
-#include <GUI>
 GUI_spawn("AHK starting up..")
 SendMode Input
 SetWorkingDir %A_ScriptDir%
-DetectHiddenWindows, On
 SetNumLockState AlwaysOff
 FileInstall, .\SoundEffects\mute.mp3, mute.mp3 ;Both sfx files are from Discord's sfx zip file https://t.co/AD6jvkePul 
 FileInstall, .\SoundEffects\unmute.mp3, unmute.mp3 ; ^
@@ -129,9 +127,9 @@ MuteMic(){          ;toggles the microphone then either displays a toolkit or pl
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     GUI_spawn( !MuteState == True ? "Microphone muted" : "Microphone online" ) 
+     GUI_spawn( !MuteState ? "Microphone muted" : "Microphone online" ) 
      if ( isActiveWinFullscreen() ){
-          SoundPlay, % !MuteState == True ?  "mute.mp3" :  "unmute.mp3"
+          SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
      }
      Return
 }
