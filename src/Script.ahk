@@ -25,7 +25,10 @@ if (FileExist(TrayIcon)) {
 CapsLock::Return
 #if
 
-F6::run, speedtest
+F6::
+WinKill, ahk_exe speedtest.exe
+run, speedtest
+return
 ;===============================================Media Hotkeys===============================================
 $Media_Play_Pause::PlayPauseRun() 
 
