@@ -28,7 +28,6 @@
 
 ### [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/7d4bda111a368e04fc99e6283665e903c4a2170f/src/Script.ahk#L37)
 
-## 
 
 ### You can use any of the above files in your own script using the [#Include Directive](https://www.autohotkey.com/docs/commands/_Include.htm) or by adding the code to your Script
 
