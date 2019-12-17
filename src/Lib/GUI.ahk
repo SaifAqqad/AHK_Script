@@ -4,29 +4,26 @@
 ;*  GUI_Theme, GUI_Accent are optional paramters, both can be any color in any format supported by AHK, by default they are the current    *;
 ;*  system theme and accent, see https://www.autohotkey.com/docs/commands/Gui.htm#Color for more info                                      *;
 ;*******************************************************************************************************************************************;
-Global GUI_state := "closed"
-Global GUI_txt :=
-GUI_spawn(txt, GUI_Theme:="sys", GUI_Accent:="sys" ){
-    if (GUI_state = "closed"){
-        GUI_Theme:= ( GUI_Theme != "sys" ? GUI_Theme : GUI_getSysTheme() )
-        GUI_Accent:= ( GUI_Accent != "sys" ? GUI_Accent : GUI_getSysAccent() )
+Global GUI_state:= 0 ;0 -> closed ;1 -> open
+Global GUI_txt:=
+GUI_spawn(txt, GUI_Theme:=-1, GUI_Accent:=-1 ){
+    if (GUI_state = 0){
+        GUI_Theme:= ( GUI_Theme = -1 ? GUI_getSysTheme() : GUI_Theme  )
+        GUI_Accent:= ( GUI_Accent = -1 ? GUI_getSysAccent() : GUI_Accent )
         SetFormat, integer, d
         Gui, Color, %GUI_Theme%, %GUI_Accent%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         WinSet, Transparent, 230, ahk_class AutoHotkeyGUI
         Gui, Font, s11, Segoe UI
         Gui, Add, Text, c%GUI_Accent% vGUI_txt W165 Center, %txt%
-        GUI_yPos:= GUI_getYpos()
+        SysGet, MonitorWorkArea, MonitorWorkArea, 0
+        GUI_yPos:= MonitorWorkAreaBottom * 0.95
         Gui, Show, AutoSize NoActivate xCenter y%GUI_yPos%
-        GUI_state:= "open"
+        GUI_state:= 1
     }else{
         GuiControl, Text, GUI_txt, %txt% 
     }
     SetTimer, GUI_destroy, 700
-}
-GUI_getYpos(){
-    SysGet, MonitorWorkArea, MonitorWorkArea, 0
-    Return (MonitorWorkAreaBottom * 0.95)
 }
 GUI_getSysTheme(){
     RegRead, GUI_sysTheme, HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize, SystemUsesLightTheme 
@@ -41,6 +38,6 @@ GUI_getSysAccent(){
 }
 GUI_destroy(){
     Gui, Destroy
-    GUI_state:= "closed"
+    GUI_state := 0
     SetTimer, GUI_destroy, Off
 }
