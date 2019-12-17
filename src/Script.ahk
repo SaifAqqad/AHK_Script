@@ -4,8 +4,8 @@ GUI_spawn("AHK starting up..")
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 SetNumLockState AlwaysOff
-FileInstall, .\SoundEffects\mute.mp3, mute.mp3 ;Both sfx files are from Discord's sfx zip file https://t.co/AD6jvkePul 
-FileInstall, .\SoundEffects\unmute.mp3, unmute.mp3 ; ^
+FileInstall, .\sfx\mute.mp3, mute.mp3 ;Both sfx files are from Discord's sfx zip file https://t.co/AD6jvkePul 
+FileInstall, .\sfx\unmute.mp3, unmute.mp3 ; ^
 TrayIcon := A_ScriptDir . "\Script.ico"
 if (FileExist(TrayIcon)) {
      Menu, Tray, Icon, %TrayIcon%
