@@ -1,6 +1,6 @@
 #NoEnv
 #include <VMR>
-GUI_spawn("AHK starting up..")
+OSD_spawn("AHK starting up..")
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 SetNumLockState AlwaysOff
@@ -36,64 +36,64 @@ $^Media_Play_Pause::sendInput {Media_Play_Pause}
 
 Volume_Up::
 Vol:= VMR_volUp() 
-GUI_spawn("Global Volume: " . Vol)
+OSD_spawn("Global Volume: " . Vol)
 return
 
 Volume_Down::
 Vol:= VMR_volDown() 
-GUI_spawn("Global Volume: " . Vol)
+OSD_spawn("Global Volume: " . Vol)
 return
 
 $<^Volume_Down:: ;Mutes Bus[0]
 Mute:= VMR_muteToggle()
-GUI_spawn( Mute = 0.0 ? "Global Audio Muted" : "Global Audio Unmuted" )
+OSD_spawn( Mute = 0.0 ? "Global Audio Muted" : "Global Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $<^<+Volume_Down:: ;Mutes System Audio 
 Mute:= VMR_muteToggle("Strip[3]")
-GUI_spawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
+OSD_spawn( Mute = 0.0 ? "System Audio Muted" : "System Audio Unmuted" )
 KeyWait, LControl 
 Return
 
 $#Volume_Down::
 Vol:= VMR_volDown("Strip[4]") ;Decreases Media Audio volume
-GUI_spawn("Media Volume: " . Vol)
+OSD_spawn("Media Volume: " . Vol)
 return
 
 $#Volume_Up::
 Vol:= VMR_volUp("Strip[4]") ;increases Media Audio volume
-GUI_spawn("Media Volume: " . Vol)
+OSD_spawn("Media Volume: " . Vol)
 return
 
 $<!Volume_Down::
 Vol:= VMR_volDown("Strip[1]") ;Decreases Microphone volume
-GUI_spawn("Mic Volume: " . Vol)
+OSD_spawn("Mic Volume: " . Vol)
 return
 
 $<!Volume_Up::
 Vol:= VMR_volUp("Strip[1]") ;increases Microphone volume
-GUI_spawn("Mic Volume: " . Vol)
+OSD_spawn("Mic Volume: " . Vol)
 return
 
 $<!<^Volume_Down::
 Vol:= VMR_volDown("Strip[0]") ;Decreases Game chat volume
-GUI_spawn("Gamechat Volume: " . Vol)
+OSD_spawn("Gamechat Volume: " . Vol)
 return
 
 $<!<^Volume_Up::
 Vol:= VMR_volUp("Strip[0]") ;increases Game chat volume
-GUI_spawn("Gamechat Volume: " . Vol)
+OSD_spawn("Gamechat Volume: " . Vol)
 return
 
 F7::
 VMR_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
-GUI_spawn("Headphone Audio")
+OSD_spawn("Headphone Audio")
 return
 
 F8::          
 VMR_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
-GUI_spawn("Monitor Audio")
+OSD_spawn("Monitor Audio")
 return
 
 ;============================================Fortnite Macros================================================
@@ -130,7 +130,7 @@ MuteMic(){          ;toggles the microphone then either displays a toolkit or pl
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     GUI_spawn( !MuteState ? "Microphone muted" : "Microphone online" ) 
+     OSD_spawn( !MuteState ? "Microphone muted" : "Microphone online" ) 
      if ( isActiveWinFullscreen() ){
           SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
      }
