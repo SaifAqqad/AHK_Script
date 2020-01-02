@@ -30,20 +30,3 @@
 
 
 ### You can use any of the above files in your own script using the [#Include Directive](https://www.autohotkey.com/docs/commands/_Include.htm) or by adding the code to your Script
-
-
-## Run at Startup Instructions: 
-  1. [Download Script.exe](https://github.com/SaifAqqad/AHK_Script/releases/latest/download/Script.exe)
-  2. Copy Script.exe to any directory you want (Preferably *C:\AHK\Script*)
-  3. Open **Task Scheduler** (Windows Search --> Task Scheduler) 
-  4. **Create Basic Task**
-  
-      4a. Name: *AHK Script*
-      
-      4b. Trigger: *When I log on*
-      
-      4c. Action: *Start a program*
-      
-      4d. Program/Script: *C:\AHK\Script\Script.exe* (or the directory you copied to )
-          
-  5. Click **Finish**
