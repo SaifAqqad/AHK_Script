@@ -19,61 +19,66 @@
 ;*                  AudioDevice: The full Device name as shown in VoiceMeeter's GUI                                 *;
 ;*  VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
 ;********************************************************************************************************************;
-Global VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
+Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
+Global VM_DLL := "VoicemeeterRemote"
 Global VMR_VolType := 1 ;1 -> returns Vol as a percentage ;0 -> returns Vol in dB
 VMR_login()
 VMR_login(){
-     VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . "VoicemeeterRemote64.dll")
-     DllCall("VoicemeeterRemote64\VBVMR_Login")
+     if(A_Is64bitOS){
+          VM_Path := "C:\Program Files (x86)\VB\Voicemeeter\"
+          VM_DLL := "VoicemeeterRemote64"
+     }
+     VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . VM_DLL . ".dll")
+     DllCall(VM_DLL . "\VBVMR_Login")
      SetTimer, VMR_checkParams, 20 ;calls VMR_checkParams() periodically
      OnExit("VMR_logout")
 }
 VMR_logout(){
-     DllCall("VoicemeeterRemote64\VBVMR_Logout")
+     DllCall(VM_DLL . "\VBVMR_Logout")
      DllCall("FreeLibrary", "Ptr", VBVMRDLL) 
 }
 VMR_restart(){
-     return DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
+     return DllCall(VM_DLL . "\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
 }
 VMR_checkParams(){
-     return DllCall("VoicemeeterRemote64\VBVMR_IsParametersDirty")
+     return DllCall(VM_DLL . "\VBVMR_IsParametersDirty")
 }
 VMR_getCurrentVol(AudioBus:="Bus[0]"){
      CurrentVol := 0.0
      NumPut(0.0, CurrentVol, 0, "Float")
-     DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentVol, "Int")
+     DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentVol, "Int")
      CurrentVol := NumGet(CurrentVol, 0, "Float")
      return CurrentVol
 }
 VMR_volUp(AudioBus:="Bus[0]"){
      local Vol := VMR_getCurrentVol(AudioBus)
      Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
-     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
      return (VMR_VolType ? ((Vol+60)/0.6) . "%" : Vol . "dB" )
 }
 VMR_volDown(AudioBus:="Bus[0]"){
      local Vol := VMR_getCurrentVol(AudioBus)
      Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
-     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
      return (VMR_VolType ? ((Vol+60)/0.6) . "%" : Vol . "dB" )     
 }
 VMR_setVol(AudioBus:="Bus[0]", Vol:=0.0){
-     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
      SetFormat, FloatFast, 4.1
      return (VMR_VolType ? ((Vol+60)/0.6) . "%" : Vol . "dB" )
 }
 VMR_getMuteState(AudioBus:="Bus[0]"){
      local MuteState := 0.0
      NumPut(0.0, MuteState, 0, "Float")
-     DllCall("VoicemeeterRemote64\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Mute" , "Ptr" , &MuteState , "Int")
+     DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Mute" , "Ptr" , &MuteState , "Int")
      MuteState := NumGet(MuteState, 0, "Float")
      return MuteState
 }
 VMR_muteToggle(AudioBus:="Bus[0]"){
      local Mute := VMR_getMuteState(AudioBus)
-     DllCall("VoicemeeterRemote64\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , !Mute, "Int")    
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , !Mute, "Int")    
      return VMR_getMuteState(AudioBus)
 }
 VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
