@@ -15,8 +15,8 @@
 ;*  VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                             *;
 ;*******                                                                                                      *******;
 ;*                  AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                       *;
-;*                  AudioDriver: "mme"/"wdm"/"ks"/"asio"                                                            *;
-;*                  AudioDevice: The full Device name as shown in VoiceMeeter's GUI                                 *;
+;*                  AudioDriver:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                      *;
+;*                  AudioDevice: any substring of an audio device's full name that's shown in VoiceMeeter's GUI          *;
 ;*  VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
@@ -82,5 +82,31 @@ VMR_muteToggle(AudioBus:="Bus[0]"){
      return VMR_getMuteState(AudioBus)
 }
 VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
-     return DllCall("VoicemeeterRemote64\VBVMR_SetParameterStringA", "AStr", AudioBus . ".Device." . AudioDriver , "AStr" , AudioDevice , "Int")  
+     numDevices := DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
+     loop %numDevices%
+     {
+          i:=A_Index-1
+          VarSetCapacity(dName, 1000)
+          VarSetCapacity(dType, 1000)
+          NumPut(0, dType, 0, "UInt")
+          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", i, "Ptr" , &dType , "Ptr", &dName, "Ptr", 0, "Int")
+          dType := NumGet(dType, 0, "UInt")
+          if dName Contains %AudioDevice%
+          {
+               if (dType = AudioDriver)
+                    break
+          }
+     }
+     Switch AudioDriver
+     {
+          case 3 :
+               AudioDriver:= "wdm"
+          case 4 :
+               AudioDriver:= "ks"
+          case 1 :
+               AudioDriver:= "mme"
+          case 5 :
+               AudioDriver:= "asio"
+     } 
+     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr", AudioBus . ".Device." . AudioDriver , "WStr" , dName , "Int")  
 }
