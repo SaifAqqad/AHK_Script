@@ -85,28 +85,14 @@ VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
      numDevices := DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
      loop %numDevices%
      {
-          i:=A_Index-1
           VarSetCapacity(dName, 1000)
           VarSetCapacity(dType, 1000)
-          NumPut(0, dType, 0, "UInt")
-          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", i, "Ptr" , &dType , "Ptr", &dName, "Ptr", 0, "Int")
+          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &dType , "Ptr", &dName, "Ptr", 0, "Int")
           dType := NumGet(dType, 0, "UInt")
-          if dName Contains %AudioDevice%
-          {
-               if (dType = AudioDriver)
+          if (dType = AudioDriver)
+               if dName Contains %AudioDevice%
                     break
-          }
      }
-     Switch AudioDriver
-     {
-          case 3 :
-               AudioDriver:= "wdm"
-          case 4 :
-               AudioDriver:= "ks"
-          case 1 :
-               AudioDriver:= "mme"
-          case 5 :
-               AudioDriver:= "asio"
-     } 
+     AudioDriver := (AudioDriver=3 ? "wdm" : (AudioDriver=4 ? "ks" : (AudioDriver=5 ? "asio" : "mme"))) 
      return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr", AudioBus . ".Device." . AudioDriver , "WStr" , dName , "Int")  
 }
