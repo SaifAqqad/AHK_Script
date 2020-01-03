@@ -87,12 +87,12 @@ OSD_spawn("Gamechat Volume: " . Vol)
 return
 
 F7::
-VMR_setAudioDevice("Bus[0]","wdm","Headset Earphone (Corsair HS70 Wireless Gaming Headset)")
+VMR_setAudioDevice("Bus[0]",1,"hs70") 
 OSD_spawn("Headphone Audio")
 return
 
 F8::          
-VMR_setAudioDevice("Bus[0]","wdm","LG HDR WFHD (2- AMD High Definition Audio Device)")
+VMR_setAudioDevice("Bus[0]",3,"LG HDR")
 OSD_spawn("Monitor Audio")
 return
 
