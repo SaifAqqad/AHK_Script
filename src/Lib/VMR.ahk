@@ -15,9 +15,9 @@
 ;*  VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                             *;
 ;*******                                                                                                      *******;
 ;*                  AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                       *;
-;*                  AudioDriver:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                      *;
-;*                  AudioDevice: any substring of an audio device's full name that's shown in VoiceMeeter's GUI          *;
-;*  VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice) Sets AudioDevice to the given AudioBus using AudioDriver *;
+;*                  AudioDriver:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                     *;
+;*                  AudioDevice: any substring of an audio device's full name that's shown in VoiceMeeter's GUI     *;
+;*  VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice)                                                          *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
 Global VM_DLL := "VoicemeeterRemote"
