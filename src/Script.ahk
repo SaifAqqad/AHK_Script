@@ -13,7 +13,12 @@ if (FileExist(TrayIcon)) {
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMR_restart()
 
-#Space::#s 
+#Space::
+clipboard = 
+SendInput {CTRLDOWN}c{CTRLUP}
+ClipWait
+Run http://www.google.com/search?hl=en&q=%clipboard%,, UseErrorLevel
+Return 
 
 <!<+::#Space 
 
@@ -87,7 +92,7 @@ OSD_spawn("Gamechat Volume: " . Vol)
 return
 
 F7::
-VMR_setAudioDevice("Bus[0]",1,"hs70") 
+VMR_setAudioDevice("Bus[0]",3,"hs70") 
 OSD_spawn("Headphone Audio")
 return
 
@@ -117,16 +122,16 @@ Return
 */
 #if
 ;=============================================Functions=============================================
-PlayPauseRun(){ ;either runs DefaultMediaApp then sends Media_play_pause or just sends it immediately
+PlayPauseRun(){
      
-     if (WinExist("ahk_exe Spotify.exe") or WinExist("ahk_exe Anghami.exe") or WinExist("ahk_exe Plex.exe") or WinExist("ahk_exe Plexamp.exe")){
+     if (WinExist("ahk_exe Spotify.exe") or WinExist("ahk_exe Anghami.exe") or WinExist("ahk_exe Plex.exe") or WinExist("ahk_exe Plexamp.exe") or WinExist("myTube!")){
           SendInput, {Media_Play_Pause}
      }else {
           run, plexamp.exe
      }
      Return
 }
-MuteMic(){          ;toggles the microphone then either displays a toolkit or plays a sound effect
+MuteMic(){
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
@@ -136,7 +141,7 @@ MuteMic(){          ;toggles the microphone then either displays a toolkit or pl
      }
      Return
 }
-isActiveWinFullscreen(){ ;returns true if the currently active window is fullscreen
+isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      winID := WinExist( "A" )
      if ( !winID )
           Return false
