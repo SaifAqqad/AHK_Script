@@ -7,10 +7,10 @@
 ;*  VMR_checkParams() Calls VM's IsParametersDirty function                                                         *;
 ;*******                                                                                                      *******;
 ;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana ;"Bus[0]" by default        *;
-;*  VMR_getCurrentVol(AudioBus) returns the current volume for AudioBus                                             *;
-;*  VMR_volUp(AudioBus) Increases the AudioBus volume by 2dB                                                        *;
-;*  VMR_volDown(AudioBus) Decreases the AudioBus volume by 2dB                                                      *;
-;*  VMR_setVol(AudioBus, Vol) Sets AudioBus volume to a specific Vol, Vol is given in dB                            *;
+;*  VMR_getCurrentGain(AudioBus) returns the current Gain for AudioBus                                              *;
+;*  VMR_incGain(AudioBus) Increases the AudioBus Gain by 2dB                                                        *;
+;*  VMR_decGain(AudioBus) Decreases the AudioBus Gain by 2dB                                                        *;
+;*  VMR_setGain(AudioBus, Gain) Sets AudioBus Gain                                                                  *;
 ;*  VMR_muteToggle(AudioBus) Mutes AudioBus                                                                         *;
 ;*  VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                             *;
 ;*******                                                                                                      *******;
@@ -21,7 +21,6 @@
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
 Global VM_DLL := "VoicemeeterRemote"
-Global VMR_VolType := 1 ;1 -> returns Vol as a percentage ;0 -> returns Vol in dB
 VMR_login()
 VMR_login(){
      if(A_Is64bitOS){
@@ -43,31 +42,31 @@ VMR_restart(){
 VMR_checkParams(){
      return DllCall(VM_DLL . "\VBVMR_IsParametersDirty")
 }
-VMR_getCurrentVol(AudioBus:="Bus[0]"){
-     CurrentVol := 0.0
-     NumPut(0.0, CurrentVol, 0, "Float")
-     DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentVol, "Int")
-     CurrentVol := NumGet(CurrentVol, 0, "Float")
-     return CurrentVol
+VMR_getCurrentGain(AudioBus:="Bus[0]"){
+     CurrentGain := 0.0
+     NumPut(0.0, CurrentGain, 0, "Float")
+     DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentGain, "Int")
+     CurrentGain := NumGet(CurrentGain, 0, "Float")
+     return CurrentGain
 }
-VMR_volUp(AudioBus:="Bus[0]"){
-     local Vol := VMR_getCurrentVol(AudioBus)
-     Vol := ( Vol != 0.0 ? Vol+2 : 0.0)
-     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
+VMR_incGain(AudioBus:="Bus[0]"){
+     local Gain := VMR_getCurrentGain(AudioBus)
+     Gain := ( Gain != 0.0 ? Gain+2 : 0.0)
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMR_VolType ? ((Vol+60)/0.6) . "%" : Vol . "dB" )
+     return Gain . "dB" 
 }
-VMR_volDown(AudioBus:="Bus[0]"){
-     local Vol := VMR_getCurrentVol(AudioBus)
-     Vol := ( Vol != -60.0 ? Vol-2 : -60.0 )
-     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
+VMR_decGain(AudioBus:="Bus[0]"){
+     local Gain := VMR_getCurrentGain(AudioBus)
+     Gain := ( Gain != -60.0 ? Gain-2 : -60.0 )
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMR_VolType ? ((Vol+60)/0.6) . "%" : Vol . "dB" )     
+     return Gain . "dB" 
 }
-VMR_setVol(AudioBus:="Bus[0]", Vol:=0.0){
-     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Vol , "Int")
+VMR_setGain(AudioBus:="Bus[0]", Gain:=0.0){
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return (VMR_VolType ? ((Vol+60)/0.6) . "%" : Vol . "dB" )
+     return Gain . "dB" 
 }
 VMR_getMuteState(AudioBus:="Bus[0]"){
      local MuteState := 0.0
