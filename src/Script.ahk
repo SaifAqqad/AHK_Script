@@ -41,12 +41,12 @@ $^Media_Play_Pause::sendInput {Media_Play_Pause}
 
 Volume_Up::
 Vol:= VMR_incGain() 
-OSD_spawn("Global gain: " . Vol)
+OSD_spawn("Gain: " . Vol)
 return
 
 Volume_Down::
 Vol:= VMR_decGain() 
-OSD_spawn("Global gain: " . Vol)
+OSD_spawn("Gain: " . Vol)
 return
 
 $<^Volume_Down:: ;Mutes Bus[0]
@@ -63,32 +63,32 @@ Return
 
 $#Volume_Down::
 Vol:= VMR_decGain("Strip[4]") ;Decreases Media Audio Gain
-OSD_spawn("Media gain: " . Vol)
+OSD_spawn("Media: " . Vol)
 return
 
 $#Volume_Up::
 Vol:= VMR_incGain("Strip[4]") ;increases Media Audio Gain
-OSD_spawn("Media gain: " . Vol)
+OSD_spawn("Media: " . Vol)
 return
 
 $<!Volume_Down::
 Vol:= VMR_decGain("Strip[1]") ;Decreases Microphone Gain
-OSD_spawn("Mic gain: " . Vol)
+OSD_spawn("Microphone: " . Vol)
 return
 
 $<!Volume_Up::
 Vol:= VMR_incGain("Strip[1]") ;increases Microphone Gain
-OSD_spawn("Mic gain: " . Vol)
+OSD_spawn("Microphone: " . Vol)
 return
 
 $<!<^Volume_Down::
 Vol:= VMR_decGain("Strip[0]") ;Decreases Game chat Gain
-OSD_spawn("Gamechat gain: " . Vol)
+OSD_spawn("Gamechat: " . Vol)
 return
 
 $<!<^Volume_Up::
 Vol:= VMR_incGain("Strip[0]") ;increases Game chat Gain
-OSD_spawn("Gamechat gain: " . Vol)
+OSD_spawn("Gamechat: " . Vol)
 return
 
 F7::
