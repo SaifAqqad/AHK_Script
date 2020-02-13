@@ -1,23 +1,23 @@
 ;********************************************************************************************************************;
 ;*                                            VoiceMeeterRemote Wrapper                                             *;
 ;******************************************************USAGE*********************************************************;
-;*  VMR_login()  loads VoiceMeeter's Library and calls VM's login function                                          *;
-;*  VMR_logout() Calls VM's logout function                                                                         *;
-;*  VMR_restart() Restarts VoiceMeeter's Engine                                                                     *;
-;*  VMR_checkParams() Calls VM's IsParametersDirty function                                                         *;
+;*  11 VMR_login()  loads VoiceMeeter's Library and calls VM's login function                                       *;
+;*  12 VMR_logout() Calls VM's logout function                                                                      *;
+;*  13 VMR_restart() Restarts VoiceMeeter's Engine                                                                  *;
+;*  14 VMR_checkParams() Calls VM's IsParametersDirty function                                                      *;
 ;*******                                                                                                      *******;
 ;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana ;"Bus[0]" by default        *;
-;*  VMR_getCurrentGain(AudioBus) returns the current Gain for AudioBus                                              *;
-;*  VMR_incGain(AudioBus) Increases the AudioBus Gain by 2dB                                                        *;
-;*  VMR_decGain(AudioBus) Decreases the AudioBus Gain by 2dB                                                        *;
-;*  VMR_setGain(AudioBus, Gain) Sets AudioBus Gain                                                                  *;
-;*  VMR_muteToggle(AudioBus) Mutes AudioBus                                                                         *;
-;*  VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                             *;
+;*  21 VMR_getCurrentGain(AudioBus) returns the current Gain for AudioBus                                           *;
+;*  22 VMR_incGain(AudioBus) Increases the AudioBus Gain by 2dB                                                     *;
+;*  23 VMR_decGain(AudioBus) Decreases the AudioBus Gain by 2dB                                                     *;
+;*  24 VMR_setGain(AudioBus, Gain) Sets AudioBus Gain                                                               *;
+;*  25 VMR_muteToggle(AudioBus) Mutes AudioBus                                                                      *;
+;*  26 VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                          *;
 ;*******                                                                                                      *******;
 ;*                  AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                       *;
 ;*                  AudioDriver:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                     *;
 ;*                  AudioDevice: any substring of an audio device's full name that's shown in VoiceMeeter's GUI     *;
-;*  VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice)                                                          *;
+;*  31 VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice)                                                       *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
 Global VM_DLL := "VoicemeeterRemote"
