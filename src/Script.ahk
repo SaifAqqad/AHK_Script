@@ -35,9 +35,7 @@ WinKill, ahk_exe speedtest.exe
 run, speedtest
 return
 ;===============================================Media Hotkeys===============================================
-$Media_Play_Pause::PlayPauseRun() 
-
-$^Media_Play_Pause::sendInput {Media_Play_Pause} 
+$Media_Play_Pause::SendInput, {Media_Play_Pause}
 
 Volume_Up::
 Vol:= VMR_incGain() 
@@ -111,26 +109,8 @@ sendInput, {RButton}
 sleep, 30
 sendInput, {g}
 Return
-/*Hold Edit-building key macro
-$g::
-sendInput {g}
-KeyWait, g
-Return
-$g Up::
-SendInput {g}
-Return
-*/
 #if
 ;=============================================Functions=============================================
-PlayPauseRun(){
-     
-     if (WinExist("ahk_exe Spotify.exe") or WinExist("ahk_exe Anghami.exe") or WinExist("ahk_exe Plex.exe") or WinExist("ahk_exe Plexamp.exe") or WinExist("myTube!")){
-          SendInput, {Media_Play_Pause}
-     }else {
-          run, plexamp.exe
-     }
-     Return
-}
 MuteMic(){
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
