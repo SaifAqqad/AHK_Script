@@ -23,9 +23,9 @@
 ### [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/c5dbb3c96ec036125261e28b62f3ade15329bf9b/src/Script.ahk#L38)
 
 # [VMR_launcher.ahk](./src/VMR_launcher.ahk)
-  ## CLI for [VMR.ahk](./src/Lib/VMR.ahk) 
+  ### CLI for [VMR.ahk](./src/Lib/VMR.ahk) 
   #### Can be used to control VoiceMeeter from any app that can run commands (like [Deckboard](https://deckboard.app/)).
-  ## USAGE:
+  ### USAGE:
           VMR_launcher.exe "function name" "Strip[i]/Bus[i]" "Substring of an audio device's name (if needed)"
           function name: 
                         "gain++"          : increases gain by 2 dB
@@ -37,7 +37,7 @@
                    VMR_launcher.exe "gain++" "Bus[0]"    
                    VMR_launcher.exe "gain--" "Strip[3]" 
                    VMR_launcher.exe "setAudioDevice" "Bus[0]" "nvidia"
-#### [download latest executable]()
+#### [download latest executable](https://github.com/SaifAqqad/AHK_Script/releases/latest)
     
 # [OSD.ahk](./src/Lib/OSD.ahk)
   ### A simple OSD GUI that follows the user's system theme
