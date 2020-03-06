@@ -4,7 +4,7 @@ inFile := A_Args[1]
 SplitPath, inFile,, inDir, inExt, inName
 Switch inExt
 {
-    case "odp","powerpoint","powerpointx","powerpointm","pot","potm","potx","pps","ppsx","ppsm": ;powerpoint
+    case "pptx","ppt","odp","powerpoint","powerpointx","powerpointm","pot","potm","potx","pps","ppsx","ppsm": ;powerpoint
         powerpoint := ComObjCreate("Powerpoint.Application")
         powerpoint := powerpoint.Presentations.Open(inDir . "\" . inName . "." . inExt,,,0)
         powerpoint.SaveAs( inDir . "\" . inName . ".pdf" , 32 )
