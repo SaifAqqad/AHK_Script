@@ -1,4 +1,4 @@
-#SingleInstance, Force
+#SingleInstance, off
 SetWorkingDir, %A_ScriptDir%
 inFile := A_Args[1]
 SplitPath, inFile,, inDir, inExt, inName
