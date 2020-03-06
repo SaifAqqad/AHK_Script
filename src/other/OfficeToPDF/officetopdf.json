@@ -1,0 +1,12 @@
+{
+    "version": "1.0",
+    "description": "Convert office documents to PDF format",
+    "url": "",
+    "installer": {
+        "file": "Install_OfficeToPDF.exe"
+    },
+    "uninstaller": {
+        "file": "Uninstall_OfficeToPDF.exe"
+    }
+
+}
