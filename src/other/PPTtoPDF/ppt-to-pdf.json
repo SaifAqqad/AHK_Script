@@ -1,7 +1,7 @@
 {
     "version": "1.0",
     "description": "Convert Powerpoint presentations to PDF format",
-    "url": "",
+    "url": "https://github.com/SaifAqqad/AHK_Script/raw/master/src/other/PPTtoPDF/PPTtoPDF.zip",
     "installer": {
         "file": "Install_ppt-to-pdf.exe"
     },
