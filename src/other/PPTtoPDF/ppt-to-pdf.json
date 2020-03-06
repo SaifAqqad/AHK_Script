@@ -1,0 +1,12 @@
+{
+    "version": "1.0",
+    "description": "Convert Powerpoint presentations to PDF format",
+    "url": "",
+    "installer": {
+        "file": "Install_ppt-to-pdf.exe"
+    },
+    "uninstaller": {
+        "file": "Uninstall_ppt-to-pdf.exe"
+    }
+
+}
