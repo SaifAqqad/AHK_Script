@@ -1,5 +1,6 @@
 #NoEnv
 #include <VMR>
+#include <RapidHotkey>
 OSD_spawn("AHK starting up..")
 SendMode Input
 SetWorkingDir %A_ScriptDir%
@@ -35,7 +36,7 @@ WinKill, ahk_exe speedtest.exe
 run, speedtest
 return
 ;===============================================Media Hotkeys===============================================
-$Media_Play_Pause::SendInput, {Media_Play_Pause}
+~Media_Play_Pause::RapidHotkey("runMedia", 2,,1)
 
 Volume_Up::
 Vol:= VMR_incGain() 
@@ -130,3 +131,6 @@ isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      return !((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth)
           
 }
+runMedia:
+     run, plexamp
+     return
