@@ -5,11 +5,11 @@
     "hash": "49AE9F0D77BC02FAD715DC2DA06FA1B6ABC630F494FEE9A0B631AFCA8DFAAF64",
     "installer": {
         "file": "Installer.exe",
-        "args": "1"
+        "args": "1",
+        "keep": "true"
     },
     "uninstaller": {
         "file": "Installer.exe",
         "args": "-1"
     }
-
 }
