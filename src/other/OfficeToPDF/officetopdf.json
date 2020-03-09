@@ -1,8 +1,8 @@
 {
-    "version": "2.0",
+    "version": "2.1",
     "description": "Convert office documents to PDF format",
     "url": "https://raw.githubusercontent.com/SaifAqqad/AHK_Script/master/src/other/OfficeToPDF/OfficeToPDF.zip",
-    "hash": "54ED36E62113196E954D6DB402C109721A6F4B9750CD679A1FB044C439CB5E76",
+    "hash": "49AE9F0D77BC02FAD715DC2DA06FA1B6ABC630F494FEE9A0B631AFCA8DFAAF64",
     "installer": {
         "file": "Installer.exe",
         "args": "1"
