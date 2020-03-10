@@ -18,6 +18,7 @@ Loop, %params%
     }
 }
 GUI_destroy()
+ExitApp
 pptTopdf(fPath,path,name){
     powerpoint := ComObjCreate("Powerpoint.Application")
     powerpoint := powerpoint.Presentations.Open(fPath,,,0)
