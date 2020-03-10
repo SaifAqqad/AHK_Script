@@ -23,11 +23,11 @@ pptTopdf(fPath,path,name){
     powerpoint := ComObjCreate("Powerpoint.Application")
     powerpoint := powerpoint.Presentations.Open(fPath,,,0)
     powerpoint.SaveAs( path . "\" . name . ".pdf" , 32 )
-    powerpoint.Close()
+    powerpoint.Quit()
 }
 wrdTopdf(fPath,path,name){
     word := ComObjCreate("Word.Application")
     word := word.Documents.Open(fPath,,,,,,,,,,,0)
     word.SaveAs2( path . "\" . name . ".pdf" , 17 )
-    word.Close()
+    word.Quit()
 }

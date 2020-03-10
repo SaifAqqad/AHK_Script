@@ -1,8 +1,8 @@
 Global GUI_state:=0
 Global GUI_prog:=
-GUI_spawn(prog,GUI_theme:=-1,GUI_accent:=-1){
+GUI_spawn(prog,GUI_accent:=-1){
     if (GUI_state = 0){
-        GUI_Theme:= ( GUI_Theme = -1 ? GUI_getSysTheme() : GUI_Theme  )
+        GUI_Theme:=191919
         GUI_Accent:= ( GUI_Accent = -1 ? GUI_getSysAccent() : GUI_Accent )
         SetFormat, integer, d
         Gui, Color, %GUI_Theme%, %GUI_Accent%
@@ -17,10 +17,6 @@ GUI_spawn(prog,GUI_theme:=-1,GUI_accent:=-1){
     }else{
         GuiControl,, GUI_prog, %prog%
     }
-}
-GUI_getSysTheme(){
-    RegRead, GUI_sysTheme, HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize, SystemUsesLightTheme 
-    Return (GUI_sysTheme ? CDCED2 : 191919) ;GUI_sysTheme:  1 --> light theme, 0 --> Dark theme
 }
 GUI_getSysAccent(){
     RegRead, GUI_sysAccent, HKCU\SOFTWARE\Microsoft\Windows\DWM, ColorizationColor 
