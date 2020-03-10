@@ -132,5 +132,5 @@ isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
           
 }
 runMedia:
-     run, plexamp
+     run, plexamp , C:\Users\%A_UserName%\AppData\Local\Programs\plexamp
      return
