@@ -6,6 +6,7 @@ Loop, %params%
 {
     SetFormat, FloatFast, 0.2
     prog:= (A_Index / params)*100
+    GUI_spawn(prog)
     inFile := A_Args[A_Index]
     SplitPath, inFile,, inDir, inExt, inName
     Switch inExt
@@ -15,7 +16,6 @@ Loop, %params%
         case "rtf","odt","doc","dot","docx","dotx","docm","dotm","txt","html","htm","wpd": ;word
             wrdTopdf(inFile,inDir,inName)
     }
-    GUI_spawn(prog)
 }
 GUI_destroy()
 pptTopdf(fPath,path,name){

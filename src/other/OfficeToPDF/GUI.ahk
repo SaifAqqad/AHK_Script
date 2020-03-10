@@ -9,7 +9,7 @@ GUI_spawn(prog,GUI_theme:=-1,GUI_accent:=-1){
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         WinSet, Transparent, 230, ahk_class AutoHotkeyGUI
         Gui, Font, s11, Segoe UI
-        Gui, Add, Progress, W165 c%GUI_Accent% vGUI_prog, %prog%
+        Gui, Add, Progress, W165 c%GUI_Accent% Background%GUI_Theme% vGUI_prog, %prog%
         SysGet, MonitorWorkArea, MonitorWorkArea, 0
         GUI_yPos:= MonitorWorkAreaBottom * 0.95
         Gui, Show, AutoSize NoActivate xCenter y%GUI_yPos%
