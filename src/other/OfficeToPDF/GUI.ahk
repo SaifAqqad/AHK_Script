@@ -15,7 +15,7 @@ GUI_spawn(prog,GUI_theme:=-1,GUI_accent:=-1){
         Gui, Show, AutoSize NoActivate xCenter y%GUI_yPos%
         GUI_state:= 1
     }else{
-        GuiControl,, GUI_prog, prog
+        GuiControl,, GUI_prog, %prog%
     }
 }
 GUI_getSysTheme(){
