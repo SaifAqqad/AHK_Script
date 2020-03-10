@@ -2,9 +2,9 @@
 #Include GUI.ahk
 SetWorkingDir, %A_ScriptDir%
 params := A_Args.Length()
+SetFormat, FloatFast, 0.2
 Loop, %params%
 {
-    SetFormat, FloatFast, 0.2
     prog:= (A_Index / params)*100
     GUI_spawn(prog)
     inFile := A_Args[A_Index]
@@ -21,13 +21,13 @@ GUI_destroy()
 ExitApp
 pptTopdf(fPath,path,name){
     powerpoint := ComObjCreate("Powerpoint.Application")
-    powerpoint := powerpoint.Presentations.Open(fPath,,,0)
-    powerpoint.SaveAs( path . "\" . name . ".pdf" , 32 )
+    powerpointFile := powerpoint.Presentations.Open(fPath,,,0)
+    powerpointFile.SaveAs( path . "\" . name . ".pdf" , 32 )
     powerpoint.Quit()
 }
 wrdTopdf(fPath,path,name){
     word := ComObjCreate("Word.Application")
-    word := word.Documents.Open(fPath,,,,,,,,,,,0)
-    word.SaveAs2( path . "\" . name . ".pdf" , 17 )
+    wordFile := word.Documents.Open(fPath,,,,,,,,,,,0)
+    wordFile.SaveAs2( path . "\" . name . ".pdf" , 17 )
     word.Quit()
 }
