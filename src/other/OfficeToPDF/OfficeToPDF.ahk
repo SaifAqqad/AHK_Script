@@ -1,12 +1,12 @@
 #SingleInstance, off
 #Include GUI.ahk
 SetWorkingDir, %A_ScriptDir%
-params := A_Args.Length()
+fCount := A_Args.Length()
 SetFormat, FloatFast, 0.2
-Loop, %params%
+Loop, %fCount%
 {
-    prog:= (A_Index / params)*100
-    GUI_spawn(prog)
+    fProg:= ((A_Index-1) / fCount)*100
+    GUI_spawn(fProg,"Converting file " . A_Index . "/" . fCount)
     inFile := A_Args[A_Index]
     SplitPath, inFile,, inDir, inExt, inName
     Switch inExt
@@ -17,6 +17,8 @@ Loop, %params%
             wrdTopdf(inFile,inDir,inName)
     }
 }
+GUI_spawn(100,"File(s) converted :D")
+Sleep, 2000
 GUI_destroy()
 ExitApp
 pptTopdf(fPath,path,name){
