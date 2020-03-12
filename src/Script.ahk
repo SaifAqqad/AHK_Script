@@ -116,7 +116,9 @@ MuteMic(){
      
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     OSD_spawn( (!MuteState ? "Microphone muted" : "Microphone online"),-1,"999999" ) 
+     if (!isGameShit()){
+          OSD_spawn( (!MuteState ? "Microphone muted" : "Microphone online"),-1,"999999" ) 
+     }
      if ( isActiveWinFullscreen() ){
           SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
      }
@@ -129,7 +131,9 @@ isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      WinGet style, Style, ahk_id %WinID%
      WinGetPos ,,,winW,winH, %winTitle%
      return !((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth)
-          
+}
+isGameShit(){
+     return (WinActive("ahk_exe ModernWarfare.exe"))
 }
 runMedia:
      run, plexamp , C:\Users\%A_UserName%\AppData\Local\Programs\plexamp
