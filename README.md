@@ -18,17 +18,22 @@
   ### CLI for [VMR.ahk](./src/Lib/VMR.ahk) 
   #### Can be used to control VoiceMeeter from any app that can run executables (like [Deckboard](https://deckboard.app/)).
   ### USAGE:
-          VMR_launcher.exe "function name" "Strip[i]/Bus[i]" "Substring of an audio device's name (if needed)"
+          VMR_launcher.exe "function name" "Strip[i]/Bus[i]" [ "Audio device type" "Substring of an audio device's name" ]
           function name: 
                         "gain++"          : increases gain by 2 dB
                         "gain--"          : decreases gain by 2 dB
                         "mute"            : toggles mute state
                         "setAudioDevice"  : 
                         "vmEngineRestart" : restarts Voicemeeter's engine
+          Audio device type: 
+                            "1"   : mme
+                            "3"   : wdm
+                            "4"   : ks
+                            "5"   : asio
           examples:
                    VMR_launcher.exe "gain++" "Bus[0]"    
                    VMR_launcher.exe "gain--" "Strip[3]" 
-                   VMR_launcher.exe "setAudioDevice" "Bus[0]" "nvidia"
+                   VMR_launcher.exe "setAudioDevice" "Bus[0]" "3" "nvidia"
 #### [download latest executable](https://github.com/SaifAqqad/AHK_Script/releases/latest)
     
 # [OSD.ahk](./src/Lib/OSD.ahk)
