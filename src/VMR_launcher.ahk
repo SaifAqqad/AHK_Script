@@ -15,7 +15,7 @@ runParams(){
     }else if(A_Args[1]="mute"){
         VMR_muteToggle(A_Args[2])
     }else if(A_Args[1]="setAudioDevice"){
-        VMR_setAudioDevice(A_Args[2],3,A_Args[3])
+        VMR_setAudioDevice(A_Args[2],A_Args[3],A_Args[4])
     }else if(A_Args[1]="vmEngineRestart"){
         VMR_restart()
     }else if(A_Args[1]=91){
