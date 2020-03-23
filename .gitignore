@@ -1,4 +1,6 @@
 
 *.exe
 *.gif
+*.zip
+bin
 .vscode
