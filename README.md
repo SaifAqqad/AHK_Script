@@ -18,24 +18,24 @@
   ### CLI for [VMR.ahk](./src/Lib/VMR.ahk) 
   #### Control VoiceMeeter from any app that can run executables (like [Deckboard](https://deckboard.app/)).
   ### USAGE:
-          VMR_launcher.exe "function name" "Strip[i]/Bus[i]" [ "Audio device type" "Substring of an audio device's name" ]
-          function name: 
-                        "gain++"          : increases gain by 2 dB
-                        "gain--"          : decreases gain by 2 dB
-                        "mute"            : toggles mute state
-                        "setAudioDevice"  : 
-                        "vmEngineRestart" : restarts Voicemeeter's engine
-          Audio device type: 
-                            "1"   : mme
-                            "3"   : wdm
-                            "4"   : ks
-                            "5"   : asio
-          examples:
-                   VMR_launcher.exe "gain++" "Bus[0]"    
-                   VMR_launcher.exe "gain--" "Strip[3]" 
-                   VMR_launcher.exe "setAudioDevice" "Bus[0]" "3" "nvidia"
-#### [download latest executable](https://github.com/SaifAqqad/AHK_Script/releases/latest)
-    
+      voicemeeter "command" "Strip[i]/Bus[i]" [ "Audio device type" "Substring of an audio device'name" ]
+      command: 
+                    "gain++"          : increases gain by 2 dB
+                    "gain--"          : decreases gain by 2 dB
+                    "mute"            : toggles mute state
+                    "setAudioDevice"  : 
+                    "vmEngineRestart" : restarts Voicemeeter's engine
+      Audio device type: 
+                        "1"   : mme
+                        "3"   : wdm
+                        "4"   : ks
+                        "5"   : asio
+      examples:
+               voicemeeter gain++ Bus[0]   
+               voicemeeter gain-- Strip[3] 
+               voicemeeter setAudioDevice Bus[0] 3 nvidia
+  ### Download using [scoop](https://scoop.sh):
+      scoop bucket add utils https://github.com/SaifAqqad/utils.git | scoop install vmr_launcher    
 # [OSD.ahk](./src/Lib/OSD.ahk)
   ### A simple OSD that follows the user's system theme.
   ![GUIlight demo](https://user-images.githubusercontent.com/47293197/68298049-55067a80-0090-11ea-877c-9f2964873c96.gif) ![GUIdark Demo](https://user-images.githubusercontent.com/47293197/68298037-50da5d00-0090-11ea-854b-54731a5ffcd8.gif)
