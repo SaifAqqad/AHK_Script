@@ -16,7 +16,7 @@
 
 # [VMR_launcher.ahk](./src/VMR_launcher.ahk)
   ### CLI for [VMR.ahk](./src/Lib/VMR.ahk) 
-  #### Can be used to control VoiceMeeter from any app that can run executables (like [Deckboard](https://deckboard.app/)).
+  #### Control VoiceMeeter from any app that can run executables (like [Deckboard](https://deckboard.app/)).
   ### USAGE:
           VMR_launcher.exe "function name" "Strip[i]/Bus[i]" [ "Audio device type" "Substring of an audio device's name" ]
           function name: 
