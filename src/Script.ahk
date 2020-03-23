@@ -122,7 +122,7 @@ isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
 showOSD(txt, OSD_Theme:=-1, OSD_Accent:=-1 ){
      if (WinActive("ahk_exe ModernWarfare.exe"))
           return
-     OSD_spawn(txt,OSD_Theme,OSD_spawn)
+     OSD_spawn(txt,OSD_Theme,OSD_Accent)
 }
 runMedia:
      run, plexamp , C:\Users\%A_UserName%\AppData\Local\Programs\plexamp
