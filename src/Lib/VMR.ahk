@@ -15,9 +15,9 @@
 ;*  26 VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                          *;
 ;*******                                                                                                      *******;
 ;*                  AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                       *;
-;*                  AudioDriver:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                     *;
+;*                  AudioType:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                     *;
 ;*                  AudioDevice: any substring of an audio device's full name that's shown in VoiceMeeter's GUI     *;
-;*  31 VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice)                                                       *;
+;*  31 VMR_setAudioDevice(AudioBus, AudioType, AudioDevice)                                                       *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
 Global VM_DLL := "VoicemeeterRemote"
@@ -80,7 +80,7 @@ VMR_muteToggle(AudioBus:="Bus[0]"){
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , !Mute, "Int")    
      return VMR_getMuteState(AudioBus)
 }
-VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
+VMR_setAudioDevice(AudioBus, AudioType, AudioDevice){
      numDevices := DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
      loop %numDevices%
      {
@@ -88,10 +88,10 @@ VMR_setAudioDevice(AudioBus, AudioDriver, AudioDevice){
           VarSetCapacity(dType, 1000)
           DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &dType , "Ptr", &dName, "Ptr", 0, "Int")
           dType := NumGet(dType, 0, "UInt")
-          if (dType = AudioDriver)
+          if (dType = AudioType)
                if dName Contains %AudioDevice%
                     break
      }
-     AudioDriver := (AudioDriver=3 ? "wdm" : (AudioDriver=4 ? "ks" : (AudioDriver=5 ? "asio" : "mme"))) 
-     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr", AudioBus . ".Device." . AudioDriver , "WStr" , dName , "Int")  
+     AudioType := (AudioType=3 ? "wdm" : (AudioType=4 ? "ks" : (AudioType=5 ? "asio" : "mme"))) 
+     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr", AudioBus . ".Device." . AudioType , "WStr" , dName , "Int")  
 }
