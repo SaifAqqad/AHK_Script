@@ -24,7 +24,7 @@ runParams(){
         DllCall("AttachConsole", "int", -1)
         FileAppend,`n`nUSAGE:`nvoicemeeter "command" "Strip[i]/Bus[i]" [ "device type" "Substring of the device's name" ]`ncommand: `n              "gain++"          : increases gain by 2 dB`n              "gain--"          : decreases gain by 2 dB`n              "mute"            : toggles mute state`n              "setAudioDevice"  : `n              "vmEngineRestart" : restarts Voicemeeter's engine`nAudio device type: `n                  "1"   : mme`n                  "3"   : wdm`n                  "4"   : ks`n                  "5"   : asio`nexamples:`n         voicemeeter "gain++" "Bus[0]" `n         voicemeeter "gain--" "Strip[3]" `n         voicemeeter "setAudioDevice" "Bus[0]" "3" "nvidia"`n , CONOUT$
         WinActivate,"ahk_class ConsoleWindowClass"
-        Send,{Left}
+        Send,{Enter}
     }
     Sleep,24
     ExitApp
