@@ -6,18 +6,19 @@
 ;*  13 VMR_restart() Restarts VoiceMeeter's Engine                                                                  *;
 ;*  14 VMR_checkParams() Calls VM's IsParametersDirty function                                                      *;
 ;*******                                                                                                      *******;
-;*                  AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana ;"Bus[0]" by default        *;
-;*  21 VMR_getCurrentGain(AudioBus) returns the current Gain for AudioBus                                           *;
-;*  22 VMR_incGain(AudioBus) Increases the AudioBus Gain by 2dB                                                     *;
-;*  23 VMR_decGain(AudioBus) Decreases the AudioBus Gain by 2dB                                                     *;
-;*  24 VMR_setGain(AudioBus, Gain) Sets AudioBus Gain                                                               *;
+;*               AudioBus: "Strip[i]" or "Bus[i]" ;i is zero based ;0-4 for VMBanana ;"Bus[0]" by default           *;
+;*               returnPercentage: boolean value (0,1); if set to 1,the function returns the Gain % instead of dB   *;
+;*  21 VMR_getCurrentGain(AudioBus, returnPercentage) returns the current Gain for AudioBus                         *;
+;*  22 VMR_incGain(AudioBus, returnPercentage) Increases the AudioBus Gain by 2dB                                   *;
+;*  23 VMR_decGain(AudioBus, returnPercentage) Decreases the AudioBus Gain by 2dB                                   *;
+;*  24 VMR_setGain(AudioBus, Gain, returnPercentage) Sets AudioBus Gain                                             *;
 ;*  25 VMR_muteToggle(AudioBus) Mutes AudioBus                                                                      *;
 ;*  26 VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                          *;
 ;*******                                                                                                      *******;
-;*                  AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                       *;
-;*                  AudioType:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                     *;
-;*                  AudioDevice: any substring of an audio device's full name that's shown in VoiceMeeter's GUI     *;
-;*  31 VMR_setAudioDevice(AudioBus, AudioType, AudioDevice)                                                       *;
+;*               AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                          *;
+;*               AudioType:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                          *;
+;*               AudioDevice: any substring of an audio device's full name that's shown in VoiceMeeter's GUI        *;
+;*  31 VMR_setAudioDevice(AudioBus, AudioType, AudioDevice)                                                         *;
 ;********************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
 Global VM_DLL := "VoicemeeterRemote"
@@ -42,31 +43,31 @@ VMR_restart(){
 VMR_checkParams(){
      return DllCall(VM_DLL . "\VBVMR_IsParametersDirty")
 }
-VMR_getCurrentGain(AudioBus:="Bus[0]"){
+VMR_getCurrentGain(AudioBus:="Bus[0]", returnPercentage:=0){
      CurrentGain := 0.0
      NumPut(0.0, CurrentGain, 0, "Float")
      DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentGain, "Int")
      CurrentGain := NumGet(CurrentGain, 0, "Float")
-     return CurrentGain
+     return (returnPercentage? CurrentGain/0.6+100 . "%" : CurrentGain)
 }
-VMR_incGain(AudioBus:="Bus[0]"){
+VMR_incGain(AudioBus:="Bus[0]", returnPercentage:=0){
      local Gain := VMR_getCurrentGain(AudioBus)
      Gain := ( Gain != 0.0 ? Gain+2 : 0.0)
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return Gain . "dB" 
+     return (returnPercentage? Gain/0.6+100 . "%" : Gain . "dB" )
 }
-VMR_decGain(AudioBus:="Bus[0]"){
+VMR_decGain(AudioBus:="Bus[0]", returnPercentage:=0){
      local Gain := VMR_getCurrentGain(AudioBus)
      Gain := ( Gain != -60.0 ? Gain-2 : -60.0 )
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return Gain . "dB" 
+     return (returnPercentage? Gain/0.6+100 . "%" : Gain . "dB" )
 }
-VMR_setGain(AudioBus:="Bus[0]", Gain:=0.0){
+VMR_setGain(AudioBus:="Bus[0]", Gain:=0.0, returnPercentage:=0){
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return Gain . "dB" 
+     return (returnPercentage? Gain/0.6+100 . "%" : Gain . "dB" )
 }
 VMR_getMuteState(AudioBus:="Bus[0]"){
      local MuteState := 0.0
