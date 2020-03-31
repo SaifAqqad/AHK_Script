@@ -44,7 +44,7 @@ VMR_checkParams(){
      return DllCall(VM_DLL . "\VBVMR_IsParametersDirty")
 }
 VMR_getCurrentGain(AudioBus:="Bus[0]", returnPercentage:=0){
-     CurrentGain := 0.0
+     local CurrentGain := 0.0
      NumPut(0.0, CurrentGain, 0, "Float")
      DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentGain, "Int")
      CurrentGain := NumGet(CurrentGain, 0, "Float")
@@ -70,16 +70,20 @@ VMR_setGain(AudioBus:="Bus[0]", Gain:=0.0, returnPercentage:=0){
      return (returnPercentage? Gain/0.6+100 . "%" : Gain . "dB" )
 }
 VMR_getMuteState(AudioBus:="Bus[0]"){
-     local MuteState := 0.0
-     NumPut(0.0, MuteState, 0, "Float")
+     local MuteState := 0
+     NumPut(0, MuteState, 0, "Float")
      DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Mute" , "Ptr" , &MuteState , "Int")
      MuteState := NumGet(MuteState, 0, "Float")
      return MuteState
 }
 VMR_muteToggle(AudioBus:="Bus[0]"){
-     local Mute := VMR_getMuteState(AudioBus)
-     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , !Mute, "Int")    
-     return VMR_getMuteState(AudioBus)
+     local MuteState := !VMR_getMuteState(AudioBus)
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , MuteState, "Int")    
+     return MuteState
+}
+VMR_setMuteState(AudioBus:="Bus[0]", MuteState:=1){
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , MuteState, "Int")
+     return MuteState
 }
 VMR_setAudioDevice(AudioBus, AudioType, AudioDevice){
      numDevices := DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
