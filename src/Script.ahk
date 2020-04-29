@@ -28,6 +28,11 @@ Return
 
 *RShift::MuteMic()
 
+^AppsKey::
+VA_SetMasterMute(0,"AmazonBasics:1")
+micMuteFeedback(0)
+return
+
 #if, (isActiveWinFullscreen())
 CapsLock::Return
 #if
@@ -102,14 +107,24 @@ showOSD("Monitor Audio")
 return
 ;=============================================Functions=============================================
 MuteMic(){
-     
      MuteState := VA_GetMasterMute("AmazonBasics:1")
-     VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     showOSD( (!MuteState ? "Microphone muted" : "Microphone online") ) 
-     if ( isActiveWinFullscreen() ){
-          SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
+     if (MuteState){
+          VA_SetMasterMute(0,"AmazonBasics:1")
+          micMuteFeedback(0)
+          KeyWait,RShift
+          VA_SetMasterMute(1,"AmazonBasics:1")
+          micMuteFeedback(1)
+     }else{
+          VA_SetMasterMute(1,"AmazonBasics:1")
+          micMuteFeedback(1)
      }
-     Return
+     return
+}
+micMuteFeedback(MuteState){
+     showOSD( (MuteState ? "Microphone muted" : "Microphone online") ) 
+     if ( isActiveWinFullscreen() ){
+          SoundPlay, % MuteState ?  "mute.mp3" :  "unmute.mp3"
+     }
 }
 isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      winID := WinExist( "A" )
