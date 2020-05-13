@@ -28,11 +28,6 @@ Return
 
 *RShift::MuteMic()
 
-^AppsKey::
-VA_SetMasterMute(0,"AmazonBasics:1")
-micMuteFeedback(0)
-return
-
 #if, (isActiveWinFullscreen())
 CapsLock::Return
 #if
@@ -107,24 +102,14 @@ showOSD("Monitor Audio")
 return
 ;=============================================Functions=============================================
 MuteMic(){
+     
      MuteState := VA_GetMasterMute("AmazonBasics:1")
-     if (MuteState){
-          VA_SetMasterMute(0,"AmazonBasics:1")
-          micMuteFeedback(0)
-          KeyWait,RShift
-          VA_SetMasterMute(1,"AmazonBasics:1")
-          micMuteFeedback(1)
-     }else{
-          VA_SetMasterMute(1,"AmazonBasics:1")
-          micMuteFeedback(1)
-     }
-     return
-}
-micMuteFeedback(MuteState){
-     showOSD( (MuteState ? "Microphone muted" : "Microphone online") ) 
+     VA_SetMasterMute(!MuteState, "AmazonBasics:1")
+     showOSD( (!MuteState ? "Microphone muted" : "Microphone online") ) 
      if ( isActiveWinFullscreen() ){
-          SoundPlay, % MuteState ?  "mute.mp3" :  "unmute.mp3"
+          SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
      }
+     Return
 }
 isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      winID := WinExist( "A" )
@@ -135,7 +120,7 @@ isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      return !((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth)
 }
 showOSD(txt, OSD_Theme:=-1, OSD_Accent:=-1 ){
-     if (WinActive("ahk_exe ModernWarfare.exe"))
+     if (WinActive("ahk_exe ModernWarfare.exe") or WinActive("ahk_exe VALORANT-Win64-Shipping.exe"))
           return
      OSD_spawn(txt,OSD_Theme,OSD_Accent)
 }
