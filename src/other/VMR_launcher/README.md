@@ -13,7 +13,7 @@
 2. Add my bucket to scoop
         
         scoop bucket add utils https://github.com/SaifAqqad/utils.git
-3. Install OfficeToPDF
+3. Install VMR_launcher
 
         scoop install vmr_launcher
 
