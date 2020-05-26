@@ -94,12 +94,12 @@ showOSD("Gamechat: " . Vol)
 return
 
 F7::
-VMR_setAudioDevice("Bus[0]",3,"hs70") 
+VMR_setOutputDevice(0,"hs70") 
 showOSD("Headphone Audio")
 return
 
 F8::          
-VMR_setAudioDevice("Bus[0]",3,"LG HDR")
+VMR_setOutputDevice(0,"LG HDR")
 showOSD("Monitor Audio")
 return
 ;=============================================Functions=============================================
