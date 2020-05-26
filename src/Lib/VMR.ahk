@@ -12,8 +12,9 @@
 ;*  22 VMR_incGain(AudioBus, returnPercentage) Increases the AudioBus Gain by 2dB                                   *;
 ;*  23 VMR_decGain(AudioBus, returnPercentage) Decreases the AudioBus Gain by 2dB                                   *;
 ;*  24 VMR_setGain(AudioBus, Gain, returnPercentage) Sets AudioBus Gain                                             *;
-;*  25 VMR_muteToggle(AudioBus) Mutes AudioBus                                                                      *;
-;*  26 VMR_getMuteState(AudioBus) Returns current mute status for AudioBus                                          *;
+;*  25 VMR_muteToggle(AudioBus) Mutes/Unmutes AudioBus                                                              *;
+;*  26 VMR_setMuteState(AudioBus, MuteState) Sets mute state for AudioBus                                           *;
+;*  27 VMR_getMuteState(AudioBus) Returns current mute state for AudioBus                                           *;
 ;*******                                                                                                      *******;
 ;*               AudioBus: "Strip[i]" or "Bus[i]" ;Physical Buses/Strips ;0-2 for VMBanana                          *;
 ;*               AudioType:  1 for mme / 3 for wdm / 4 for ks / 5 for asio                                          *;
@@ -85,18 +86,69 @@ VMR_setMuteState(AudioBus:="Bus[0]", MuteState:=1){
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , MuteState, "Int")
      return MuteState
 }
-VMR_setAudioDevice(AudioBus, AudioType, AudioDevice){
-     numDevices := DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
-     loop %numDevices%
+VMR_getOutputDeviceName(substring){
+     loop % DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
      {
           VarSetCapacity(dName, 1000)
-          VarSetCapacity(dType, 1000)
-          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &dType , "Ptr", &dName, "Ptr", 0, "Int")
-          dType := NumGet(dType, 0, "UInt")
-          if (dType = AudioType)
-               if dName Contains %AudioDevice%
-                    break
+          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , 0 , "Ptr", &dName, "Ptr", 0, "Int")
+          if dName Contains %substring%
+          return dName
      }
-     AudioType := (AudioType=3 ? "wdm" : (AudioType=4 ? "ks" : (AudioType=5 ? "asio" : "mme"))) 
-     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr", AudioBus . ".Device." . AudioType , "WStr" , dName , "Int")  
+}
+VMR_setOutputDevice(AudioBus, DeviceName, DeviceDriver := "wdm"){
+     if AudioBus not in 0, 1, 2 
+          return -4
+     if DeviceDriver not in wdm,mme,ks,asio
+          return -5
+     DeviceName := VMR_getOutputDeviceName(DeviceName)
+     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Bus[" . AudioBus . "].Device." . DeviceDriver , "WStr" , DeviceName , "Int") 
+}
+VMR_getOutputDevicesList(){
+     Device := {Name:"",Driver:""}
+     DeviceList := Array()
+     loop % DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
+     {
+          VarSetCapacity(Name, 1000)
+          VarSetCapacity(Driver, 1000)
+          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &Driver , "Ptr", &Name, "Ptr", 0, "Int")
+          Driver := NumGet(Driver, 0, "UInt")
+          device := new Device
+          device.Name := Name
+          device.Driver := (Driver=3 ? "wdm" : (Driver=4 ? "ks" : (Driver=5 ? "asio" : "mme"))) 
+          DeviceList.Push(device)
+     }
+     return DeviceList
+}
+VMR_getInputDeviceName(substring){
+     loop % DllCall(VM_DLL . "\VBVMR_Input_GetDeviceNumber","Int")
+     {
+          VarSetCapacity(dName, 1000)
+          DllCall(VM_DLL . "\VBVMR_Input_GetDeviceDescW", "Int", A_Index-1, "Ptr" , 0 , "Ptr", &dName, "Ptr", 0, "Int")
+          if dName Contains %substring%
+          return dName
+     }
+}
+VMR_setInputDevice(AudioBus, DeviceName, DeviceDriver := "wdm"){
+     if AudioBus not in 0, 1, 2 
+          return -4
+     if DeviceDriver not in wdm,mme,ks,asio
+          return -5
+     DeviceName := VMR_getInputDeviceName(DeviceName)
+     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Strip[" . AudioBus . "].Device." . DeviceDriver , "WStr" , DeviceName , "Int") 
+}
+VMR_getInputDevicesList(){
+     Device := {Name:"",Driver:""}
+     DeviceList := Array()
+     loop % DllCall(VM_DLL . "\VBVMR_Input_GetDeviceNumber","Int")
+     {
+          VarSetCapacity(Name, 1000)
+          VarSetCapacity(Driver, 1000)
+          DllCall(VM_DLL . "\VBVMR_Input_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &Driver , "Ptr", &Name, "Ptr", 0, "Int")
+          Driver := NumGet(Driver, 0, "UInt")
+          device := new Device
+          device.Name := Name
+          device.Driver := (Driver=3 ? "wdm" : (Driver=4 ? "ks" : (Driver=5 ? "asio" : "mme"))) 
+          DeviceList.Push(device)
+     }
+     return DeviceList
 }
