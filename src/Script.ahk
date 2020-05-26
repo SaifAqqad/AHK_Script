@@ -15,10 +15,12 @@ if (FileExist(TrayIcon)) {
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMR_restart()
 
-#Space::
+#Space::SendInput {CtrlDown}{F3}
+
+!Space::
 clipboard = 
 SendInput {CTRLDOWN}c{CTRLUP}
-ClipWait
+ClipWait, 1
 Run http://www.google.com/search?hl=en&q=%clipboard%,, UseErrorLevel
 Return 
 
@@ -102,10 +104,13 @@ showOSD("Monitor Audio")
 return
 ;=============================================Functions=============================================
 MuteMic(){
-     
      MuteState := VA_GetMasterMute("AmazonBasics:1")
      VA_SetMasterMute(!MuteState, "AmazonBasics:1")
-     showOSD( (!MuteState ? "Microphone muted" : "Microphone online") ) 
+     if (!MuteState){
+          showOSD("Microphone muted",,"B10501")
+     }else{
+          showOSD("Microphone online",,"21D725")
+     }
      if ( isActiveWinFullscreen() ){
           SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
      }
