@@ -41,15 +41,9 @@ return
 ;===============================================Media Hotkeys===============================================
 ~Media_Play_Pause::RapidHotkey("runMedia", 2,,1)
 
-Volume_Up:: ;Increase Bus[0] gain
-Vol:= VMR_incGain(,1) 
-showOSD("Gain: " . Vol)
-return
+Volume_Up::showOSD("Gain: " . VMR_incGain(,1) ) ;Increase Bus[0] gain
 
-Volume_Down:: ;Decrease Bus[0] gain
-Vol:= VMR_decGain(,1) 
-showOSD("Gain: " . Vol)
-return
+Volume_Down::showOSD("Gain: " . VMR_decGain(,1)) ;Decrease Bus[0] gain
 
 $<^Volume_Down:: ;Mutes Bus[0]
 Mute:= VMR_muteToggle()
@@ -63,45 +57,21 @@ showOSD( (Mute ? "System Audio Muted" : "System Audio Unmuted") )
 KeyWait, LControl 
 Return
 
-$#Volume_Down::
-Vol:= VMR_decGain("Strip[4]",1) ;Decreases Media Audio Gain
-showOSD("Media: " . Vol)
-return
+$#Volume_Down::showOSD("Media: " . VMR_decGain("Strip[4]",1)) ;Decreases Media Audio Gain
 
-$#Volume_Up::
-Vol:= VMR_incGain("Strip[4]",1) ;increases Media Audio Gain
-showOSD("Media: " . Vol)
-return
+$#Volume_Up::showOSD("Media: " . VMR_incGain("Strip[4]",1)) ;increases Media Audio Gain
 
-$<!Volume_Down::
-Vol:= VMR_decGain("Strip[1]") ;Decreases Microphone Gain
-showOSD("Microphone: " . Vol)
-return
+$<!Volume_Down::showOSD("Microphone: " . VMR_decGain("Strip[1]")) ;Decreases Microphone Gain
 
-$<!Volume_Up::
-Vol:= VMR_incGain("Strip[1]") ;increases Microphone Gain
-showOSD("Microphone: " . Vol)
-return
+$<!Volume_Up::showOSD("Microphone: " . VMR_incGain("Strip[1]") ) ;increases Microphone Gain
 
-$<!<^Volume_Down::
-Vol:= VMR_decGain("Strip[0]",1) ;Decreases Game chat Gain
-showOSD("Gamechat: " . Vol)
-return
+$<!<^Volume_Down::showOSD("Gamechat: " . VMR_decGain("Strip[0]",1) ) ;Decreases Game chat Gain
 
-$<!<^Volume_Up::
-Vol:= VMR_incGain("Strip[0]",1) ;increases Game chat Gain
-showOSD("Gamechat: " . Vol)
-return
+$<!<^Volume_Up::showOSD("Gamechat: " . VMR_incGain("Strip[0]",1)) ;increases Game chat Gain
 
-F7::
-VMR_setOutputDevice(0,"hs70") 
-showOSD("Headphone Audio")
-return
+F7::showOSD("A1: " . VMR_setOutputDevice(0,"hs70"))
 
-F8::          
-VMR_setOutputDevice(0,"LG HDR")
-showOSD("Monitor Audio")
-return
+F8::showOSD("A1: " . VMR_setOutputDevice(0,"LG HDR"))
 ;=============================================Functions=============================================
 MuteMic(){
      MuteState := VA_GetMasterMute("AmazonBasics:1")
