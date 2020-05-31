@@ -1,6 +1,6 @@
-;****************************************************************************************************************************************************************************************************;
-;*                                                                                VoiceMeeterRemote Wrapper                                                                                         *;
-;****************************************************************************************************************************************************************************************************;
+;*****************************************************************************************************************;
+;*                                          VoiceMeeterRemote Wrapper                                            *;
+;*****************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
 Global VM_DLL := "VoicemeeterRemote"
 VMR_login()
@@ -98,7 +98,8 @@ VMR_getMuteState(AudioBus:="Bus[0]"){
 }
 
 /*
-     VMR_muteToggle(AudioBus) Toggles mute state for AudioBus
+     VMR_muteToggle(AudioBus) 
+     Toggles mute state for AudioBus
 */
 VMR_muteToggle(AudioBus:="Bus[0]"){
      local MuteState := !VMR_getMuteState(AudioBus)
@@ -117,7 +118,10 @@ VMR_setMuteState(AudioBus:="Bus[0]", MuteState:=1){
 
 /*
      VMR_setOutputDevice(AudioBus, DeviceName, DeviceDriver)
-     Sets Bus[0/1/2] to the passed Device and Driver; AudioBus can be 0,1,2 ; DeviceName can be any substring of the full device name; DeviceDriver can be "wdm","mme","ks","asio"
+     Sets Bus[0/1/2] to the passed Device and Driver;
+     AudioBus can be 0,1,2; 
+     DeviceName can be any substring of the full device name; 
+     DeviceDriver can be "wdm","mme","ks","asio"
 */
 VMR_setOutputDevice(AudioBus, DeviceName, DeviceDriver := "wdm"){
      if AudioBus not in 0, 1, 2 
@@ -137,13 +141,13 @@ VMR_getOutputDevicesList(){
      DeviceList := Array()
      loop % DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
      {
-          VarSetCapacity(Name, 1000)
-          VarSetCapacity(Driver, 1000)
-          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &Driver , "Ptr", &Name, "Ptr", 0, "Int")
-          Driver := NumGet(Driver, 0, "UInt")
+          VarSetCapacity(ptrName, 1000)
+          VarSetCapacity(ptrDriver, 1000)
+          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &ptrDriver , "Ptr", &ptrName, "Ptr", 0, "Int")
+          ptrDriver := NumGet(ptrDriver, 0, "UInt")
           device := new Device
-          device.Name := Name
-          device.Driver := (Driver=3 ? "wdm" : (Driver=4 ? "ks" : (Driver=5 ? "asio" : "mme"))) 
+          device.Name := ptrName
+          device.Driver := (ptrDriver=3 ? "wdm" : (ptrDriver=4 ? "ks" : (ptrDriver=5 ? "asio" : "mme"))) 
           DeviceList.Push(device)
      }
      return DeviceList
@@ -151,7 +155,10 @@ VMR_getOutputDevicesList(){
 
 /*
      VMR_setInputDevice(AudioStrip, DeviceName, DeviceDriver)
-     Sets Strip[0/1/2] to the passed Device and Driver; AudioStrip can be 0,1,2 ; DeviceName can be any substring of the full device name; DeviceDriver can be "wdm","mme","ks","asio"
+     Sets Strip[0/1/2] to the passed Device and Driver;
+     AudioStrip can be 0,1,2; 
+     DeviceName can be any substring of the full device name; 
+     DeviceDriver can be "wdm","mme","ks","asio"
 */
 VMR_setInputDevice(AudioStrip, DeviceName, DeviceDriver := "wdm"){
      if AudioStrip not in 0, 1, 2 
@@ -171,13 +178,13 @@ VMR_getInputDevicesList(){
      DeviceList := Array()
      loop % DllCall(VM_DLL . "\VBVMR_Input_GetDeviceNumber","Int")
      {
-          VarSetCapacity(Name, 1000)
-          VarSetCapacity(Driver, 1000)
-          DllCall(VM_DLL . "\VBVMR_Input_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &Driver , "Ptr", &Name, "Ptr", 0, "Int")
-          Driver := NumGet(Driver, 0, "UInt")
+          VarSetCapacity(ptrName, 1000)
+          VarSetCapacity(ptrDriver, 1000)
+          DllCall(VM_DLL . "\VBVMR_Input_GetDeviceDescW", "Int", A_Index-1, "Ptr" , &ptrDriver , "Ptr", &ptrName, "Ptr", 0, "Int")
+          ptrDriver := NumGet(ptrDriver, 0, "UInt")
           device := new Device
-          device.Name := Name
-          device.Driver := (Driver=3 ? "wdm" : (Driver=4 ? "ks" : (Driver=5 ? "asio" : "mme"))) 
+          device.Name := ptrName
+          device.Driver := (ptrDriver=3 ? "wdm" : (ptrDriver=4 ? "ks" : (ptrDriver=5 ? "asio" : "mme"))) 
           DeviceList.Push(device)
      }
      return DeviceList
