@@ -58,5 +58,5 @@ excelTopdf(fPath,path,name){
 }
 pdfOptimizer(fPath,path,name){
     outputFileName := path . "\" . name . "-optimized.pdf"
-    RunWait, gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dFastWebView -sOUTPUTFILE=%outputFileName%  %fPath%,,Hide
+    RunWait, gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dFastWebView -sOUTPUTFILE="%outputFileName%"  "%fPath%",,Hide
 }
