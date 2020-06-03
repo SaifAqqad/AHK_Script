@@ -23,6 +23,8 @@ handle(inFile){
     SplitPath, inFile,, inDir, inExt, inName
     Switch inExt
     {
+        case "pdf":
+            pdfOptimizer(inFile,inDir,inName)
         case "pptx","ppt","odp","powerpoint","powerpointx","powerpointm","pot","potm","potx","pps","ppsx","ppsm": ;powerpoint
             pptTopdf(inFile,inDir,inName)
         case "rtf","odt","doc","dot","docx","dotx","docm","dotm","txt","html","htm","wpd": ;word
@@ -53,4 +55,8 @@ excelTopdf(fPath,path,name){
     excelFile := excel.Workbooks.open(fPath)
     excelFile.ExportAsFixedFormat(0, path . "\" . name . ".pdf")
     excel.Quit()
+}
+pdfOptimizer(fPath,path,name){
+    outputFileName := path . "\" . name . "-optimized.pdf"
+    RunWait, gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dFastWebView -sOUTPUTFILE=%outputFileName%  %fPath%,,Hide
 }
