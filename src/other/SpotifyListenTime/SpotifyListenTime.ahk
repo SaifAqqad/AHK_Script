@@ -1,9 +1,12 @@
 #Include, %A_ScriptDir%\..\..\Lib\JSON.ahk
+#NoTrayIcon
 Global totalms:= 0
 Global dir:= ""
-MsgBox, 0, SpotifyListenTime, Select json file(s)
+MsgBox, 65, Spotify Listen Time, Select json file(s)
 IfMsgBox, OK
-    FileSelectFile, files, M3,, Select StreamingHistory#.json file(s), *.json
+    FileSelectFile, files, M3, StreamingHistory0.json, Select StreamingHistory#.json file(s), *.json
+Else
+    ExitApp
 Loop, parse, files, `n
 {
     if (A_Index = 1)
@@ -14,7 +17,7 @@ Loop, parse, files, `n
         Data:= JSON.Load(jsonString)
         Loop % Data.Length()
         {
-            totalms:= totalms + Data[A_Index].msPlayed
+            totalms += Data[A_Index].msPlayed
         }
     }
 }
@@ -26,5 +29,5 @@ totalhr:=Mod((totalms/1000)/3600, 24)
 totalhr:= Format("{:d}", totalhr)
 totalDays:=(totalms/1000)/86400
 totalDays:= Format("{:d}", totalDays)
-totalTime:= totalDays . " days, " . totalhr . " hours, " . totalmin . " minutes and " . totalSec . "seconds"
-MsgBox, % "You spent " . totalTime .  " listening to spotify"
+totalTime:= totalDays . " days, " . totalhr . " hours, " . totalmin . " minutes and " . totalSec . " seconds"
+MsgBox,, Spotify Listen Time, You spent %totalTime% listening to spotify
