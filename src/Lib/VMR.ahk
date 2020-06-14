@@ -128,7 +128,6 @@ VMR_setOutputDevice(AudioBus, DeviceName, DeviceDriver := "wdm"){
           return -4
      if DeviceDriver not in wdm,mme,ks,asio
           return -5
-     DeviceName := VMR_getOutputDeviceName(DeviceName, DeviceDriver)
      return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Bus[" . AudioBus . "].Device." . DeviceDriver , "WStr" , DeviceName , "Int") 
 }
 
@@ -165,7 +164,6 @@ VMR_setInputDevice(AudioStrip, DeviceName, DeviceDriver := "wdm"){
           return -4
      if DeviceDriver not in wdm,mme,ks,asio
           return -5
-     DeviceName := VMR_getInputDeviceName(DeviceName, DeviceDriver)
      return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Strip[" . AudioStrip . "].Device." . DeviceDriver , "WStr" , DeviceName , "Int") 
 }
 
@@ -189,29 +187,6 @@ VMR_getInputDevicesList(){
      }
      return DeviceList
 }
-
-VMR_getInputDeviceName(substring, Driver){
-     loop % DllCall(VM_DLL . "\VBVMR_Input_GetDeviceNumber","Int")
-     {
-          VarSetCapacity(ptrName, 1000)
-          DllCall(VM_DLL . "\VBVMR_Input_GetDeviceDescW", "Int", A_Index-1, "Ptr" , ptrDriver , "Ptr", &ptrName, "Ptr", 0, "Int")
-          if ptrDriver = Driver
-               if ptrName Contains %substring%
-                    return ptrName
-     }
-}
-
-VMR_getOutputDeviceName(substring, Driver){
-     loop % DllCall(VM_DLL . "\VBVMR_Output_GetDeviceNumber","Int")
-     {
-          VarSetCapacity(ptrName, 1000)
-          DllCall(VM_DLL . "\VBVMR_Output_GetDeviceDescW", "Int", A_Index-1, "Ptr" , ptrDriver , "Ptr", &ptrName, "Ptr", 0, "Int")
-          if ptrDriver = Driver
-               if ptrName Contains %substring%
-                    return ptrName
-     }
-}
-
 VMR_checkParams(){
      return DllCall(VM_DLL . "\VBVMR_IsParametersDirty")
 }
