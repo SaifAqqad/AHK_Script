@@ -12,6 +12,19 @@ TrayIcon := A_ScriptDir . "\Script.ico"
 if (FileExist(TrayIcon)) {
      Menu, Tray, Icon, %TrayIcon%
 }
+OSD_spawn("AHK starting up..")
+Global DefaultMediaApp:=
+Global Output1Name:=
+Global Output1Driver:=
+Global Output2Name:=
+Global Output2Driver:=
+Global Mic:= 
+if (!FileExist("config.ini")) {
+     IniWrite, DefaultMediaApp=""`n, config.ini, settings
+     IniWrite, Output1Name=""`nOutput1Driver=""`nOutput2Name=""`nOutput2Driver=""`nMic=""`n, config.ini, devices
+     editConfig()
+}
+readconfig()
 ;===============================================Global Hotkeys===============================================
 <^<+R::VMR_restart()
 
@@ -27,6 +40,8 @@ Return
 <!<+::#Space 
 
 ^End::ExitApp
+
+>^Insert::editConfig()
 
 *RShift::MuteMic()
 
@@ -69,13 +84,20 @@ $<!<^Volume_Down::showOSD("Gamechat: " . VMR_decGain("Strip[0]",1) ) ;Decreases 
 
 $<!<^Volume_Up::showOSD("Gamechat: " . VMR_incGain("Strip[0]",1)) ;increases Game chat Gain
 
-F7::showOSD("A1: " . VMR_setOutputDevice(0,"hs70"))
+F7::
+VMR_setOutputDevice(0,Output1Name,Output1Driver) 
+showOSD(Output1Name)
+return
 
-F8::showOSD("A1: " . VMR_setOutputDevice(0,"LG HDR"))
+F8::         
+VMR_setOutputDevice(0,Output2Name,Output2Driver)
+showOSD(Output2Name)
+return
 ;=============================================Functions=============================================
 MuteMic(){
-     MuteState := VA_GetMasterMute("AmazonBasics:1")
-     VA_SetMasterMute(!MuteState, "AmazonBasics:1")
+     MuteState := VA_GetMasterMute(Mic)
+     VA_SetMasterMute(!MuteState, Mic)
+     OSD_destroy()
      if (!MuteState){
           showOSD("Microphone muted",,"B10501")
      }else{
@@ -99,6 +121,38 @@ showOSD(txt, OSD_Theme:=-1, OSD_Accent:=-1 ){
           return
      OSD_spawn(txt,OSD_Theme,OSD_Accent)
 }
-runMedia:
-     run, plexamp , C:\Users\%A_UserName%\AppData\Local\Programs\plexamp
-     return
+readconfig(){
+     IniRead, DefaultMediaApp, config.ini, settings, DefaultMediaApp, %A_Space%
+     IniRead, Output1Name, config.ini, devices, Output1Name, %A_Space%
+     IniRead, Output1Driver, config.ini, devices, Output1Driver, %A_Space%
+     IniRead, Output2Name, config.ini, devices, Output2Name, %A_Space%
+     IniRead, Output2Driver, config.ini, devices, Output2Driver, %A_Space%
+     IniRead, Mic, config.ini, devices, Mic, %A_Space%
+     if(!DefaultMediaApp or !Output1Name or !Output1Driver or !Output2Name or !Output2Driver  or !Mic)
+          editConfig()
+}
+editConfig(){
+     showDevicesList()
+     RunWait, notepad.exe config.ini
+     Reload
+}
+showDevicesList(){
+     FileDelete, list.temp
+     outputlist:= VMR_getOutputDevicesList()
+     inputlist:= VMR_getInputDevicesList()
+     FileAppend,[Output Devices]`n, list.temp
+     loop % outputlist.Length()
+     {
+          name:= outputlist[A_Index].Name
+          driver:= outputlist[A_Index].Driver
+          FileAppend,%name% : %driver%`n,list.temp
+     }
+     FileAppend,`n[Input Devices]`n,list.temp
+     loop % inputlist.Length()
+     {
+          name:= inputlist[A_Index].Name
+          driver:= inputlist[A_Index].Driver
+          FileAppend,%name% : %driver%`n,list.temp     
+     }
+     Run, notepad.exe list.temp
+}
