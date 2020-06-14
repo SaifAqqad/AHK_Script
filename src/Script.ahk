@@ -1,15 +1,12 @@
 #NoEnv
-#include <VMR>
-#include <RapidHotkey>
+#Include <VMR>
+#Include <RapidHotkey>
 #Include <OSD>
-OSD_spawn("AHK starting up..")
 SendMode Input
-SetWorkingDir %A_ScriptDir%
 SetNumLockState AlwaysOff
 FileInstall, .\sfx\mute.mp3, mute.mp3 ;Both sfx files are from Discord's sfx zip file https://t.co/AD6jvkePul 
 FileInstall, .\sfx\unmute.mp3, unmute.mp3 ; ^
-TrayIcon := A_ScriptDir . "\Script.ico"
-if (FileExist(TrayIcon)) {
+if (FileExist("Script.ico")) {
      Menu, Tray, Icon, %TrayIcon%
 }
 OSD_spawn("AHK starting up..")
@@ -39,7 +36,7 @@ Return
 
 <!<+::#Space 
 
-^End::ExitApp
+>^End::ExitApp
 
 >^Insert::editConfig()
 
@@ -94,14 +91,17 @@ VMR_setOutputDevice(0,Output2Name,Output2Driver)
 showOSD(Output2Name)
 return
 ;=============================================Functions=============================================
+runMedia:
+     Run, %DefaultMediaApp%,, Hide
+     return
 MuteMic(){
      MuteState := VA_GetMasterMute(Mic)
      VA_SetMasterMute(!MuteState, Mic)
      OSD_destroy()
      if (!MuteState){
-          showOSD("Microphone muted",,"B10501")
+          showOSD("Microphone muted","191919","E13502")
      }else{
-          showOSD("Microphone online",,"21D725")
+          showOSD("Microphone online","191919","0066C1")
      }
      if ( isActiveWinFullscreen() ){
           SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
