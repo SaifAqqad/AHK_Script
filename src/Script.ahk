@@ -7,7 +7,7 @@ SetNumLockState AlwaysOff
 FileInstall, .\sfx\mute.mp3, mute.mp3 ;Both sfx files are from Discord's sfx zip file https://t.co/AD6jvkePul 
 FileInstall, .\sfx\unmute.mp3, unmute.mp3 ; ^
 if (FileExist("Script.ico")) {
-     Menu, Tray, Icon, %TrayIcon%
+     Menu, Tray, Icon, Script.ico
 }
 OSD_spawn("AHK starting up..")
 Global DefaultMediaApp:=
@@ -15,10 +15,9 @@ Global Output1Name:=
 Global Output1Driver:=
 Global Output2Name:=
 Global Output2Driver:=
-Global Mic:= 
 if (!FileExist("config.ini")) {
      IniWrite, DefaultMediaApp=""`n, config.ini, settings
-     IniWrite, Output1Name=""`nOutput1Driver=""`nOutput2Name=""`nOutput2Driver=""`nMic=""`n, config.ini, devices
+     IniWrite, Output1Name=""`nOutput1Driver=""`nOutput2Name=""`nOutput2Driver=""`n, config.ini, devices
      editConfig()
 }
 readconfig()
@@ -39,8 +38,6 @@ Return
 >^End::ExitApp
 
 >^Insert::editConfig()
-
-*RShift::MuteMic()
 
 #if, (isActiveWinFullscreen())
 CapsLock::Return
@@ -94,20 +91,6 @@ return
 runMedia:
      Run, %DefaultMediaApp%,, Hide
      return
-MuteMic(){
-     MuteState := VA_GetMasterMute(Mic)
-     VA_SetMasterMute(!MuteState, Mic)
-     OSD_destroy()
-     if (!MuteState){
-          showOSD("Microphone muted","191919","E13502")
-     }else{
-          showOSD("Microphone online","191919","0066C1")
-     }
-     if ( isActiveWinFullscreen() ){
-          SoundPlay, % !MuteState ?  "mute.mp3" :  "unmute.mp3"
-     }
-     Return
-}
 isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      winID := WinExist( "A" )
      if ( !winID )
@@ -127,8 +110,7 @@ readconfig(){
      IniRead, Output1Driver, config.ini, devices, Output1Driver, %A_Space%
      IniRead, Output2Name, config.ini, devices, Output2Name, %A_Space%
      IniRead, Output2Driver, config.ini, devices, Output2Driver, %A_Space%
-     IniRead, Mic, config.ini, devices, Mic, %A_Space%
-     if(!DefaultMediaApp or !Output1Name or !Output1Driver or !Output2Name or !Output2Driver  or !Mic)
+     if(!DefaultMediaApp or !Output1Name or !Output1Driver or !Output2Name or !Output2Driver)
           editConfig()
 }
 editConfig(){
