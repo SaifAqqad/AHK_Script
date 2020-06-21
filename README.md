@@ -9,7 +9,7 @@
 </p>
 
 # [Script.ahk](./src/Script.ahk)
-  ###  My personal AHK script With VoiceMeeter hotkeys.
+  ###  My personal hotkeys script With VoiceMeeter hotkeys.
 
 # [VMR.ahk](./src/Lib/VMR.ahk)
   ### AHK Wrapper for <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">Voicemeeter Remote API</a>.
