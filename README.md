@@ -16,8 +16,6 @@
   ![VoiceMeeterRemote Demo](https://user-images.githubusercontent.com/47293197/68070055-bfea4580-fd60-11e9-825e-3ae075367f5a.gif)
 ### [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/c5dbb3c96ec036125261e28b62f3ade15329bf9b/src/Script.ahk#L38)
 
-# [VMR_launcher.ahk](./src/other/VMR_launcher)
-  ### CLI for [VMR.ahk](./src/Lib/VMR.ahk) 
 # [OSD.ahk](./src/Lib/OSD.ahk)
   ### A simple OSD that follows the user's system theme.
   ![GUIlight demo](https://user-images.githubusercontent.com/47293197/68298049-55067a80-0090-11ea-877c-9f2964873c96.gif) ![GUIdark Demo](https://user-images.githubusercontent.com/47293197/68298037-50da5d00-0090-11ea-854b-54731a5ffcd8.gif)
