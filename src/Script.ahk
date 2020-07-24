@@ -47,6 +47,11 @@ F6::
 WinKill, ahk_exe speedtest.exe
 run, speedtest
 return
+
+;cycle through windows using mouse wheel
+MButton::AltTabMenu
+WheelDown::AltTab
+WheelUp::ShiftAltTab
 ;===============================================Media Hotkeys===============================================
 ~Media_Play_Pause::RapidHotkey("runMedia", 2,,1)
 
