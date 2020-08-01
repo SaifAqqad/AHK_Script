@@ -3,12 +3,14 @@
 ;*****************************************************************************************************************;
 Global VM_Path := "C:\Program Files\VB\Voicemeeter\"
 Global VM_DLL := "VoicemeeterRemote"
+Global OutputDevices :=
+Global InputDevices :=
 VMR_login()
 
 /*
      VMR_login()
      loads VoiceMeeter's Library and calls VM's login function 
-     if '#include <VMR>' is used, this function will be called implicitly, otherwise it needs to be called at script startup
+     if '#include <VMR>' is not used, this function needs to be called at startup
 */
 VMR_login(){
      if(A_Is64bitOS){
@@ -18,6 +20,8 @@ VMR_login(){
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . VM_DLL . ".dll")
      DllCall(VM_DLL . "\VBVMR_Login")
      SetTimer, VMR_checkParams, 20 ;calls VMR_checkParams() periodically
+     OutputDevices := VMR_getOutputDevicesList()
+     InputDevices:= VMR_getInputDevicesList()
      OnExit("VMR_logout")
 }
 
@@ -128,7 +132,23 @@ VMR_setOutputDevice(AudioBus, DeviceName, DeviceDriver := "wdm"){
           return -4
      if DeviceDriver not in wdm,mme,ks,asio
           return -5
-     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Bus[" . AudioBus . "].Device." . DeviceDriver , "WStr" , DeviceName , "Int") 
+     device := VMR_getOutputDevice(DeviceName,DeviceDriver)
+     errLevel := DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Bus[" . AudioBus . "].Device." . DeviceDriver , "WStr" , device.Name , "Int") 
+     return errLevel<0 ? errLevel : device.Name
+}
+
+/*
+     VMR_getOutputDevice(Substring, DeviceDriver)
+     returns the full device name from a substring
+*/
+VMR_getOutputDevice(Substring, DeviceDriver){
+     loop % OutputDevices.Length()
+     {
+          if (OutputDevices[A_Index].Driver = DeviceDriver){
+               if (InStr(OutputDevices[A_Index].Name, Substring)>0)
+                    return OutputDevices[A_Index]
+          }
+     }
 }
 
 /*
@@ -164,7 +184,23 @@ VMR_setInputDevice(AudioStrip, DeviceName, DeviceDriver := "wdm"){
           return -4
      if DeviceDriver not in wdm,mme,ks,asio
           return -5
-     return DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Strip[" . AudioStrip . "].Device." . DeviceDriver , "WStr" , DeviceName , "Int") 
+     device := VMR_getInputDevice(DeviceName,DeviceDriver)
+     errLevel := DllCall(VM_DLL . "\VBVMR_SetParameterStringW", "AStr","Strip[" . AudioStrip . "].Device." . DeviceDriver , "WStr" , device.Name , "Int") 
+     return errLevel<0 ? errLevel : device.Name
+}
+
+/*
+     VMR_getInputDevice(Substring, DeviceDriver)
+     returns the full device name from a substring
+*/
+VMR_getInputDevice(Substring, DeviceDriver){
+     loop % InputDevices.Length()
+     {
+          if (InputDevices[A_Index].Driver = DeviceDriver){
+               if (InStr(InputDevices[A_Index].Name, Substring)>0) 
+                    return InputDevices[A_Index]
+          }
+     }
 }
 
 /*
