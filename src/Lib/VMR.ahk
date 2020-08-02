@@ -19,7 +19,7 @@ VMR_login(){
      }
      VBVMRDLL := DllCall("LoadLibrary", "str", VM_Path . VM_DLL . ".dll")
      DllCall(VM_DLL . "\VBVMR_Login")
-     SetTimer, VMR_checkParams, 20 ;calls VMR_checkParams() periodically
+     SetTimer, checkParams, 20 ;calls checkParams() periodically
      OutputDevices := VMR_getOutputDevicesList()
      InputDevices:= VMR_getInputDevicesList()
      OnExit("VMR_logout")
@@ -36,10 +36,12 @@ VMR_logout(){
 
 /*
      VMR_restart() 
-     Restarts VoiceMeeter's Audio Engine  
+     Restarts VoiceMeeter's Audio Engine and refetches devices lists
 */
 VMR_restart(){
-     return DllCall(VM_DLL . "\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
+     DllCall(VM_DLL . "\VBVMR_SetParameterFloat","AStr","Command.Restart","Float","1.0f", "Int")
+     OutputDevices := VMR_getOutputDevicesList()
+     InputDevices:= VMR_getInputDevicesList()
 }
 
 /*
@@ -107,8 +109,8 @@ VMR_getMuteState(AudioBus:="Bus[0]"){
 */
 VMR_muteToggle(AudioBus:="Bus[0]"){
      local MuteState := !VMR_getMuteState(AudioBus)
-     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , MuteState, "Int")    
-     return MuteState
+     errLevel := DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , MuteState, "Int")    
+     return errLevel<0? errLevel : MuteState
 }
 
 /*
@@ -116,8 +118,7 @@ VMR_muteToggle(AudioBus:="Bus[0]"){
      Sets mute state for AudioBus; MuteState is a boolean value (0/1)
 */
 VMR_setMuteState(AudioBus:="Bus[0]", MuteState:=1){
-     DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , MuteState, "Int")
-     return MuteState
+     return DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Mute" , "Float" , MuteState, "Int")
 }
 
 /*
@@ -144,9 +145,8 @@ VMR_setOutputDevice(AudioBus, DeviceName, DeviceDriver := "wdm"){
 VMR_getOutputDevice(Substring, DeviceDriver){
      loop % OutputDevices.Length()
      {
-          if (OutputDevices[A_Index].Driver = DeviceDriver){
-               if (InStr(OutputDevices[A_Index].Name, Substring)>0)
-                    return OutputDevices[A_Index]
+          if (OutputDevices[A_Index].Driver = DeviceDriver && InStr(OutputDevices[A_Index].Name, Substring)>0){
+               return OutputDevices[A_Index]
           }
      }
 }
@@ -196,9 +196,8 @@ VMR_setInputDevice(AudioStrip, DeviceName, DeviceDriver := "wdm"){
 VMR_getInputDevice(Substring, DeviceDriver){
      loop % InputDevices.Length()
      {
-          if (InputDevices[A_Index].Driver = DeviceDriver){
-               if (InStr(InputDevices[A_Index].Name, Substring)>0) 
-                    return InputDevices[A_Index]
+          if (InputDevices[A_Index].Driver = DeviceDriver && InStr(InputDevices[A_Index].Name, Substring)>0){
+               return InputDevices[A_Index]
           }
      }
 }
@@ -223,6 +222,6 @@ VMR_getInputDevicesList(){
      }
      return DeviceList
 }
-VMR_checkParams(){
+checkParams(){
      return DllCall(VM_DLL . "\VBVMR_IsParametersDirty")
 }
