@@ -54,7 +54,7 @@ VMR_getCurrentGain(AudioBus:="Bus[0]", returnPercentage:=0){
      NumPut(0.0, CurrentGain, 0, "Float")
      DllCall(VM_DLL . "\VBVMR_GetParameterFloat", "AStr" , AudioBus . ".Gain" , "Ptr" , &CurrentGain, "Int")
      CurrentGain := NumGet(CurrentGain, 0, "Float")
-     return (returnPercentage? CurrentGain/0.6+100 . "%" : CurrentGain)
+     return (returnPercentage? dB2Scalar(Gain, -60, 0) . "%"  : CurrentGain)
 }
 
 /*
@@ -63,10 +63,10 @@ VMR_getCurrentGain(AudioBus:="Bus[0]", returnPercentage:=0){
 */
 VMR_incGain(AudioBus:="Bus[0]", returnPercentage:=0){
      local Gain := VMR_getCurrentGain(AudioBus)
-     Gain := ( Gain != 0.0 ? Gain+2 : 0.0)
+     Gain := ( Gain != 12.0 ? Gain+1.2 : 12.0)
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return (returnPercentage? Gain/0.6+100 . "%" : Gain . "dB" )
+     return (returnPercentage? dB2Scalar(Gain, -60, 0) . "%" : Gain . "dB" )
 }
 
 /*
@@ -75,11 +75,11 @@ VMR_incGain(AudioBus:="Bus[0]", returnPercentage:=0){
 */
 VMR_decGain(AudioBus:="Bus[0]", returnPercentage:=0){
      local Gain := VMR_getCurrentGain(AudioBus)
-     Gain := ( Gain != -60.0 ? Gain-2 : -60.0 )
+     Gain := ( Gain != -60.0 ? Gain-1.2 : -60.0 )
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return (returnPercentage? Gain/0.6+100 . "%" : Gain . "dB" )
-}
+     return (returnPercentage? dB2Scalar(Gain, -60, 0) . "%" : Gain . "dB" )
+} ;Gain/0.6+100 . "%" 
 
 /*
      VMR_setGain(AudioBus, Gain, returnPercentage) 
@@ -88,7 +88,7 @@ VMR_decGain(AudioBus:="Bus[0]", returnPercentage:=0){
 VMR_setGain(AudioBus:="Bus[0]", Gain:=0.0, returnPercentage:=0){
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
-     return (returnPercentage? Gain/0.6+100 . "%" : Gain . "dB" )
+     return (returnPercentage? dB2Scalar(Gain, -60, 0) . "%"  : Gain . "dB" )
 }
 
 /*
@@ -225,3 +225,7 @@ VMR_getInputDevicesList(){
 checkParams(){
      return DllCall(VM_DLL . "\VBVMR_IsParametersDirty")
 }
+dB2Scalar(dB, min_dB, max_dB) {
+    min_s := 10**(min_dB/20), max_s := 10**(max_dB/20)
+    return ((10**(dB/20))-min_s)/(max_s-min_s)*100
+} 
