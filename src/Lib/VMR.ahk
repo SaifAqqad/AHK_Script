@@ -79,7 +79,7 @@ VMR_decGain(AudioBus:="Bus[0]", returnPercentage:=0){
      DllCall(VM_DLL . "\VBVMR_SetParameterFloat", "AStr" , AudioBus . ".Gain" , "Float" , Gain , "Int")
      SetFormat, FloatFast, 4.1
      return (returnPercentage? dB2Scalar(Gain, -60, 0) . "%" : Gain . "dB" )
-} ;Gain/0.6+100 . "%" 
+}
 
 /*
      VMR_setGain(AudioBus, Gain, returnPercentage) 

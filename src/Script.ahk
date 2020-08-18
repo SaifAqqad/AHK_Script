@@ -4,8 +4,6 @@
 #Include <OSD>
 SendMode Input
 SetNumLockState AlwaysOff
-FileInstall, .\sfx\mute.mp3, mute.mp3 ;Both sfx files are from Discord's sfx zip file https://t.co/AD6jvkePul 
-FileInstall, .\sfx\unmute.mp3, unmute.mp3 ; ^
 if (FileExist("Script.ico")) {
      Menu, Tray, Icon, Script.ico
 }
@@ -49,9 +47,8 @@ run, speedtest
 return
 
 ;cycle through windows using mouse wheel
-MButton::AltTabMenu
-WheelDown::AltTab
-WheelUp::ShiftAltTab
+~XButton1 & WheelDown::AltTab
+~XButton1 & WheelUp::ShiftAltTab
 ;===============================================Media Hotkeys===============================================
 ~Media_Play_Pause::RapidHotkey("runMedia", 2,,1)
 
@@ -83,15 +80,9 @@ $<!<^Volume_Down::showOSD("Gamechat: " . VMR_decGain("Strip[0]",1) ) ;Decreases 
 
 $<!<^Volume_Up::showOSD("Gamechat: " . VMR_incGain("Strip[0]",1)) ;increases Game chat Gain
 
-F7::
-VMR_setOutputDevice(0,Output1Name,Output1Driver) 
-showOSD(Output1Name)
-return
+F7::showOSD(VMR_setOutputDevice(0,Output1Name,Output1Driver))
 
-F8::         
-VMR_setOutputDevice(0,Output2Name,Output2Driver)
-showOSD(Output2Name)
-return
+F8::showOSD(VMR_setOutputDevice(0,Output2Name,Output2Driver))
 ;=============================================Functions=============================================
 runMedia:
      Run, %DefaultMediaApp%,, Hide
@@ -124,22 +115,22 @@ editConfig(){
      Reload
 }
 showDevicesList(){
-     FileDelete, list.temp
+     FileDelete, list.tmp
      outputlist:= VMR_getOutputDevicesList()
      inputlist:= VMR_getInputDevicesList()
-     FileAppend,[Output Devices]`n, list.temp
+     FileAppend,[Output Devices]`n, list.tmp
      loop % outputlist.Length()
      {
           name:= outputlist[A_Index].Name
           driver:= outputlist[A_Index].Driver
-          FileAppend,%name% : %driver%`n,list.temp
+          FileAppend,%name% : %driver%`n,list.tmp
      }
-     FileAppend,`n[Input Devices]`n,list.temp
+     FileAppend,`n[Input Devices]`n,list.tmp
      loop % inputlist.Length()
      {
           name:= inputlist[A_Index].Name
           driver:= inputlist[A_Index].Driver
-          FileAppend,%name% : %driver%`n,list.temp     
+          FileAppend,%name% : %driver%`n,list.tmp     
      }
-     Run, notepad.exe list.temp
+     Run, notepad.exe list.tmp
 }

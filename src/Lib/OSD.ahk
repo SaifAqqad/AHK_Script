@@ -27,7 +27,7 @@ OSD_spawn(txt, OSD_Theme:=-1, OSD_Accent:=-1 ){
 }
 OSD_getSysTheme(){
     RegRead, OSD_sysTheme, HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize, SystemUsesLightTheme 
-    Return (OSD_sysTheme ? "E6E6E6" : "191919") ;OSD_sysTheme:  1 --> light theme, 0 --> Dark theme
+    Return (OSD_sysTheme ? 0xE6E6E6 : 0x191919) ;OSD_sysTheme:  1 --> light theme, 0 --> Dark theme
 }
 OSD_getSysAccent(){
     RegRead, OSD_sysAccent, HKCU\SOFTWARE\Microsoft\Windows\DWM, ColorizationColor 
