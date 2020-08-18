@@ -14,13 +14,15 @@ OSD_spawn(txt, OSD_Theme:=-1, OSD_Accent:=-1 ){
         Gui, Color, %OSD_Theme%, %OSD_Accent%
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border
         WinSet, Transparent, 230, ahk_class AutoHotkeyGUI
-        Gui, Font, s11, Segoe UI
-        Gui, Add, Text, c%OSD_Accent% vOSD_txt W165 Center, %txt%
+        Gui, Font, s11 w500 c%OSD_Accent%, Segoe UI
+        Gui, Add, Text, vOSD_txt W165 Center, %txt%
         SysGet, MonitorWorkArea, MonitorWorkArea, 0
         OSD_yPos:= MonitorWorkAreaBottom * 0.95
         Gui, Show, AutoSize NoActivate xCenter y%OSD_yPos%
         OSD_state:= 1
     }else{
+        Gui, Font, s11 w500 c%OSD_Accent%
+        GuiControl, Font, OSD_txt
         GuiControl, Text, OSD_txt, %txt% 
     }
     SetTimer, OSD_destroy, 700
