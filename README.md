@@ -14,7 +14,7 @@
 # [VMR.ahk](./src/Lib/VMR.ahk)
   ### AHK Wrapper for <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">Voicemeeter Remote API</a>.
   ![VoiceMeeterRemote Demo](https://user-images.githubusercontent.com/47293197/68070055-bfea4580-fd60-11e9-825e-3ae075367f5a.gif)
-### [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/c5dbb3c96ec036125261e28b62f3ade15329bf9b/src/Script.ahk#L38)
+### [**Examples**](https://github.com/SaifAqqad/AHK_Script/blob/2415d8766c8e378cd3944f45713e8d11ea60dfb3/src/Script.ahk#L55)
 
 # [OSD.ahk](./src/Lib/OSD.ahk)
   ### A simple OSD that follows the user's system theme.
