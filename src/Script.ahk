@@ -8,11 +8,9 @@ if (FileExist("Script.ico")) {
      Menu, Tray, Icon, Script.ico
 }
 OSD_spawn("AHK starting up..")
-Global DefaultMediaApp:=
-Global Output1Name:=
-Global Output1Driver:=
-Global Output2Name:=
-Global Output2Driver:=
+Global DefaultMediaApp, Output1Name, Output1Driver, Output2Name, Output2Driver
+Global voicemeeter:= new VMR()
+voicemeeter.login()
 if (!FileExist("config.ini")) {
      IniWrite, DefaultMediaApp=""`n, config.ini, settings
      IniWrite, Output1Name=""`nOutput1Driver=""`nOutput2Name=""`nOutput2Driver=""`n, config.ini, devices
@@ -20,15 +18,15 @@ if (!FileExist("config.ini")) {
 }
 readconfig()
 ;===============================================Global Hotkeys===============================================
-<^<+R::VMR_restart()
+<^<+R::voicemeeter.restart()
 
 #Space::SendInput {CtrlDown}{F3}
 
 !Space::
-clipboard = 
-SendInput {CTRLDOWN}c{CTRLUP}
-ClipWait, 1
-Run http://www.google.com/search?hl=en&q=%clipboard%,, UseErrorLevel
+     clipboard = 
+     SendInput {CTRLDOWN}c{CTRLUP}
+     ClipWait, 1
+     Run http://www.google.com/search?hl=en&q=%clipboard%,, UseErrorLevel
 Return 
 
 <!<+::#Space 
@@ -40,10 +38,10 @@ Return
 #if, (isActiveWinFullscreen())
 CapsLock::Return
 #if
-
+     
 F6::
-WinKill, ahk_exe speedtest.exe
-run, speedtest
+     WinKill, ahk_exe speedtest.exe
+     run, speedtest
 return
 
 ;cycle through windows using mouse wheel
@@ -52,48 +50,56 @@ return
 ;===============================================Media Hotkeys===============================================
 ~Media_Play_Pause::RapidHotkey("runMedia", 2,,1)
 
-Volume_Up::showOSD("Gain: " . VMR_incGain(,1) ) ;Increase Bus[0] gain
+Volume_Up::
+     voicemeeter.bus[1].incGain()
+     showOSD("Gain: " . voicemeeter.bus[1].getGain() . " dB" )
+return
 
-Volume_Down::showOSD("Gain: " . VMR_decGain(,1)) ;Decrease Bus[0] gain
+Volume_Down::
+     voicemeeter.bus[1].decGain()
+     showOSD("Gain: " . voicemeeter.bus[1].getGain() . " dB" )
+return
 
-$<^Volume_Down:: ;Mutes Bus[0]
-Mute:= VMR_muteToggle()
-showOSD((Mute ? "Global Audio Muted" : "Global Audio Unmuted"))
-KeyWait, LControl 
+$<^Volume_Down::
+     voicemeeter.bus[1].toggleMute()
+     showOSD(voicemeeter.bus[1].getMute() ? "Global Audio Muted" : "Global Audio Unmuted")
+     KeyWait, LControl 
 Return
 
-$<^<+Volume_Down:: ;Mutes System Audio 
-Mute:= VMR_muteToggle("Strip[3]")
-showOSD( (Mute ? "System Audio Muted" : "System Audio Unmuted") )
-KeyWait, LControl 
+$<^<+Volume_Down::
+     voicemeeter.strip[4].toggleMute()
+     showOSD(voicemeeter.strip[4].getMute() ? "Global Audio Muted" : "Global Audio Unmuted")
+     KeyWait, LControl 
 Return
 
-$#Volume_Down::showOSD("Media: " . VMR_decGain("Strip[4]",1)) ;Decreases Media Audio Gain
+$#Volume_Down::
+     voicemeeter.strip[5].decGain()
+     showOSD("Gain: " . voicemeeter.strip[5].getGain() . " dB" )
+return
 
-$#Volume_Up::showOSD("Media: " . VMR_incGain("Strip[4]",1)) ;increases Media Audio Gain
+$#Volume_Up::
+     voicemeeter.strip[5].incGain()
+     showOSD("Gain: " . voicemeeter.strip[5].getGain() . " dB" )
+return
 
-$<!Volume_Down::showOSD("Microphone: " . VMR_decGain("Strip[1]")) ;Decreases Microphone Gain
+F7::
+     voicemeeter.bus[1].setDevice(Output1Name,Output1Driver)
+return
 
-$<!Volume_Up::showOSD("Microphone: " . VMR_incGain("Strip[1]") ) ;increases Microphone Gain
-
-$<!<^Volume_Down::showOSD("Gamechat: " . VMR_decGain("Strip[0]",1) ) ;Decreases Game chat Gain
-
-$<!<^Volume_Up::showOSD("Gamechat: " . VMR_incGain("Strip[0]",1)) ;increases Game chat Gain
-
-F7::showOSD(VMR_setOutputDevice(0,Output1Name,Output1Driver))
-
-F8::showOSD(VMR_setOutputDevice(0,Output2Name,Output2Driver))
+F8::
+     voicemeeter.bus[1].setDevice(Output2Name,Output2Driver)
+return
 ;=============================================Functions=============================================
 runMedia:
      Run, %DefaultMediaApp%,, Hide
-     return
+return
 isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
      winID := WinExist( "A" )
      if ( !winID )
           Return false
      WinGet style, Style, ahk_id %WinID%
      WinGetPos ,,,winW,winH, %winTitle%
-     return !((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth)
+return !((style & 0x20800000) or WinActive("ahk_class Progman") or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth)
 }
 showOSD(txt, OSD_Theme:=-1, OSD_Accent:=-1 ){
      if (WinActive("ahk_exe ModernWarfare.exe") or WinActive("ahk_exe VALORANT-Win64-Shipping.exe"))
@@ -116,8 +122,8 @@ editConfig(){
 }
 showDevicesList(){
      FileDelete, list.tmp
-     outputlist:= VMR_getOutputDevicesList()
-     inputlist:= VMR_getInputDevicesList()
+     outputlist:= voicemeeter.VM_BUS.devices()
+     inputlist:= voicemeeter.VM_STRIP.devices()
      FileAppend,[Output Devices]`n, list.tmp
      loop % outputlist.Length()
      {
@@ -130,7 +136,7 @@ showDevicesList(){
      {
           name:= inputlist[A_Index].Name
           driver:= inputlist[A_Index].Driver
-          FileAppend,%name% : %driver%`n,list.tmp     
+          FileAppend,%name% : %driver%`n,list.tmp 
      }
      Run, notepad.exe list.tmp
 }
