@@ -1,5 +1,5 @@
 #NoEnv
-#Include <VMR>
+#Include %A_ScriptDir%\Lib\VMR.ahk\VMR.ahk
 #Include <RapidHotkey>
 #Include <OSD>
 SendMode Input
@@ -52,33 +52,39 @@ return
 
 Volume_Up::
      voicemeeter.bus[1].incGain()
+     Sleep, 30
      showOSD("Gain: " . voicemeeter.bus[1].getGain() . " dB" )
 return
 
 Volume_Down::
      voicemeeter.bus[1].decGain()
+     Sleep, 30
      showOSD("Gain: " . voicemeeter.bus[1].getGain() . " dB" )
 return
 
 $<^Volume_Down::
      voicemeeter.bus[1].toggleMute()
+     Sleep, 30
      showOSD(voicemeeter.bus[1].getMute() ? "Global Audio Muted" : "Global Audio Unmuted")
      KeyWait, LControl 
 Return
 
 $<^<+Volume_Down::
      voicemeeter.strip[4].toggleMute()
+     Sleep, 30
      showOSD(voicemeeter.strip[4].getMute() ? "Global Audio Muted" : "Global Audio Unmuted")
      KeyWait, LControl 
 Return
 
 $#Volume_Down::
      voicemeeter.strip[5].decGain()
+     Sleep, 30
      showOSD("Gain: " . voicemeeter.strip[5].getGain() . " dB" )
 return
 
 $#Volume_Up::
      voicemeeter.strip[5].incGain()
+     Sleep, 30
      showOSD("Gain: " . voicemeeter.strip[5].getGain() . " dB" )
 return
 
