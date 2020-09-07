@@ -50,43 +50,23 @@ return
 ;===============================================Media Hotkeys===============================================
 ~Media_Play_Pause::RapidHotkey("runMedia", 2,,1)
 
-Volume_Up::
-     voicemeeter.bus[1].incGain()
-     Sleep, 30
-     showOSD("Gain: " . voicemeeter.bus[1].getGain() . " dB" )
-return
+Volume_Up::showOSD("Gain: " . voicemeeter.bus[1].incGain() . " dB" )
 
-Volume_Down::
-     voicemeeter.bus[1].decGain()
-     Sleep, 30
-     showOSD("Gain: " . voicemeeter.bus[1].getGain() . " dB" )
-return
+Volume_Down::showOSD("Gain: " . voicemeeter.bus[1].decGain() . " dB" )
 
 $<^Volume_Down::
-     voicemeeter.bus[1].toggleMute()
-     Sleep, 30
-     showOSD(voicemeeter.bus[1].getMute() ? "Global Audio Muted" : "Global Audio Unmuted")
+     showOSD(voicemeeter.bus[1].toggleMute() ? "Global Audio Muted" : "Global Audio Unmuted")
      KeyWait, LControl 
 Return
 
 $<^<+Volume_Down::
-     voicemeeter.strip[4].toggleMute()
-     Sleep, 30
-     showOSD(voicemeeter.strip[4].getMute() ? "Global Audio Muted" : "Global Audio Unmuted")
+     showOSD(voicemeeter.strip[4].toggleMute() ? "Global Audio Muted" : "Global Audio Unmuted")
      KeyWait, LControl 
 Return
 
-$#Volume_Down::
-     voicemeeter.strip[5].decGain()
-     Sleep, 30
-     showOSD("Gain: " . voicemeeter.strip[5].getGain() . " dB" )
-return
+$#Volume_Down::showOSD("Gain: " . voicemeeter.strip[5].decGain() . " dB" )
 
-$#Volume_Up::
-     voicemeeter.strip[5].incGain()
-     Sleep, 30
-     showOSD("Gain: " . voicemeeter.strip[5].getGain() . " dB" )
-return
+$#Volume_Up::showOSD("Gain: " . voicemeeter.strip[5].incGain() . " dB" )
 
 F7::
      voicemeeter.bus[1].setDevice(Output1Name,Output1Driver)
