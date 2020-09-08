@@ -18,7 +18,7 @@ if (!FileExist("config.ini")) {
 }
 readconfig()
 ;===============================================Global Hotkeys===============================================
-<^<+R::voicemeeter.restart()
+<^<+R::voicemeeter.command.restart()
 
 #Space::SendInput {CtrlDown}{F3}
 
