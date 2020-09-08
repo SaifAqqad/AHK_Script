@@ -11,7 +11,7 @@
 # [Script.ahk](./src/Script.ahk)
   ###  My personal hotkeys script With VoiceMeeter hotkeys.
 
-# [VMR.ahk](https://github.com/SaifAqqad/VMR.ahk/blob/master/VMR.ahk)
+# [VMR.ahk](https://github.com/SaifAqqad/VMR.ahk/)
   ### AHK Wrapper class for <a style="text-decoration:none" href="https://www.vb-audio.com/Services/developers.htm">Voicemeeter Remote API</a>.
   ![VoiceMeeterRemote Demo](https://user-images.githubusercontent.com/47293197/68070055-bfea4580-fd60-11e9-825e-3ae075367f5a.gif)
 ### [**Examples**](https://github.com/SaifAqqad/VMR.ahk/blob/master/example.ahk)
