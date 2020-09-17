@@ -10,7 +10,9 @@ Global OSD_sysTheme:=
 Global OSD_sysAccent:=
 getSysTheme()
 
-OSD_spawn(txt, OSD_Theme:=-1, OSD_Accent:=-1 ){
+OSD_spawn(txt, OSD_Theme:=-1, OSD_Accent:=-1, exclude_fullscreen:=0){
+    if (exclude_fullscreen && isActiveWinFullscreen())
+        return
     OSD_Theme:= ( OSD_Theme = -1 ? OSD_sysTheme : OSD_Theme  )
     OSD_Accent:= ( OSD_Accent = -1 ? OSD_sysAccent : OSD_Accent )
     if (OSD_state = 0){
@@ -44,4 +46,13 @@ getSysTheme(){
     reg := reg+0
     StringRight, reg, reg, 6
     OSD_sysAccent:=reg
+}
+isActiveWinFullscreen(){ ;returns true if the active window is fullscreen
+    winID := WinExist( "A" )
+    if ( !winID )
+        Return false
+    WinGet style, Style, ahk_id %WinID%
+    WinGetPos ,,,winW,winH, %winTitle%
+    return !((style & 0x20800000) or WinActive("ahk_class Progman") 
+    or WinActive("ahk_class WorkerW") or winH < A_ScreenHeight or winW < A_ScreenWidth)
 }
