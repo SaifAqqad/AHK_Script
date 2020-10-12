@@ -35,6 +35,14 @@ Return
 
 >^Insert::editConfig()
 
+^+B::
+     ClipWait
+     SplitPath, Clipboard,,,,fName
+     fName:= StrReplace(fName, "%20", A_Space)
+     if Clipboard contains file:// 
+          FileCreateShortcut, C:\Program Files\Mozilla Firefox\firefox.exe, %A_Desktop%\%fName%.lnk,, %Clipboard%
+return
+
 #if, (isActiveWinFullscreen())
 CapsLock::Return
 #if
@@ -57,28 +65,46 @@ Alt & WheelUp::SendInput, {PgUp}
 ~Media_Play_Pause::RapidHotkey("runMedia", 2,,1)
 ;--------------------Voicemeeter-------------------------
 ; global audio
-Volume_Up::OSD_spawn("Global gain: " . globalAudio.incGain() . " dB",,, 1)
+Volume_Up::
+gain:= globalAudio.getPercentage(++globalAudio.gain)
+OSD_spawn("Global gain: " . gain . "%",,, 1, gain)
+return
 
-Volume_Down::OSD_spawn("Global gain: " . globalAudio.decGain() . " dB",,, 1)
+Volume_Down::
+gain:= globalAudio.getPercentage(--globalAudio.gain)
+OSD_spawn("Global gain: " . gain . "%",,, 1, gain)
+return
 
-<^M::OSD_spawn("Global Audio " . (globalAudio.toggleMute()? "muted" : "unmuted"),,, 1)
+<^M::OSD_spawn("Global Audio " . ((globalAudio.mute:=-1)? "muted" : "unmuted"),,, 1)
 
-!1::OSD_spawn("A1: " . globalAudio.setDevice(Output1Name,Output1Driver),,, 1)
+!1::OSD_spawn("A1: " . globalAudio.device[Output1Driver]:=Output1Name,,, 1)
 
-!2::OSD_spawn("A1: " . globalAudio.setDevice(Output2Name,Output2Driver),,, 1)
+!2::OSD_spawn("A1: " . globalAudio.device[Output2Driver]:=Output2Name,,, 1)
 ;---------------------------------------
 ; media audio
-!Volume_Up::OSD_spawn(mediaAudio.getParameter("Label") . ":" . mediaAudio.incGain() . " dB",,, 1)
+!Volume_Up::
+gain:= mediaAudio.getPercentage(++mediaAudio.gain)
+OSD_spawn(mediaAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+return
 
-!Volume_Down::OSD_spawn(mediaAudio.getParameter("Label") . ":" . mediaAudio.decGain() . " dB",,, 1)
+!Volume_Down::
+gain:= mediaAudio.getPercentage(--mediaAudio.gain)
+OSD_spawn(mediaAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+return
 
-<!M::OSD_spawn(mediaAudio.getParameter("Label") . (mediaAudio.toggleMute()? " muted" : " unmuted"),,, 1)
+<!M::OSD_spawn(mediaAudio.getParameter("Label") . ((mediaAudio.mute:=-1)? " muted" : " unmuted"),,, 1)
 ;---------------------------------------
 ; mic audio
 #If, (GetKeyState("Alt"))
-A & Volume_Up::OSD_spawn(micInput.getParameter("Label") . ":" . micInput.incGain() . " dB",,, 1)
+A & Volume_Up::
+gain:= micInput.getPercentage(++micInput.gain)
+OSD_spawn(micInput.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+return
 
-A & Volume_Down::OSD_spawn(micInput.getParameter("Label") . ":" . micInput.decGain() . " dB",,, 1)
+A & Volume_Down::
+gain:= micInput.getPercentage(--micInput.gain)
+OSD_spawn(micInput.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+return
 #If
 
 !F1::
@@ -93,22 +119,30 @@ return
 ;---------------------------------------
 ; chat audio
 #If, (GetKeyState("Alt"))
-Q & Volume_Up::OSD_spawn(chatAudio.getParameter("Label") . ":" . chatAudio.incGain() . " dB",,, 1)
+Q & Volume_Up::
+gain:= chatAudio.getPercentage(++chatAudio.gain)
+OSD_spawn(chatAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+return
 
-Q & Volume_Down::OSD_spawn(chatAudio.getParameter("Label") . ":" . chatAudio.decGain() . " dB",,, 1)
+Q & Volume_Down::
+gain:= chatAudio.getPercentage(--chatAudio.gain)
+OSD_spawn(chatAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+return
 #If
 
-!`::OSD_spawn(chatAudio.getParameter("Label") . (chatAudio.toggleMute()? " muted" : " unmuted"),,, 1)
+!`::OSD_spawn(chatAudio.getParameter("Label") . ((chatAudio.mute:=-1)? " muted" : " unmuted"),,, 1)
 ;---------------------------------------
 ; recorder hotkeys
 <!R::
+     if(voicemeeter.recorder.record)
+          return
      voicemeeter.recorder.armStrips(1)
-     voicemeeter.recorder.record(1)
+     voicemeeter.recorder.record:=1
      OSD_spawn("Recording started",,, 1)
 return
 
 <!S::
-     voicemeeter.recorder.stop(1)
+     voicemeeter.recorder.stop:=1
      voicemeeter.command.eject()
      OSD_spawn("Recording stopped",,, 1)
 return
