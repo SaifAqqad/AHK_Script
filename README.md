@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="250" height="80" align="center" src="https://www.autohotkey.com/assets/images/ahk-logo-no-text241x78-160.png">
+  <img width="250" height="80" align="center" src="https://www.autohotkey.com/static/ahk_logo_no_text.svg">
 </p>
 <h1 align="center">
   AHK_Script
