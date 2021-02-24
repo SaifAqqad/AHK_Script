@@ -11,6 +11,7 @@ OSD_spawn("AHK starting up..")
 Global DefaultMediaApp, Output1Name, Output1Driver, Output2Name, Output2Driver, voicemeeter:= new VMR()
 voicemeeter.login()
 globalAudio:= voicemeeter.bus[1], mediaAudio:= voicemeeter.strip[5], micInput:= voicemeeter.strip[2], chatAudio:= voicemeeter.strip[1]
+globalAudio.gain_limit:= 0.0, micInput.gain_limit:= -10.0
 if (!FileExist("config.ini")) {
      IniWrite, DefaultMediaApp=""`n, config.ini, settings
      IniWrite, Output1Name=""`nOutput1Driver=""`nOutput2Name=""`nOutput2Driver=""`n, config.ini, devices
@@ -21,6 +22,18 @@ readconfig()
 <^<+R::voicemeeter.command.restart()
 
 #Space::SendInput {CtrlDown}{F3}
+
+#T::
+if(wid:=WinExist("ahk_exe WindowsTerminal.exe")){
+     WinActivate, % "ahk_id " . wid
+     ControlFocus,Windows.UI.Input.InputSite.WindowClass1, % "ahk_id " . wid
+}else{
+     Run, wt.exe, %A_Desktop%\..\, UseErrorLevel, wpid
+     Sleep, 500
+     WinActivate, ahk_exe WindowsTerminal.exe
+     ControlFocus,Windows.UI.Input.InputSite.WindowClass1, ahk_exe WindowsTerminal.exe
+}
+return
 
 !Space::
      clipboard = 
@@ -67,12 +80,12 @@ Alt & WheelUp::SendInput, {PgUp}
 ; global audio
 Volume_Up::
 gain:= globalAudio.getPercentage(++globalAudio.gain)
-OSD_spawn("Global gain: " . gain . "%",,, 1, gain)
+OSD_spawn("Global gain: " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 
 Volume_Down::
 gain:= globalAudio.getPercentage(--globalAudio.gain)
-OSD_spawn("Global gain: " . gain . "%",,, 1, gain)
+OSD_spawn("Global gain: " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 
 <^M::OSD_spawn("Global Audio " . ((globalAudio.mute:=-1)? "muted" : "unmuted"),,, 1)
@@ -84,53 +97,52 @@ return
 ; media audio
 !Volume_Up::
 gain:= mediaAudio.getPercentage(++mediaAudio.gain)
-OSD_spawn(mediaAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+OSD_spawn(mediaAudio["Label"] . ": " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 
 !Volume_Down::
 gain:= mediaAudio.getPercentage(--mediaAudio.gain)
-OSD_spawn(mediaAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+OSD_spawn(mediaAudio["Label"] . ": " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 
-<!M::OSD_spawn(mediaAudio.getParameter("Label") . ((mediaAudio.mute:=-1)? " muted" : " unmuted"),,, 1)
+<!M::OSD_spawn(mediaAudio["Label"] . ((mediaAudio.mute:=-1)? " muted" : " unmuted"),,, 1)
 ;---------------------------------------
 ; mic audio
 #If, (GetKeyState("Alt"))
 A & Volume_Up::
 gain:= micInput.getPercentage(++micInput.gain)
-OSD_spawn(micInput.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+OSD_spawn(micInput["Label"] . ": " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 
 A & Volume_Down::
 gain:= micInput.getPercentage(--micInput.gain)
-OSD_spawn(micInput.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+OSD_spawn(micInput["Label"] . ": " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 #If
 
 !F1::
-     micInput.setParameter("fx_x","0")
-     micInput.setParameter("fx_y","0")
+     micInput["fx_x"]:= micInput["fx_y"]:= 0
 return
 
 !F2::
-     micInput.setParameter("fx_x","0.23")
-     micInput.setParameter("fx_y","0.5")
+     micInput["fx_x"]:= 0.23
+     micInput["fx_y"]:= 0.5
 return
 ;---------------------------------------
 ; chat audio
 #If, (GetKeyState("Alt"))
 Q & Volume_Up::
 gain:= chatAudio.getPercentage(++chatAudio.gain)
-OSD_spawn(chatAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+OSD_spawn(chatAudio["Label"] . ": " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 
 Q & Volume_Down::
 gain:= chatAudio.getPercentage(--chatAudio.gain)
-OSD_spawn(chatAudio.getParameter("Label") . ":" . gain . "%",,, 1, gain)
+OSD_spawn(chatAudio["Label"] . ": " . Format("{:.2f}", gain) . "%",,, 1, gain)
 return
 #If
 
-!`::OSD_spawn(chatAudio.getParameter("Label") . ((chatAudio.mute:=-1)? " muted" : " unmuted"),,, 1)
+!`::OSD_spawn(chatAudio["Label"] . ((chatAudio.mute:=-1)? " muted" : " unmuted"),,, 1)
 ;---------------------------------------
 ; recorder hotkeys
 <!R::
