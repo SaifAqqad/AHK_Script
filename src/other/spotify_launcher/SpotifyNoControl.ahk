@@ -22,7 +22,7 @@ Try{
         if(sHwnd%A_Index% = tempHwnd) ; skip the window if it's the default one
             Continue
         ; resize the window to 0,0 and place it on the bottom of the z order
-        DllCall("SetWindowPos", "UInt", sHwnd%A_Index%, "UInt", 1, "Int", 0, "Int", 0, "Int", 0, "Int", 0, "UInt", 0x0200 | 0x0002 | 0x0004)
+        DllCall("SetWindowPos", "UInt", sHwnd%A_Index%, "UInt", 1, "Int", 0, "Int", 0, "Int", 0, "Int", 0, "UInt", 0x0200 | 0x0002)
     }
     ExitApp, 0
 } Catch {
