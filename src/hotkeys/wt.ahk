@@ -1,13 +1,24 @@
 ;windows terminal hotkey
 *#T::
-; if wt is running -> get the PID
+newTab:= GetKeyState("Alt")
 WinGet, wtPID, PID, ahk_exe WindowsTerminal.exe
-if(!wtPID){ ; if not, run wt
-     Run, wt.exe, %A_Desktop%\..\, UseErrorLevel, wtPID
+if(!wtPID){
+     Run, wt.exe, %A_Desktop%\..\, UseErrorLevel
+     WinWait, ahk_exe WindowsTerminal.exe,,4
      Sleep, 500
 }
-; activate the wt window
-WinActivate, ahk_pid %wtPID%
-; focus the input to the window
-ControlFocus, Windows.UI.Input.InputSite.WindowClass1, ahk_pid %wtPID%
+if(newTab){
+     Run, wt.exe -w 0 nt, %A_Desktop%\..\, UseErrorLevel
+}
+; activate the wt window & focus the input to the window
+fCount:=0
+focusInput:
+Try{
+     WinActivate, ahk_exe WindowsTerminal.exe
+     ControlFocus, Windows.UI.Input.InputSite.WindowClass1, ahk_exe WindowsTerminal.exe
+}catch{
+     Sleep, 20
+     if(++fCount<4)
+          Goto, focusInput
+}
 return
