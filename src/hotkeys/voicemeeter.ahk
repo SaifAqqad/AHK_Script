@@ -12,7 +12,7 @@ Volume_Down::osd_obj.showAndHide("A1 gain: " --vm.bus[1].gain,0,2)
 *<!1::
 vm.bus[1].device["ks"]:="Corsair"
 osd_obj.showAndHide("Headphone audio")
-Sleep, 800
+Sleep, 1000
 tts.Speak("Headphone audio")
 return
 
@@ -20,7 +20,7 @@ return
 *<!2::
 vm.bus[1].device["wdm"]:="AMD"
 osd_obj.showAndHide("Monitor audio")
-Sleep, 800
+Sleep, 1000
 tts.Speak("Monitor audio")
 return
 

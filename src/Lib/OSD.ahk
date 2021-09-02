@@ -1,5 +1,5 @@
 Class OSD {
-    static ACCENT:= {"-1":"FF572D" ; MAIN ACCENT
+    static ACCENT:= {"-1":"4D5565" ; MAIN ACCENT
     ,"0":"DC3545" ; OFF ACCENT
     ,"1":"007BFF"} ; ON ACCENT
 
