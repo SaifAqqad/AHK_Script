@@ -10,7 +10,7 @@ Volume_Down::osd_obj.showAndHide("A1 gain: " --vm.bus[1].gain,0,2)
 
 ;set A1 to headphones
 *<!1::
-vm.bus[1].device:="Corsair"
+vm.bus[1].device["ks"]:="Corsair"
 osd_obj.showAndHide("Headphone audio")
 Sleep, 800
 tts.Speak("Headphone audio")
@@ -18,7 +18,7 @@ return
 
 ;set A1 to monitor
 *<!2::
-vm.bus[1].device:="AMD"
+vm.bus[1].device["wdm"]:="AMD"
 osd_obj.showAndHide("Monitor audio")
 Sleep, 800
 tts.Speak("Monitor audio")
@@ -39,11 +39,13 @@ return
 
 ; hold-to-mute A1 and mic
 ~*Esc::
+osd_obj.show("EMERGENCY MUTE")
 vm.bus[1].mute:=1
 vm.strip[2].mute:=1
 KeyWait, Esc
 vm.bus[1].mute:=0
 vm.strip[2].mute:=0
+osd_obj.hide()
 return
 
 ; VALORANT specific

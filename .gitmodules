@@ -1,0 +1,3 @@
+[submodule "src/Lib/VMR"]
+	path = src/Lib/VMR
+	url = https://github.com/SaifAqqad/VMR.ahk
