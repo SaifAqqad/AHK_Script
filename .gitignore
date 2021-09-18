@@ -3,3 +3,4 @@ Script.exe
 *.zip
 bin
 .vscode
+config.json

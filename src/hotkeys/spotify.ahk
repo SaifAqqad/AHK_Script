@@ -1,37 +1,61 @@
-*~Media_Play_Pause::RapidHotkey("call_runSpotify",2,,1)
+DetectHiddenWindows, On
+Global SPOTIFY_EXE:= "Spotify.exe"
+, current_vol:=""
+
+$*Volume_Up::
+if(GetKeyState("LAlt","P")){
+    Try {
+        if(current_vol="")
+            current_vol:= spotify.GetCurrentPlaybackInfo().device.volume_percent
+        current_vol:= Min(Max(current_vol+10, 0), 100)
+        spotify.SetVolume(current_vol)
+        osd_obj.showAndHide("Spotify Volume: " current_vol,"1ED760")
+    }
+}else
+    SendInput, {Volume_Up}
+return
+$*Volume_Down::
+if(GetKeyState("LAlt","P")){
+    Try {
+        if(current_vol="")
+            current_vol:= spotify.GetCurrentPlaybackInfo().device.volume_percent
+        current_vol:= Min(Max(current_vol-10, 0), 100)
+        spotify.SetVolume(current_vol)
+        osd_obj.showAndHide("Spotify Volume: " current_vol,"1ED760")
+    }
+}else
+    SendInput, {Volume_Down}
+return
+
+*~Media_Play_Pause::RapidHotkey("call_runSpotify",2,0.4,1)
 
 call_runSpotify:
 runSpotify()
 return
 
-runSpotify(SPOTIFY_PATH:=""){
-    static SPOTIFY_EXE:= "spotify.exe"
+runSpotify(){
     Try{
         ; if spotify is running -> get the PID
         WinGet, sPID, PID , ahk_exe %SPOTIFY_EXE%
         if(!sPID){ ; if not, run spotify
-            Run,% SPOTIFY_PATH? SPOTIFY_PATH : "spotify:" , %A_AppData%, Hide, sPID
-            ; wait for the window to exist
+            Run, % getSpotifyFullPath() , %A_AppData%,, sPID
             WinWait, ahk_exe %SPOTIFY_EXE%,, 5
-            ; get the PID
-            WinGet, sPID, PID
-            WinShow, 
+            WinShow, ahk_exe %SPOTIFY_EXE%
         }
-        ; Focus the main window
-        WinActivate, ahk_pid %sPID%
-        ; get the Hwnd for all spotify windows
-        WinGet, sHwnd, List, ahk_pid %sPID%
-        Loop, %sHwnd% {
-            ; only the main window has a title
-            ; so check the window title
-            WinGetTitle, sTitle, % "ahk_id " . sHwnd%A_Index%
-            if(sTitle) ; if there's a title -> skip the window
-                Continue
-            ; resize the window to 0,0 and place it on the bottom of the z order
-            DllCall("SetWindowPos", "UInt", sHwnd%A_Index%, "UInt", 1, "Int", 0, "Int", 0, "Int", 0, "Int", 0, "UInt", 0x0200 | 0x0002)
-        }
+        WinActivate, ahk_exe %SPOTIFY_EXE%
         return 1
     } Catch {
         return 0
     }
+}
+
+getSpotifyFullPath(){
+    p_path:= A_Args[1]
+    if(!p_path){
+        ; works regardless of where spotify is installed
+        RegRead, p_path, HKCR\spotify\shell\open\command
+        SplitPath, p_path,, p_path
+        p_path:= StrReplace(p_path, """") "\" SPOTIFY_EXE
+    }
+    return p_path
 }

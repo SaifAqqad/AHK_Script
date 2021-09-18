@@ -14,7 +14,7 @@ if(newTab){
 fCount:=0
 focusInput:
 Try{
-     WinActivate, ahk_exe WindowsTerminal.exe
+     WinActivate, ahk_exe WindowsTerminal.exe ahk_class CASCADIA_HOSTING_WINDOW_CLASS
      ControlFocus, Windows.UI.Input.InputSite.WindowClass1, ahk_exe WindowsTerminal.exe
 }catch{
      Sleep, 20
