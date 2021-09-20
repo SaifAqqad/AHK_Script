@@ -13,7 +13,7 @@ Class OSD {
         ;get the primary monitor scaling
         this.scale:= A_ScreenDPI/96
         ;set the OSD width and height
-        this.width:= Format("{:i}", 220 * this.scale)
+        this.width:= Format("{:i}", 250 * this.scale)
         this.height:= Format("{:i}", 38 * this.scale)
         ;set the default pos object
         pos:= pos? pos : {x:-1,y:-1}
@@ -36,10 +36,10 @@ Class OSD {
         Gui, New, +Hwndhwnd, OSD 
         this.hwnd:= hwnd
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border 
-        Gui, Margin, 30
+        Gui, Margin, 15
         Gui, Color, % this.theme, % OSD.ACCENT["-1"]
-        Gui, Font,% Format("s{:i} w500 c{}", 12*this.scale, OSD.ACCENT["-1"]), Segoe UI
-        Gui, Add, Text,% Format("HwndtxtHwnd w{} r1 Center", this.width-60)
+        Gui, Font,% Format("s{:i} w500 c{}", 11*this.scale, OSD.ACCENT["-1"]), Segoe UI
+        Gui, Add, Text,% Format("HwndtxtHwnd w{} Center", this.width-30)
         this.hwndTxt:= txtHwnd
     }
 
@@ -67,11 +67,12 @@ Class OSD {
         Gui, Color, % this.theme, % accent
         Gui, Font,% Format("s{:i} w500 c{}", 12*this.scale, accent)
         GuiControl, Font, % this.hwndTxt
-        ;set the OSD text
         text:= this.processText(text)
         GuiControl, Text, % this.hwndTxt, %text%
+        Gui, +LastFound
+        Winset, Redraw
         ;show the OSD
-        Gui, Show, % Format("w{} h{} NoActivate x{} y{}", this.width, this.height, this.pos.x, this.pos.y)
+        Gui, Show, % Format("w{} NoActivate NA x{} y{}", this.width, this.pos.x, this.pos.y)
         ;make the OSD corners rounded
         WinGetPos,,,Width, Height, % "ahk_id " . this.hwnd
         WinSet, Region, % Format("w{} h{} 0-0 R{3:i}-{3:i}", Width, Height, 15*this.scale ), % "ahk_id " . this.hwnd
@@ -123,8 +124,8 @@ Class OSD {
     }
 
     processText(text){
-        if (StrLen(text)>20)
-            text:= SubStr(text, 1, 18) . Chr(0x2026) ; fix overflow with ellipsis
+        if (StrLen(text)>28)
+            text:= SubStr(text, 1, 26) . Chr(0x2026) ; fix overflow with ellipsis
         return text
     }
 

@@ -2,25 +2,23 @@ DetectHiddenWindows, On
 Global SPOTIFY_EXE:= "Spotify.exe"
 
 <^Up::
-spotify.SetVolume(10,1)
-osd_obj.showAndHide("Spotify Volume: " spotify.GetVolume(),"1ED760")
+Try spotify.SetVolume(10,1)
+SetTimer, showVolume, -100
 return
 
 <^Down::
-spotify.SetVolume(-10,1)
-osd_obj.showAndHide("Spotify Volume: " spotify.GetVolume(),"1ED760")
+Try spotify.SetVolume(-10,1)
+SetTimer, showVolume, -100
 return
 
 <^Right::
-spotify.NextTrack()
-track:= spotify.GetCurrentTrackInfo()
-osd_obj.showAndHide("Playing: " track.item.artists[0].name " - " track.item.name,"1ED760")
+Try spotify.NextTrack()
+SetTimer, showPlaying, -200
 return
 
 <^Left::
-spotify.PreviousTrack()
-track:= spotify.GetCurrentTrackInfo()
-osd_obj.showAndHide("Playing: " track.item.artists[0].name " - " track.item.name,"1ED760")
+Try spotify.PreviousTrack()
+SetTimer, showPlaying, -200
 return
 
 *~Media_Play_Pause::RapidHotkey("call_runSpotify",2,0.4,1)
@@ -54,4 +52,15 @@ getSpotifyFullPath(){
         p_path:= StrReplace(p_path, """") "\" SPOTIFY_EXE
     }
     return p_path
+}
+
+showPlaying(){
+    Try {
+        track:= spotify.GetCurrentTrackInfo()
+        osd_obj.showAndHide(track.item.artists[1].name " - " track.item.name,"1ED760",2)
+    }
+}
+
+showVolume(){
+    Try osd_obj.showAndHide("Spotify Volume: " spotify.GetVolume(),"1ED760",1)
 }

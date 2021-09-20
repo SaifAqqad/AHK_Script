@@ -7,10 +7,11 @@
 #MaxThreadsBuffer, On
 tray_init()
 
-global spotify:= new SpotifyAPI()
-, osd_obj:= new OSD("",1)
+global osd_obj:= new OSD("",1)
 , tts:= ComObjCreate("SAPI.SpVoice")
 osd_obj.setTheme("0A0E14")
+global spotify:= new SpotifyAPI()
+osd_obj.showAndHide("Connected to Spotify","1ED760",1)
 
 #Include, %A_ScriptDir%\hotkeys
 #Include, spotify.ahk
