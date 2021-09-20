@@ -1,30 +1,26 @@
 DetectHiddenWindows, On
 Global SPOTIFY_EXE:= "Spotify.exe"
-, current_vol:=""
 
-$*Volume_Up::
-if(GetKeyState("LAlt","P")){
-    Try {
-        if(current_vol="")
-            current_vol:= spotify.GetCurrentPlaybackInfo().device.volume_percent
-        current_vol:= Min(Max(current_vol+10, 0), 100)
-        spotify.SetVolume(current_vol)
-        osd_obj.showAndHide("Spotify Volume: " current_vol,"1ED760")
-    }
-}else
-    SendInput, {Volume_Up}
+<^Up::
+spotify.SetVolume(10,1)
+osd_obj.showAndHide("Spotify Volume: " spotify.GetVolume(),"1ED760")
 return
-$*Volume_Down::
-if(GetKeyState("LAlt","P")){
-    Try {
-        if(current_vol="")
-            current_vol:= spotify.GetCurrentPlaybackInfo().device.volume_percent
-        current_vol:= Min(Max(current_vol-10, 0), 100)
-        spotify.SetVolume(current_vol)
-        osd_obj.showAndHide("Spotify Volume: " current_vol,"1ED760")
-    }
-}else
-    SendInput, {Volume_Down}
+
+<^Down::
+spotify.SetVolume(-10,1)
+osd_obj.showAndHide("Spotify Volume: " spotify.GetVolume(),"1ED760")
+return
+
+<^Right::
+spotify.NextTrack()
+track:= spotify.GetCurrentTrackInfo()
+osd_obj.showAndHide("Playing: " track.item.artists[0].name " - " track.item.name,"1ED760")
+return
+
+<^Left::
+spotify.PreviousTrack()
+track:= spotify.GetCurrentTrackInfo()
+osd_obj.showAndHide("Playing: " track.item.artists[0].name " - " track.item.name,"1ED760")
 return
 
 *~Media_Play_Pause::RapidHotkey("call_runSpotify",2,0.4,1)

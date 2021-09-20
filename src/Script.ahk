@@ -1,18 +1,13 @@
 ;@Ahk2Exe-SetMainIcon Script.ico
 ;@Ahk2Exe-Base Unicode 64*
 
-#Include <JSON>
-#Include <SpotifyAPI>
+#Include <SpotifyFreeAPI\src\SpotifyFreeAPI>
 #Include <OSD>
 #Include <RapidHotkey>
 #MaxThreadsBuffer, On
 tray_init()
 
-if(!FileExist("config.json"))
-    tray_editConfig()
-
-global config:= JSON.Load(FileOpen("config.json","R").Read())
-, spotify:= new SpotifyAPI(config.token)
+global spotify:= new SpotifyAPI()
 , osd_obj:= new OSD("",1)
 , tts:= ComObjCreate("SAPI.SpVoice")
 osd_obj.setTheme("0A0E14")
@@ -34,8 +29,6 @@ tray_init(){
     Menu, Tray, add, Suspend Hotkeys, % fObj
     fObj:= Func("tray_reload")
     Menu, Tray, add, Reload Script, % fObj
-    fObj:= Func("tray_editConfig")
-    Menu, Tray, add, Edit Config, % fObj
     fObj:= Func("tray_exit")
     Menu, Tray, add, Exit, % fObj
 }
@@ -50,11 +43,6 @@ tray_suspend(){
 
 tray_exit(){
     ExitApp, 0
-}
-
-tray_editConfig(){
-    RunWait, Notepad.exe "%A_ScriptDir%\config.json"
-    Reload
 }
 
 tray_toggleAutoStart(){
