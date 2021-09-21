@@ -5,6 +5,7 @@
 #Include <OSD>
 #Include <RapidHotkey>
 #MaxThreadsBuffer, On
+SetWorkingDir, %A_ScriptDir%
 tray_init()
 
 global osd_obj:= new OSD("",1)
