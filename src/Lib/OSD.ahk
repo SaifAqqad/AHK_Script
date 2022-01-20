@@ -14,7 +14,7 @@ Class OSD {
         this.scale:= A_ScreenDPI/96
         ;set the OSD width and height
         this.width:= Format("{:i}", 250 * this.scale)
-        this.height:= Format("{:i}", 38 * this.scale)
+        this.height:= Format("{:i}", 40 * this.scale)
         ;set the default pos object
         pos:= pos? pos : {x:-1,y:-1}
         ;get the final pos object
@@ -38,7 +38,7 @@ Class OSD {
         Gui, +AlwaysOnTop -SysMenu +ToolWindow -caption -Border 
         Gui, Margin, 15
         Gui, Color, % this.theme, % OSD.ACCENT["-1"]
-        Gui, Font,% Format("s{:i} w500 c{}", 11*this.scale, OSD.ACCENT["-1"]), Segoe UI
+        Gui, Font,% Format("s{:i} w500 c{}", 12*this.scale, OSD.ACCENT["-1"]), Segoe UI Variable
         Gui, Add, Text,% Format("HwndtxtHwnd w{} Center", this.width-30)
         this.hwndTxt:= txtHwnd
     }

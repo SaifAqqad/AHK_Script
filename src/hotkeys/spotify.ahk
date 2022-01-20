@@ -1,22 +1,22 @@
 DetectHiddenWindows, On
 Global SPOTIFY_EXE:= "Spotify.exe"
 
-<^Up::
+<!Up::
 Try vol:= spotify.SetVolume(10,1)
 osd_obj.showAndHide("Spotify Volume: " vol,"1ED760",1)
 return
 
-<^Down::
+<!Down::
 Try vol:= spotify.SetVolume(-10,1)
 osd_obj.showAndHide("Spotify Volume: " vol,"1ED760",1)
 return
 
-<^Right::
+<!Right::
 Try spotify.NextTrack()
 SetTimer, showPlaying, -200
 return
 
-<^Left::
+<!Left::
 Try spotify.PreviousTrack()
 SetTimer, showPlaying, -200
 return
